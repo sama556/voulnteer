@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المستخدمين - المنصة التطوعية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        :root {
+            --color-dark-navy: #001F4D;
+            --color-deep-blue: #003B73;
+            --color-blue: #005EA6;
+            --color-sky-blue: #008ECC;
+            --color-light-sky: #33BFE6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--color-dark-navy);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-right: 3px solid var(--color-light-sky);
+        }
+        
+        .sidebar-menu i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-dark-navy);
+            margin: 0;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* Search and Filter */
+        .search-filter {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-header {
+            background: var(--color-dark-navy);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* User Avatar */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Default Avatar for users without images */
+        .user-avatar-default {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-light-sky));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+        
+        /* Action Buttons */
+        .action-btn {
+            border: none;
+            background: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .action-btn.view {
+            color: var(--color-blue);
+        }
+        
+        .action-btn.ban {
+            color: #dc3545;
+        }
+        
+        .action-btn.unban {
+            color: #28a745;
+        }
+        
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .sidebar-menu i {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-info {
+                margin-top: 10px;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            border-radius: 15px 15px 0 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e9ecef;
+            padding: 20px 30px;
+        }
+
+        .form-label {
+            color: var(--color-dark-navy);
+            font-size: 0.9rem;
+        }
+
+        .text-muted {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Enhanced Responsive Styles */
+        @media (max-width: 1200px) {
+            .modal-dialog {
+                max-width: 90%;
+            }
+        }
+
+        /* Large Screen Modal Enhancements */
+        @media (min-width: 1200px) {
+            .modal-dialog {
+                max-width: 1000px;
+            }
+            
+            .modal-body {
+                padding: 40px;
+            }
+            
+            .text-primary {
+                color: var(--color-blue) !important;
+                border-bottom: 2px solid var(--color-light-sky);
+                padding-bottom: 8px;
+                margin-bottom: 20px;
+            }
+            
+            .form-label {
+                font-size: 0.95rem;
+                margin-bottom: 5px;
+            }
+            
+            .text-muted {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            
+            .user-avatar,
+            .user-avatar-default {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                border: 3px solid white;
+            }
+            
+            .badge {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .modal-footer {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+            }
+            
+            /* Stack modal content vertically on mobile */
+            .modal-body .row > .col-md-4,
+            .modal-body .row > .col-md-8 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .modal-body .col-md-4 {
+                margin-bottom: 20px;
+            }
+            
+            /* Make form fields stack better on mobile */
+            .modal-body .col-sm-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .modal-body {
+                padding: 15px;
+            }
+            
+            .modal-header {
+                padding: 15px;
+            }
+            
+            .modal-title {
+                font-size: 1.1rem;
+            }
+            
+            .form-label {
+                font-size: 0.85rem;
+            }
+            
+            .text-muted {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Table Responsive Enhancements */
+        @media (max-width: 992px) {
+            .table-responsive {
+                border-radius: 10px;
+            }
+            
+            .table th,
+            .table td {
+                padding: 8px 6px;
+                font-size: 0.9rem;
+            }
+            
+            .user-avatar,
+            .user-avatar-default {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .action-btn {
+                padding: 4px 6px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .table th,
+            .table td {
+                padding: 6px 4px;
+                font-size: 0.8rem;
+            }
+            
+            .user-avatar,
+            .user-avatar-default {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .user-avatar-default {
+                font-size: 1rem;
+            }
+            
+            .action-btn {
+                padding: 3px 5px;
+                font-size: 0.75rem;
+            }
+            
+            .badge {
+                font-size: 0.7rem;
+            }
+            
+            /* Hide less important columns on mobile */
+            .table th:nth-child(5),
+            .table td:nth-child(5) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .table th,
+            .table td {
+                padding: 4px 2px;
+                font-size: 0.75rem;
+            }
+            
+            .user-avatar,
+            .user-avatar-default {
+                width: 25px;
+                height: 25px;
+            }
+            
+            .user-avatar-default {
+                font-size: 0.8rem;
+            }
+            
+            .action-btn {
+                padding: 2px 4px;
+                font-size: 0.7rem;
+            }
+            
+            /* Hide more columns on very small screens */
+            .table th:nth-child(7),
+            .table td:nth-child(7) {
+                display: none;
+            }
+        }
+
+        /* Search and Filter Responsive */
+        @media (max-width: 768px) {
+            .search-filter .row {
+                margin: 0;
+            }
+            
+            .search-filter .col-md-4,
+            .search-filter .col-md-3,
+            .search-filter .col-md-2 {
+                margin-bottom: 10px;
+            }
+            
+            .search-filter .btn {
+                width: 100%;
+            }
+        }
+
+        /* Pagination Responsive */
+        @media (max-width: 576px) {
+            .pagination {
+                font-size: 0.8rem;
+            }
+            
+            .pagination .page-link {
+                padding: 0.375rem 0.5rem;
+            }
+        }
+
+        /* Top Bar Responsive Enhancements */
+        @media (max-width: 576px) {
+            .top-bar h1 {
+                font-size: 1.2rem;
+            }
+            
+            .admin-info span {
+                font-size: 0.9rem;
+            }
+            
+            .admin-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Table Header Responsive */
+        @media (max-width: 768px) {
+            .table-header {
+                padding: 10px 15px;
+            }
+            
+            .table-header h3 {
+                font-size: 1rem;
+            }
+            
+            .table-header span {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Sidebar Mobile Enhancements */
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .main-content {
+                margin-right: 60px;
+            }
+            
+            .sidebar-menu a {
+                padding: 12px 15px;
+            }
+        }
+        button.btn-close.btn-close-white {
+    margin: 0;
+}
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-hands-helping me-2"></i> إدارة المنصة</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="admin-dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-users.html" class="active">
+                    <i class="fas fa-users"></i>
+                    <span>إدارة المستخدمين</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-content.html">
+                    <i class="fas fa-file-alt"></i>
+                    <span>إدارة المحتوى</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-platforms.html">
+                    <i class="fas fa-th-large"></i>
+                    <span>إدارة المنصات</span>
+                </a>
+            </li>
+           
+            <li>
+                <a href="../index.html">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>العودة للموقع</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1>إدارة المستخدمين</h1>
+            <div class="admin-info">
+                <div class="admin-avatar">مد</div>
+                <span>مدير النظام</span>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="ابحث بالاسم أو البريد الإلكتروني...">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="">جميع الحالات</option>
+                        <option value="active">نشط</option>
+                        <option value="banned">محظور</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="">جميع الأنواع</option>
+                        <option value="volunteer">متطوع</option>
+                        <option value="initiative_owner">صاحب مبادرة</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100">بحث</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="data-table">
+            <div class="table-header">
+                <h3>قائمة المستخدمين</h3>
+                
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>رقم المستخدم</th>
+                            <th>الصورة</th>
+                            <th>الاسم الكامل</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>المنطقة</th>
+                            <th>النوع</th>
+                            <th>تاريخ الإنشاء</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-user-type="volunteer">
+                            <td>#V001</td>
+                            <td><img src="../images/man2.jpg" class="user-avatar" alt="صورة المستخدم"></td>
+                            <td>أحمد محمد</td>
+                            <td>ahmed@example.com</td>
+                            <td>الرياض</td>
+                            <td><span class="badge bg-primary">متطوع</span></td>
+                            <td>2025-05-15</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn ban" title="حظر"><i class="fas fa-ban"></i></button>
+                            </td>
+                        </tr>
+                        <tr data-user-type="initiative_owner">
+                            <td>#I001</td>
+                            <td><div class="user-avatar-default" data-name="فاطمة أحمد">ف</div></td>
+                            <td>فاطمة أحمد</td>
+                            <td>fatima@example.com</td>
+                            <td>جدة</td>
+                            <td><span class="badge bg-warning">صاحب مبادرة</span></td>
+                            <td>2025-06-20</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn ban" title="حظر"><i class="fas fa-ban"></i></button>
+                            </td>
+                        </tr>
+                        <tr data-user-type="volunteer">
+                            <td>#V002</td>
+                            <td><img src="../images/man1.jpg" class="user-avatar" alt="صورة المستخدم"></td>
+                            <td>خالد سعيد</td>
+                            <td>khaled@example.com</td>
+                            <td>الدمام</td>
+                            <td><span class="badge bg-primary">متطوع</span></td>
+                            <td>2025-04-10</td>
+                            <td><span class="badge bg-danger">محظور</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn unban" title="إلغاء الحظر"><i class="fas fa-check"></i></button>
+                            </td>
+                        </tr>
+                        <tr data-user-type="initiative_owner">
+                            <td>#I002</td>
+                            <td><div class="user-avatar-default" data-name="سارة علي">س</div></td>
+                            <td>سارة علي</td>
+                            <td>sara@example.com</td>
+                            <td>الرياض</td>
+                            <td><span class="badge bg-warning">صاحب مبادرة</span></td>
+                            <td>2025-07-05</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn ban" title="حظر"><i class="fas fa-ban"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+       
+    </div>
+
+    <!-- User Details Modal -->
+    <div class="modal fade" id="userDetailsModal" tabindex="-1" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--color-dark-navy); color: white;">
+                    <h5 class="modal-title" id="userDetailsModalLabel">تفاصيل المستخدم</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Large Screen Layout (3 columns) -->
+                    <div class="row d-none d-lg-flex">
+                        <!-- Column 1: User Info & Avatar -->
+                        <div class="col-lg-4 text-center">
+                            <img id="modalUserAvatar" src="" class="user-avatar mb-3" style="width: 100px; height: 100px;" alt="صورة المستخدم">
+                            <div id="modalUserAvatarDefault" class="user-avatar-default mb-3" style="width: 100px; height: 100px; font-size: 2.5rem; display: none;"></div>
+                            <h4 id="modalUserName" class="mb-3"></h4>
+                            <div class="mb-3">
+                                <span id="modalUserStatus" class="badge me-2"></span>
+                                <div id="modalUserType" class="badge bg-info"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Column 2: Basic Information -->
+                        <div class="col-lg-4">
+                            <h5 class="text-primary mb-3">المعلومات الأساسية</h5>
+                            <!-- متطوع Fields -->
+                            <div id="volunteerFieldsCol2" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">رقم المتطوع:</label>
+                                    <p id="modalVolunteerId" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">الاسم الكامل:</label>
+                                    <p id="modalVolunteerName" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">البريد الإلكتروني:</label>
+                                    <p id="modalVolunteerEmail" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">المنطقة:</label>
+                                    <p id="modalVolunteerRegion" class="text-muted"></p>
+                                </div>
+                            </div>
+
+                            <!-- صاحب مبادرة Fields -->
+                            <div id="initiativeOwnerFieldsCol2" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">رقم صاحب المبادرة:</label>
+                                    <p id="modalOwnerId" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">الاسم الكامل:</label>
+                                    <p id="modalOwnerName" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">اسم الجهة:</label>
+                                    <p id="modalOwnerOrganization" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">البريد الإلكتروني:</label>
+                                    <p id="modalOwnerEmail" class="text-muted"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Column 3: Additional Information -->
+                        <div class="col-lg-4">
+                            <h5 class="text-primary mb-3">معلومات إضافية</h5>
+                            <!-- متطوع Fields -->
+                            <div id="volunteerFieldsCol3" style="display: none;">
+                               
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">تاريخ الإنشاء:</label>
+                                    <p id="modalVolunteerDate" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">النبذة:</label>
+                                    <p id="modalVolunteerBio" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">الاهتمامات:</label>
+                                    <p id="modalVolunteerInterests" class="text-muted"></p>
+                                </div>
+                            </div>
+
+                            <!-- صاحب مبادرة Fields -->
+                            <div id="initiativeOwnerFieldsCol3" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">رقم الجوال:</label>
+                                    <p id="modalOwnerPhone" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">تاريخ الإنشاء:</label>
+                                    <p id="modalOwnerDate" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">المجال التطوعي:</label>
+                                    <p id="modalOwnerField" class="text-muted"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">المنطقة:</label>
+                                    <p id="modalOwnerRegion" class="text-muted"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile/Tablet Layout (2 columns) -->
+                    <div class="row d-lg-none">
+                        <div class="col-md-4 text-center">
+                            <img id="modalUserAvatarMobile" src="" class="user-avatar mb-3" style="width: 80px; height: 80px;" alt="صورة المستخدم">
+                            <div id="modalUserAvatarDefaultMobile" class="user-avatar-default mb-3" style="width: 80px; height: 80px; font-size: 2rem; display: none;"></div>
+                            <h5 id="modalUserNameMobile" class="mb-2"></h5>
+                            <span id="modalUserStatusMobile" class="badge mb-3"></span>
+                            <div id="modalUserTypeMobile" class="badge bg-info mb-2"></div>
+                        </div>
+                        <div class="col-md-8">
+                            <!-- متطوع Fields -->
+                            <div id="volunteerFieldsMobile" class="row" style="display: none;">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">رقم المتطوع:</label>
+                                    <p id="modalVolunteerIdMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">الاسم الكامل:</label>
+                                    <p id="modalVolunteerNameMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">البريد الإلكتروني:</label>
+                                    <p id="modalVolunteerEmailMobile" class="text-muted"></p>
+                                </div>
+                                
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">المنطقة:</label>
+                                    <p id="modalVolunteerRegionMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">تاريخ الإنشاء:</label>
+                                    <p id="modalVolunteerDateMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">النبذة:</label>
+                                    <p id="modalVolunteerBioMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">الاهتمامات:</label>
+                                    <p id="modalVolunteerInterestsMobile" class="text-muted"></p>
+                                </div>
+                            </div>
+
+                            <!-- صاحب مبادرة Fields -->
+                            <div id="initiativeOwnerFieldsMobile" class="row" style="display: none;">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">رقم صاحب المبادرة:</label>
+                                    <p id="modalOwnerIdMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">الاسم الكامل:</label>
+                                    <p id="modalOwnerNameMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">اسم الجهة:</label>
+                                    <p id="modalOwnerOrganizationMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">البريد الإلكتروني:</label>
+                                    <p id="modalOwnerEmailMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">رقم الجوال:</label>
+                                    <p id="modalOwnerPhoneMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">تاريخ الإنشاء:</label>
+                                    <p id="modalOwnerDateMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">المجال التطوعي:</label>
+                                    <p id="modalOwnerFieldMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">المنطقة:</label>
+                                    <p id="modalOwnerRegionMobile" class="text-muted"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        // Add event listeners to view buttons
+        document.querySelectorAll('.action-btn.view').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const userType = row.getAttribute('data-user-type');
+                const userId = row.querySelector('td:nth-child(1)').textContent;
+                
+                // Handle both image and default avatar cases
+                const avatarCell = row.querySelector('td:nth-child(2)');
+                let userAvatar = null, userInitial = null;
+                
+                const imgElement = avatarCell.querySelector('img');
+                const defaultAvatarElement = avatarCell.querySelector('.user-avatar-default');
+                
+                if (imgElement) {
+                    // User has an image
+                    userAvatar = imgElement.src;
+                } else if (defaultAvatarElement) {
+                    // User has default avatar (no image)
+                    userInitial = defaultAvatarElement.textContent;
+                }
+                
+                const userName = row.querySelector('td:nth-child(3)').textContent;
+                const userEmail = row.querySelector('td:nth-child(4)').textContent;
+                const userRegion = row.querySelector('td:nth-child(5)').textContent;
+                const userDate = row.querySelector('td:nth-child(7)').textContent;
+                const userStatus = row.querySelector('td:nth-child(8) .badge').textContent;
+                const isActive = row.querySelector('td:nth-child(8) .badge').classList.contains('bg-success');
+                
+                // Hide all field sections first
+                // Large screen sections
+                document.getElementById('volunteerFieldsCol2').style.display = 'none';
+                document.getElementById('volunteerFieldsCol3').style.display = 'none';
+                document.getElementById('initiativeOwnerFieldsCol2').style.display = 'none';
+                document.getElementById('initiativeOwnerFieldsCol3').style.display = 'none';
+                
+                // Mobile sections
+                document.getElementById('volunteerFieldsMobile').style.display = 'none';
+                document.getElementById('initiativeOwnerFieldsMobile').style.display = 'none';
+                
+                // Set common fields for both layouts
+                const modalAvatar = document.getElementById('modalUserAvatar');
+                const modalDefaultAvatar = document.getElementById('modalUserAvatarDefault');
+                const modalAvatarMobile = document.getElementById('modalUserAvatarMobile');
+                const modalDefaultAvatarMobile = document.getElementById('modalUserAvatarDefaultMobile');
+                
+                // Function to set avatar
+                function setAvatar(avatarEl, defaultEl) {
+                    if (userAvatar && userAvatar !== null) {
+                        // User has an image
+                        avatarEl.src = userAvatar;
+                        avatarEl.style.display = 'block';
+                        defaultEl.style.display = 'none';
+                    } else if (userInitial && userInitial !== null) {
+                        // User has no image, show default avatar
+                        avatarEl.style.display = 'none';
+                        defaultEl.style.display = 'flex';
+                        defaultEl.textContent = userInitial;
+                    } else {
+                        // Fallback: show default avatar with first letter of name
+                        avatarEl.style.display = 'none';
+                        defaultEl.style.display = 'flex';
+                        defaultEl.textContent = userName.charAt(0);
+                    }
+                }
+                
+                // Set avatars for both layouts
+                setAvatar(modalAvatar, modalDefaultAvatar);
+                setAvatar(modalAvatarMobile, modalDefaultAvatarMobile);
+                
+                // Set names for both layouts
+                document.getElementById('modalUserName').textContent = userName;
+                document.getElementById('modalUserNameMobile').textContent = userName;
+                
+                // Set status badges for both layouts
+                const statusBadge = document.getElementById('modalUserStatus');
+                const statusBadgeMobile = document.getElementById('modalUserStatusMobile');
+                statusBadge.textContent = userStatus;
+                statusBadge.className = 'badge me-2 ' + (isActive ? 'bg-success' : 'bg-danger');
+                statusBadgeMobile.textContent = userStatus;
+                statusBadgeMobile.className = 'badge mb-3 ' + (isActive ? 'bg-success' : 'bg-danger');
+                
+                if (userType === 'volunteer') {
+                    // Show volunteer fields and populate data
+                    // Large screen layout
+                    document.getElementById('volunteerFieldsCol2').style.display = 'block';
+                    document.getElementById('volunteerFieldsCol3').style.display = 'block';
+                    document.getElementById('modalUserType').textContent = 'متطوع';
+                    document.getElementById('modalUserType').className = 'badge bg-primary';
+                    
+                    // Mobile layout
+                    document.getElementById('volunteerFieldsMobile').style.display = 'block';
+                    document.getElementById('modalUserTypeMobile').textContent = 'متطوع';
+                    document.getElementById('modalUserTypeMobile').className = 'badge bg-primary mb-2';
+                    
+                    // Populate data for both layouts
+                    // Large screen - Column 2
+                    document.getElementById('modalVolunteerId').textContent = userId;
+                    document.getElementById('modalVolunteerName').textContent = userName;
+                    document.getElementById('modalVolunteerEmail').textContent = userEmail;
+                    document.getElementById('modalVolunteerRegion').textContent = userRegion;
+                    
+                    // Static data for volunteers
+                    const volunteerData = {
+                        '#V001': {
+                            bio: 'متطوع نشط في المجتمع، يساهم في العديد من المبادرات التطوعية ويهتم بالتعليم والبيئة. لديه خبرة واسعة في العمل التطوعي.',
+                            interests: 'تعليم، بيئة، صحة، ثقافة'
+                        },
+                        '#V002': {
+                            bio: 'متطوع متميز في مجال الإغاثة والمساعدة الإنسانية. يشارك بفعالية في حملات التوعية المجتمعية.',
+                            interests: 'إغاثة، صحة، تعليم، مساعدة إنسانية'
+                        }
+                    };
+                    
+                    const volunteerInfo = volunteerData[userId] || {
+                        bio: 'متطوع نشط في المجتمع، يساهم في العديد من المبادرات التطوعية.',
+                        interests: 'تعليم، بيئة، صحة'
+                    };
+                    
+                    // Large screen - Column 3
+                    document.getElementById('modalVolunteerDate').textContent = userDate;
+                    document.getElementById('modalVolunteerBio').textContent = volunteerInfo.bio;
+                    document.getElementById('modalVolunteerInterests').textContent = volunteerInfo.interests;
+                    
+                    // Mobile layout
+                    document.getElementById('modalVolunteerIdMobile').textContent = userId;
+                    document.getElementById('modalVolunteerNameMobile').textContent = userName;
+                    document.getElementById('modalVolunteerEmailMobile').textContent = userEmail;
+                    document.getElementById('modalVolunteerRegionMobile').textContent = userRegion;
+                    document.getElementById('modalVolunteerDateMobile').textContent = userDate;
+                    document.getElementById('modalVolunteerBioMobile').textContent = volunteerInfo.bio;
+                    document.getElementById('modalVolunteerInterestsMobile').textContent = volunteerInfo.interests;
+                    
+                } else if (userType === 'initiative_owner') {
+                    // Show initiative owner fields and populate data
+                    // Large screen layout
+                    document.getElementById('initiativeOwnerFieldsCol2').style.display = 'block';
+                    document.getElementById('initiativeOwnerFieldsCol3').style.display = 'block';
+                    document.getElementById('modalUserType').textContent = 'صاحب مبادرة';
+                    document.getElementById('modalUserType').className = 'badge bg-warning';
+                    
+                    // Mobile layout
+                    document.getElementById('initiativeOwnerFieldsMobile').style.display = 'block';
+                    document.getElementById('modalUserTypeMobile').textContent = 'صاحب مبادرة';
+                    document.getElementById('modalUserTypeMobile').className = 'badge bg-warning mb-2';
+                    
+                    // Static data for initiative owners
+                    const initiativeOwnerData = {
+                        '#I001': {
+                            organization: 'جمعية الخير',
+                            phone: '0501234567',
+                            field: 'التعليم'
+                        },
+                        '#I002': {
+                            organization: 'مؤسسة الأمل',
+                            phone: '0507654321',
+                            field: 'الصحة'
+                        }
+                    };
+                    
+                    const ownerInfo = initiativeOwnerData[userId] || {
+                        organization: 'مؤسسة التطوع',
+                        phone: '0509876543',
+                        field: 'البيئة'
+                    };
+                    
+                    // Populate data for both layouts
+                    // Large screen - Column 2
+                    document.getElementById('modalOwnerId').textContent = userId;
+                    document.getElementById('modalOwnerName').textContent = userName;
+                    document.getElementById('modalOwnerOrganization').textContent = ownerInfo.organization;
+                    document.getElementById('modalOwnerEmail').textContent = userEmail;
+                    
+                    // Large screen - Column 3
+                    document.getElementById('modalOwnerPhone').textContent = ownerInfo.phone;
+                    document.getElementById('modalOwnerDate').textContent = userDate;
+                    document.getElementById('modalOwnerField').textContent = ownerInfo.field;
+                    document.getElementById('modalOwnerRegion').textContent = userRegion;
+                    
+                    // Mobile layout
+                    document.getElementById('modalOwnerIdMobile').textContent = userId;
+                    document.getElementById('modalOwnerNameMobile').textContent = userName;
+                    document.getElementById('modalOwnerOrganizationMobile').textContent = ownerInfo.organization;
+                    document.getElementById('modalOwnerEmailMobile').textContent = userEmail;
+                    document.getElementById('modalOwnerPhoneMobile').textContent = ownerInfo.phone;
+                    document.getElementById('modalOwnerDateMobile').textContent = userDate;
+                    document.getElementById('modalOwnerFieldMobile').textContent = ownerInfo.field;
+                    document.getElementById('modalOwnerRegionMobile').textContent = userRegion;
+                }
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
+                modal.show();
+            });
+        });
+
+        // Add event listeners to ban/unban buttons
+        document.querySelectorAll('.action-btn.ban, .action-btn.unban').forEach(button => {
+            button.addEventListener('click', function() {
+                const userName = this.closest('tr').querySelector('td:nth-child(3)').textContent;
+                const action = this.classList.contains('ban') ? 'حظر' : 'إلغاء الحظر';
+                
+                Toastify({
+                    text: `تم ${action} المستخدم ${userName} بنجاح`,
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: action === 'حظر' ? "linear-gradient(to right, #dc3545, #c82333)" : "linear-gradient(to right, #28a745, #218838)",
+                    stopOnFocus: true
+                }).showToast();
+            });
+        });
+    </script>
+</body>
+</html>

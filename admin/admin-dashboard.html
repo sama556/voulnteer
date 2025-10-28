@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - المنصة التطوعية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        :root {
+            --color-dark-navy: #001F4D;
+            --color-deep-blue: #003B73;
+            --color-blue: #005EA6;
+            --color-sky-blue: #008ECC;
+            --color-light-sky: #33BFE6;
+            --color-cyan: #66D6F2;
+            --color-light-cyan: #99E5F7;
+            --color-pale-cyan: #CCF3FB;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--color-dark-navy);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-right: 3px solid var(--color-light-sky);
+        }
+        
+        .sidebar-menu i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-dark-navy);
+            margin: 0;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon.volunteers {
+            background: var(--color-pale-cyan);
+            color: var(--color-blue);
+        }
+        
+        .card-icon.initiatives {
+            background: rgba(51, 191, 230, 0.2);
+            color: var(--color-light-sky);
+        }
+        
+        .card-icon.platforms {
+            background: rgba(0, 94, 166, 0.1);
+            color: var(--color-deep-blue);
+        }
+        
+        .card-icon.posts {
+            background: rgba(0, 31, 77, 0.1);
+            color: var(--color-dark-navy);
+        }
+        
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .card-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-header {
+            background: var(--color-dark-navy);
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .sidebar-menu i {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-info {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-hands-helping me-2"></i> إدارة المنصة</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="admin-dashboard.html" class="active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-users.html">
+                    <i class="fas fa-users"></i>
+                    <span>إدارة المستخدمين</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-content.html">
+                    <i class="fas fa-file-alt"></i>
+                    <span>إدارة المحتوى</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-platforms.html">
+                    <i class="fas fa-th-large"></i>
+                    <span>إدارة المنصات</span>
+                </a>
+            </li>
+        
+            <li>
+                <a href="../index.html">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>العودة للموقع</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1>لوحة التحكم</h1>
+            <div class="admin-info">
+                <div class="admin-avatar">مد</div>
+                <span>مدير النظام</span>
+            </div>
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <div class="dashboard-card">
+                    <div class="card-icon volunteers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-value">1,250</div>
+                    <div class="card-label">المتطوعين المسجلين</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="dashboard-card">
+                    <div class="card-icon initiatives">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="card-value">340</div>
+                    <div class="card-label">المبادرات النشطة</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="dashboard-card">
+                    <div class="card-icon platforms">
+                        <i class="fas fa-th-large"></i>
+                    </div>
+                    <div class="card-value">50</div>
+                    <div class="card-label">المنصات الداعمة</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="dashboard-card">
+                    <div class="card-icon posts">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="card-value">2,150</div>
+                    <div class="card-label">المنشورات المضافة</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row mt-4">
+            <div class="col-lg-8">
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3>النشاط الأخير</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>المستخدم</th>
+                                    <th>النشاط</th>
+                                    <th>التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>أحمد محمد</td>
+                                    <td>سجل في مبادرة "تعليم الأجيال"</td>
+                                    <td>2023-10-05</td>
+                                </tr>
+                                <tr>
+                                    <td>فاطمة أحمد</td>
+                                    <td>أضافت منشور جديد</td>
+                                    <td>2023-10-04</td>
+                                </tr>
+                                <tr>
+                                    <td>خالد سعيد</td>
+                                    <td>أنشأ مبادرة جديدة</td>
+                                    <td>2023-10-03</td>
+                                </tr>
+                                <tr>
+                                    <td>منصة إنسان</td>
+                                    <td>تمت إضافة المنصة</td>
+                                    <td>2023-10-02</td>
+                                </tr>
+                                <tr>
+                                    <td>نورة عبدالله</td>
+                                    <td>قامت بتحديث ملفها الشخصي</td>
+                                    <td>2023-10-01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3>المستخدمين المحظورين</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>الاسم</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>محمد علي</td>
+                                    <td><span class="badge bg-danger">محظور</span></td>
+                                </tr>
+                                <tr>
+                                    <td>سارة أحمد</td>
+                                    <td><span class="badge bg-danger">محظور</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+</html>

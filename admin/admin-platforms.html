@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المنصات - المنصة التطوعية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        :root {
+            --color-dark-navy: #001F4D;
+            --color-deep-blue: #003B73;
+            --color-blue: #005EA6;
+            --color-sky-blue: #008ECC;
+            --color-light-sky: #33BFE6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--color-dark-navy);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-right: 3px solid var(--color-light-sky);
+        }
+        
+        .sidebar-menu i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-dark-navy);
+            margin: 0;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* Search and Filter */
+        .search-filter {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-header {
+            background: var(--color-dark-navy);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Platform Logo */
+        .platform-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: contain;
+            background-color: transparent;
+            border: 1px solid #e9ecef;
+        }
+        
+        /* SVG Logo specific styling */
+        .platform-logo[src$=".svg"] {
+            background-color: transparent;
+            filter: none;
+        }
+        
+        /* Change SVG color */
+        .platform-logo[src*="logo-Ensan-White.svg"] {
+            filter: invert(1) hue-rotate(200deg) saturate(1.5) brightness(1.2);
+        }
+        
+        /* Different color options for SVG logos */
+        .platform-logo[src*="logo.svg"] {
+            filter: hue-rotate(45deg) saturate(1.3) brightness(1.1);
+        }
+        
+        .platform-logo[src*="mainLogo.png"] {
+            filter: contrast(1.1) brightness(1.05);
+        }
+        
+        /* Ensure images don't have white background */
+        .platform-logo img,
+        .platform-logo svg {
+            background-color: transparent !important;
+        }
+        
+        /* Action Buttons */
+        .action-btn {
+            border: none;
+            background: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .action-btn.view {
+            color: var(--color-blue);
+        }
+        
+        .action-btn.edit {
+            color: var(--color-light-sky);
+        }
+        
+        .action-btn.delete {
+            color: #dc3545;
+        }
+        
+        .action-btn.activate {
+            color: #28a745;
+        }
+        
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            border-radius: 15px 15px 0 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e9ecef;
+            padding: 20px 30px;
+        }
+
+        .form-label {
+            color: var(--color-dark-navy);
+            font-size: 0.9rem;
+        }
+
+        .text-muted {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Large Screen Modal Enhancements */
+        @media (min-width: 1200px) {
+            .modal-dialog {
+                max-width: 1000px;
+            }
+            
+            .modal-body {
+                padding: 40px;
+            }
+            
+            .text-primary {
+                color: var(--color-blue) !important;
+                border-bottom: 2px solid var(--color-light-sky);
+                padding-bottom: 8px;
+                margin-bottom: 20px;
+            }
+            
+            .form-label {
+                font-size: 0.95rem;
+                margin-bottom: 5px;
+            }
+            
+            .text-muted {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .modal-footer {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .sidebar-menu i {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-info {
+                margin-top: 10px;
+            }
+        }
+        button.btn-close.btn-close-white {
+    margin: 0;
+}
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-hands-helping me-2"></i> إدارة المنصة</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="admin-dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-users.html">
+                    <i class="fas fa-users"></i>
+                    <span>إدارة المستخدمين</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-content.html">
+                    <i class="fas fa-file-alt"></i>
+                    <span>إدارة المحتوى</span>
+                </a>
+            </li>
+            <li>
+                <a href="admin-platforms.html" class="active">
+                    <i class="fas fa-th-large"></i>
+                    <span>إدارة المنصات</span>
+                </a>
+            </li>
+         
+            <li>
+                <a href="../index.html">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>العودة للموقع</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1>إدارة المنصات الداعمة</h1>
+            <div class="admin-info">
+                <div class="admin-avatar">مد</div>
+                <span>مدير النظام</span>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="ابحث عن منصة...">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="">جميع المناطق</option>
+                        <option value="riyadh">الرياض</option>
+                        <option value="jeddah">جدة</option>
+                        <option value="dammam">الدمام</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100">بحث</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Platform Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>قائمة المنصات الداعمة</h4>
+            <button class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> إضافة منصة جديدة
+            </button>
+        </div>
+
+        <!-- Platforms Table -->
+        <div class="data-table">
+            <div class="table-header">
+                <h3>المنصات الداعمة للتطوع</h3>
+               
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>رقم المنصة</th>
+                            <th>الشعار</th>
+                            <th>اسم المنصة</th>
+                            <th>الرابط</th>
+                            <th>المنطقة</th>
+                            <th>الوصف</th>
+                            <th>تاريخ الإضافة</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#PL001</td>
+                            <td><img src="../images/logo-Ensan-White.svg" class="platform-logo" alt="شعار المنصة"></td>
+                            <td>منصة إنسان</td>
+                            <td>ensan.sa</td>
+                            <td>الرياض</td>
+                            <td>المنصة الوطنية للتطوع</td>
+                            <td>2025-01-15</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#PL002</td>
+                            <td><img src="../images/logo.svg" class="platform-logo" alt="شعار المنصة"></td>
+                            <td>منصة تطوع</td>
+                            <td>tawaf.sa</td>
+                            <td>جدة</td>
+                            <td>منصة التطوع الاجتماعي</td>
+                            <td>2025-02-20</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#PL003</td>
+                            <td><img src="../images/mainLogo.png" class="platform-logo" alt="شعار المنصة"></td>
+                            <td>منصة صحة</td>
+                            <td>health-volunteer.sa</td>
+                            <td>الرياض</td>
+                            <td>منصة التطوع الصحي</td>
+                            <td>2025-03-10</td>
+                            <td><span class="badge bg-danger">غير نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn activate" title="تفعيل"><i class="fas fa-check"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+      
+    </div>
+
+    <!-- Platform Details Modal -->
+    <div class="modal fade" id="platformDetailsModal" tabindex="-1" aria-labelledby="platformDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--color-dark-navy); color: white;">
+                    <h5 class="modal-title" id="platformDetailsModalLabel">تفاصيل المنصة</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Large Screen Layout (3 columns) -->
+                    <div class="row d-none d-lg-flex">
+                        <!-- Column 1: Platform Logo & Status -->
+                        <div class="col-lg-4 text-center">
+                            <div class="mb-3">
+                                <img id="modalPlatformLogo" src="" class="platform-logo mb-3" style="width: 100px; height: 100px;" alt="شعار المنصة">
+                            </div>
+                            <h4 id="modalPlatformName" class="mb-3"></h4>
+                            <div class="mb-3">
+                                <span id="modalPlatformStatus" class="badge mb-3"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Column 2: Basic Information -->
+                        <div class="col-lg-4">
+                            <h5 class="text-primary mb-3">المعلومات الأساسية</h5>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">رقم المنصة:</label>
+                                <p id="modalPlatformId" class="text-muted"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">اسم المنصة:</label>
+                                <p id="modalPlatformNameCol2" class="text-muted"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">المنطقة:</label>
+                                <p id="modalPlatformRegion" class="text-muted"></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Column 3: Additional Information -->
+                        <div class="col-lg-4">
+                            <h5 class="text-primary mb-3">معلومات إضافية</h5>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">رابط الموقع الإلكتروني:</label>
+                                <p id="modalPlatformLink" class="text-muted"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">تاريخ الإضافة:</label>
+                                <p id="modalPlatformDate" class="text-muted"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile/Tablet Layout -->
+                    <div class="row d-lg-none">
+                        <div class="col-md-4 text-center">
+                            <div class="mb-3">
+                                <img id="modalPlatformLogoMobile" src="" class="platform-logo mb-3" style="width: 80px; height: 80px;" alt="شعار المنصة">
+                            </div>
+                            <h5 id="modalPlatformNameMobile" class="mb-2"></h5>
+                            <span id="modalPlatformStatusMobile" class="badge mb-2"></span>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">رقم المنصة:</label>
+                                    <p id="modalPlatformIdMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">المنطقة:</label>
+                                    <p id="modalPlatformRegionMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label fw-bold">تاريخ الإضافة:</label>
+                                    <p id="modalPlatformDateMobile" class="text-muted"></p>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">رابط الموقع الإلكتروني:</label>
+                                    <p id="modalPlatformLinkMobile" class="text-muted"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platform Description Section -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h5 class="text-primary mb-3">الوصف المختصر</h5>
+                            <div class="border rounded p-3 bg-light">
+                                <p id="modalPlatformDescription" class="text-muted mb-0"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Platform Modal -->
+    <div class="modal fade" id="platformFormModal" tabindex="-1" aria-labelledby="platformFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--color-dark-navy); color: white;">
+                    <h5 class="modal-title" id="platformFormModalLabel">إضافة منصة جديدة</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="platformForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="platformName" class="form-label">اسم المنصة</label>
+                                <input type="text" class="form-control" id="platformName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="platformLink" class="form-label">رابط الموقع الإلكتروني</label>
+                                <input type="url" class="form-control" id="platformLink" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="platformRegion" class="form-label">المنطقة</label>
+                                <select class="form-select" id="platformRegion" required>
+                                    <option value="">اختر المنطقة</option>
+                                    <option value="riyadh">الرياض</option>
+                                    <option value="jeddah">جدة</option>
+                                    <option value="dammam">الدمام</option>
+                                    <option value="makkah">مكة المكرمة</option>
+                                    <option value="medina">المدينة المنورة</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="platformLogo" class="form-label">شعار المنصة</label>
+                                <input type="file" class="form-control" id="platformLogo" accept="image/*">
+                                <div class="form-text">يرجى رفع صورة الشعار</div>
+                            </div>
+                            <div class="col-12 mb-3" id="logoPreviewContainer" style="display: none;">
+                                <label class="form-label">معاينة الشعار</label>
+                                <div class="text-center">
+                                    <img id="logoPreview" src="" class="platform-logo" style="width: 80px; height: 80px;" alt="معاينة الشعار">
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" id="removeLogoBtn">إزالة الصورة</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="platformDescription" class="form-label">الوصف المختصر</label>
+                                <textarea class="form-control" id="platformDescription" rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="savePlatformBtn">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        // Static data for platforms
+        const platformData = {
+            '#PL001': {
+                name: 'منصة إنسان',
+                logo: 'https://via.placeholder.com/40/001F4D/FFFFFF?text=إ',
+                link: 'ensan.sa',
+                region: 'الرياض',
+                description: 'المنصة الوطنية للتطوع في المملكة العربية السعودية، تهدف إلى ربط المتطوعين بالفرص التطوعية المناسبة وتنظيم العمل التطوعي في جميع أنحاء المملكة.',
+                date: '2025-01-15',
+                status: 'نشط'
+            },
+            '#PL002': {
+                name: 'منصة تطوع',
+                logo: 'https://via.placeholder.com/40/005EA6/FFFFFF?text=ت',
+                link: 'tawaf.sa',
+                region: 'جدة',
+                description: 'منصة التطوع الاجتماعي في منطقة جدة، تركز على المبادرات الاجتماعية والمشاريع التنموية المحلية.',
+                date: '2025-02-20',
+                status: 'نشط'
+            },
+            '#PL003': {
+                name: 'منصة صحة',
+                logo: 'https://via.placeholder.com/40/008ECC/FFFFFF?text=ص',
+                link: 'health-volunteer.sa',
+                region: 'الرياض',
+                description: 'منصة التطوع الصحي المتخصصة في المجالات الطبية والصحية، تهدف إلى دعم القطاع الصحي من خلال العمل التطوعي.',
+                date: '2025-03-10',
+                status: 'غير نشط'
+            }
+        };
+
+        // Add event listeners to view buttons
+        document.querySelectorAll('.action-btn.view').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const platformId = row.querySelector('td:nth-child(1)').textContent;
+                const platformName = row.querySelector('td:nth-child(3)').textContent;
+                const platformLogo = row.querySelector('td:nth-child(2) img').src;
+                const platformLink = row.querySelector('td:nth-child(4)').textContent;
+                const platformRegion = row.querySelector('td:nth-child(5)').textContent;
+                const platformDescription = row.querySelector('td:nth-child(6)').textContent;
+                const platformDate = row.querySelector('td:nth-child(7)').textContent;
+                const platformStatus = row.querySelector('td:nth-child(8) .badge').textContent;
+                const isActive = row.querySelector('td:nth-child(8) .badge').classList.contains('bg-success');
+                
+                // Set platform data in modal
+                document.getElementById('modalPlatformLogo').src = platformLogo;
+                document.getElementById('modalPlatformLogoMobile').src = platformLogo;
+                document.getElementById('modalPlatformName').textContent = platformName;
+                document.getElementById('modalPlatformNameMobile').textContent = platformName;
+                document.getElementById('modalPlatformNameCol2').textContent = platformName;
+                document.getElementById('modalPlatformId').textContent = platformId;
+                document.getElementById('modalPlatformIdMobile').textContent = platformId;
+                document.getElementById('modalPlatformRegion').textContent = platformRegion;
+                document.getElementById('modalPlatformRegionMobile').textContent = platformRegion;
+                document.getElementById('modalPlatformLink').textContent = platformLink;
+                document.getElementById('modalPlatformLinkMobile').textContent = platformLink;
+                document.getElementById('modalPlatformDate').textContent = platformDate;
+                document.getElementById('modalPlatformDateMobile').textContent = platformDate;
+                document.getElementById('modalPlatformDescription').textContent = platformDescription;
+                
+                // Set status badge
+                const statusBadge = document.getElementById('modalPlatformStatus');
+                const statusBadgeMobile = document.getElementById('modalPlatformStatusMobile');
+                statusBadge.textContent = platformStatus;
+                statusBadge.className = 'badge mb-3 ' + (isActive ? 'bg-success' : 'bg-danger');
+                statusBadgeMobile.textContent = platformStatus;
+                statusBadgeMobile.className = 'badge mb-2 ' + (isActive ? 'bg-success' : 'bg-danger');
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('platformDetailsModal'));
+                modal.show();
+            });
+        });
+
+        // Add event listener to "Add Platform" button
+        document.querySelector('.btn-success').addEventListener('click', function() {
+            // Reset form
+            document.getElementById('platformForm').reset();
+            document.getElementById('platformFormModalLabel').textContent = 'إضافة منصة جديدة';
+            document.getElementById('savePlatformBtn').textContent = 'حفظ';
+            document.getElementById('logoPreviewContainer').style.display = 'none';
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('platformFormModal'));
+            modal.show();
+        });
+
+        // Handle file upload and preview
+        document.getElementById('platformLogo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('logoPreview').src = e.target.result;
+                    document.getElementById('logoPreviewContainer').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove logo functionality
+        document.getElementById('removeLogoBtn').addEventListener('click', function() {
+            document.getElementById('platformLogo').value = '';
+            document.getElementById('logoPreview').src = '';
+            document.getElementById('logoPreviewContainer').style.display = 'none';
+        });
+
+        // Helper function to validate URL
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Add event listeners to edit buttons
+        document.querySelectorAll('.action-btn.edit').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const platformId = row.querySelector('td:nth-child(1)').textContent;
+                const platformName = row.querySelector('td:nth-child(3)').textContent;
+                const platformLink = row.querySelector('td:nth-child(4)').textContent;
+                const platformRegion = row.querySelector('td:nth-child(5)').textContent;
+                const platformDescription = row.querySelector('td:nth-child(6)').textContent;
+                const platformLogo = row.querySelector('td:nth-child(2) img').src;
+                
+                // Populate form with existing data
+                document.getElementById('platformName').value = platformName;
+                document.getElementById('platformLink').value = platformLink;
+                document.getElementById('platformDescription').value = platformDescription;
+                
+                // Set region
+                const regionSelect = document.getElementById('platformRegion');
+                for (let option of regionSelect.options) {
+                    if (option.text === platformRegion) {
+                        regionSelect.value = option.value;
+                        break;
+                    }
+                }
+                
+                // Show existing logo preview
+                document.getElementById('logoPreview').src = platformLogo;
+                document.getElementById('logoPreviewContainer').style.display = 'block';
+                
+                // Update modal title and button
+                document.getElementById('platformFormModalLabel').textContent = 'تعديل المنصة';
+                document.getElementById('savePlatformBtn').textContent = 'تحديث';
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('platformFormModal'));
+                modal.show();
+            });
+        });
+
+        // Save platform functionality
+        document.getElementById('savePlatformBtn').addEventListener('click', function() {
+            const platformName = document.getElementById('platformName').value;
+            const platformLink = document.getElementById('platformLink').value;
+            const platformRegion = document.getElementById('platformRegion').value;
+            const platformDescription = document.getElementById('platformDescription').value;
+            const platformLogoFile = document.getElementById('platformLogo').files[0];
+            
+            if (!platformName || !platformLink || !platformRegion || !platformDescription) {
+                Toastify({
+                    text: "يرجى ملء جميع الحقول المطلوبة",
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                    stopOnFocus: true
+                }).showToast();
+                return;
+            }
+            
+            const action = document.getElementById('platformFormModalLabel').textContent.includes('إضافة') ? 'إضافة' : 'تحديث';
+            
+            // Handle logo (file upload)
+            let logoMessage = '';
+            if (platformLogoFile) {
+                logoMessage = ' مع رفع صورة جديدة';
+            }
+            
+            Toastify({
+                text: `تم ${action} المنصة "${platformName}" بنجاح${logoMessage}`,
+                duration: 3000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #218838)",
+                stopOnFocus: true
+            }).showToast();
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('platformFormModal'));
+            modal.hide();
+        });
+
+        // Add event listeners to action buttons
+        document.querySelectorAll('.action-btn.delete, .action-btn.activate').forEach(button => {
+            button.addEventListener('click', function() {
+                const platformName = this.closest('tr').querySelector('td:nth-child(3)').textContent;
+                const action = this.classList.contains('delete') ? 'حذف' : 'تفعيل';
+                
+                Toastify({
+                    text: `تم ${action} المنصة "${platformName}" بنجاح`,
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: action === 'حذف' ? "linear-gradient(to right, #dc3545, #c82333)" : "linear-gradient(to right, #28a745, #218838)",
+                    stopOnFocus: true
+                }).showToast();
+            });
+        });
+
+        // Filter functionality
+        function filterPlatforms() {
+            const searchTerm = document.querySelector('input[type="text"]').value.toLowerCase();
+            const regionFilter = document.querySelector('select').value;
+            const tableRows = document.querySelectorAll('tbody tr');
+            
+            tableRows.forEach(row => {
+                const platformName = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                const platformRegion = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+                const platformDescription = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+                
+                let showRow = true;
+                
+                // Search filter
+                if (searchTerm) {
+                    showRow = platformName.includes(searchTerm) || 
+                             platformDescription.includes(searchTerm) ||
+                             platformRegion.includes(searchTerm);
+                }
+                
+                // Region filter
+                if (regionFilter && showRow) {
+                    const regionMap = {
+                        'riyadh': 'الرياض',
+                        'jeddah': 'جدة',
+                        'dammam': 'الدمام',
+                        'makkah': 'مكة المكرمة',
+                        'medina': 'المدينة المنورة'
+                    };
+                    
+                    if (regionMap[regionFilter]) {
+                        showRow = platformRegion === regionMap[regionFilter].toLowerCase();
+                    }
+                }
+                
+                row.style.display = showRow ? '' : 'none';
+            });
+            
+            // Update total count
+            const visibleRows = document.querySelectorAll('tbody tr[style=""], tbody tr:not([style])').length;
+            document.querySelector('.table-header span').textContent = `إجمالي المنصات: ${visibleRows}`;
+        }
+
+        // Add event listeners to filter elements
+        document.querySelector('input[type="text"]').addEventListener('input', filterPlatforms);
+        document.querySelector('select').addEventListener('change', filterPlatforms);
+        document.querySelector('.btn-primary').addEventListener('click', filterPlatforms);
+
+        // Clear filters functionality
+        function clearFilters() {
+            document.querySelector('input[type="text"]').value = '';
+            document.querySelector('select').value = '';
+            filterPlatforms();
+        }
+
+        // Add clear button
+     
+    </script>
+</body>
+</html>

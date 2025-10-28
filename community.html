@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجتمع التطوع - منصة التطوع السعودية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hands-helping me-2"></i>منصة صوت التطوع 
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="index.html">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#volunteers">المتطوعون</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#initiatives">المبادرات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="platforms.html">المنصات الداعمة</a>
+                    </li>
+                  
+                    <li class="nav-item">
+                        <a class="nav-link active" href="community.html">مجتمع التطوع</a>
+                    </li>
+                </ul>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <a href="login.html" class="btn btn-outline-custom">تسجيل الدخول</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="community-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                    <h1 class="display-4 fw-bold mb-4">مجتمع التطوع</h1>
+                    <p class="lead mb-4">اكتشف قصص المتطوعين الملهمة، شاهد تجاربهم، وشارك في رحلة العطاء والإنسانية</p>
+                    <div class="d-flex flex-column flex-sm-row gap-3">
+                        <a href="#stories" class="btn btn-primary-custom">استكشف القصص</a>
+                       
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="glass-card p-4 text-center floating">
+                        <h3 class="mb-4">إحصائيات المجتمع</h3>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <h4 class="fw-bold">2,500+</h4>
+                                <p>قصة ملهمة</p>
+                            </div>
+                            <div class="col-4">
+                                <h4 class="fw-bold">1,200+</h4>
+                                <p>فيديو</p>
+                            </div>
+                            <div class="col-4">
+                                <h4 class="fw-bold">5,000+</h4>
+                                <p>صورة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="filter-box">
+                        <h3 class="text-center mb-4">تصفح المحتوى</h3>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">جميع الفئات</option>
+                                    <option value="education">التعليم</option>
+                                    <option value="health">الصحة</option>
+                                    <option value="environment">البيئة</option>
+                                    <option value="relief">الإغاثة</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-5">
+                                <select class="form-select" id="regionFilter">
+                                    <option value="">جميع المناطق</option>
+                                    <option value="riyadh">الرياض</option>
+                                    <option value="jeddah">جدة</option>
+                                    <option value="dammam">الدمام</option>
+                                    <option value="makkah">مكة المكرمة</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary-custom w-100" onclick="applyFilters()">
+                                    <i class="fas fa-search me-2"></i>بحث
+                                </button>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories Section -->
+    <section id="stories" class="py-5">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up" data-aos-duration="1000">
+                <h2>قصص وتجارب المتطوعين</h2>
+                <p class="text-muted">اقرأ عن تجارب المتطوعين الملهمة في مجتمعنا</p>
+            </div>
+            
+            <!-- Featured Story -->
+            <div class="row mb-5">
+                <div class="col-12" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                    <div class="featured-story-card">
+                        <div class="row g-0">
+                            <div class="col-md-6">
+                                <div class="story-media">
+                                    <video class="img-fluid" poster="images/featured-story-poster.jpg" controls>
+                                        <source src="https://pin.it/5j9ycxTSU" type="video/mp4">
+                                        <source src="https://pin.it/5j9ycxTSU" type="video/mp4">
+                                    </video>
+                                    <div class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="story-content">
+                                    <div class="story-meta">
+                                        <span class="badge badge-custom">قصة مميزة</span>
+                                        <span class="story-date">منذ 3 أيام</span>
+                                    </div>
+                                    <h3 class="story-title">رحلة العطاء في تعليم الأطفال</h3>
+                                    <p class="story-excerpt">قصة ملهمة عن متطوعة استطاعت تعليم أكثر من 100 طفل في المناطق النائية، وكيف غيرت حياتهم للأفضل من خلال التطوع في مجال التعليم.</p>
+                                    <div class="story-author">
+                                        <img src="images/woman4.jpg" class="author-avatar" alt="المؤلف">
+                                        <div class="author-info">
+                                            <h6>فاطمة أحمد</h6>
+                                            <small>متطوعة منذ 2020</small>
+                                        </div>
+                                    </div>
+                                    <div class="story-stats">
+                                        <span><i class="fas fa-heart text-danger"></i> 245</span>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stories Grid -->
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <img src="images/4dd0f026e751148098e7004eae353068.jpg" class="img-fluid" alt="قصة تطوعية">
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">تعليم</span>
+                                <span class="story-date">منذ أسبوع</span>
+                            </div>
+                            <h5 class="story-title">تجربتي في تعليم الكبار</h5>
+                            <p class="story-excerpt">كيف ساعدت في تعليم الكبار القراءة والكتابة في مجتمعي المحلي</p>
+                            <div class="story-author">
+                                <img src="images/man1.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>أحمد محمد</h6>
+                                    <small>متطوع منذ 2021</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 89</span>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <video class="img-fluid" poster="images/fe5f8099c3041cec30afe8ed0d2df5e3.jpg">
+                                <source src="videos/volunteer-story1.mp4" type="video/mp4">
+                            </video>
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">صحة</span>
+                                <span class="story-date">منذ 5 أيام</span>
+                            </div>
+                            <h5 class="story-title">رحلة العطاء في المجال الصحي</h5>
+                            <p class="story-excerpt">فيديو يوثق تجربة متطوعة في تقديم الخدمات الصحية للمجتمع</p>
+                            <div class="story-author">
+                                <img src="images/woman5.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>نورة عبدالله</h6>
+                                    <small>متطوعة منذ 2019</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 156</span>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <img src="images/736cb88a471f0ac9354ace1886ebab18.jpg" class="img-fluid" alt="قصة تطوعية">
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">بيئة</span>
+                                <span class="story-date">منذ 10 أيام</span>
+                            </div>
+                            <h5 class="story-title">حملة تنظيف الشواطئ</h5>
+                            <p class="story-excerpt">مشاركة في حملة تنظيف شواطئ جدة وحماية البيئة البحرية</p>
+                            <div class="story-author">
+                                <img src="images/man2.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>خالد سعيد</h6>
+                                    <small>متطوع منذ 2020</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 203</span>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                <button class="btn btn-primary-custom" onclick="loadMoreStories()">
+                    <i class="fas fa-plus me-2"></i>تحميل المزيد
+                </button>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5>منصة التطوع السعودية</h5>
+                    <p>منصة وطنية تهدف إلى ربط المتطوعين مع المبادرات والمنصات الداعمة للتطوع في المملكة العربية السعودية، لنشر ثقافة العمل التطوعي وتعزيز المشاركة المجتمعية.</p>
+                   
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>روابط سريعة</h5>
+                    <div class="footer-links">
+                        <a href="index.html">الرئيسية</a>
+                        <a href="index.html#volunteers">المتطوعون</a>
+                        <a href="index.html#initiatives">المبادرات</a>
+                        <a href="index.html#platforms">المنصات الداعمة</a>
+                        <a href="community.html">مجتمع التطوع</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>المجالات التطوعية</h5>
+                    <div class="footer-links">
+                        <a href="#">التعليم</a>
+                        <a href="#">الصحة</a>
+                        <a href="#">البيئة</a>
+                        <a href="#">الإغاثة</a>
+                        <a href="#">التوعية</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>اتصل بنا</h5>
+                    <div class="footer-links">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> الرياض، المملكة العربية السعودية</p>
+                      
+                        <p><i class="fas fa-envelope me-2"></i> info@volunteer-platform.sa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2025 منصة التطوع السعودية</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Toastify JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <style>
+        .share-actions { display:flex; align-items:center; gap:8px; margin-top:10px; position: relative; }
+        .share-btn { border:1px solid #e9ecef; background:#fff; color:#005EA6; border-radius:8px; padding:6px 10px; font-size:.9rem; display:inline-flex; align-items:center; gap:6px; }
+        .share-btn:hover { background:#f5f9ff; }
+        .share-menu { position:absolute; inset-inline-end:0; top: calc(100% + 6px); background:#fff; border:1px solid #e9ecef; box-shadow: 0 10px 24px rgba(0,0,0,.08); border-radius:10px; min-width:210px; z-index: 1000; display:none; }
+        .share-menu.show { display:block; }
+        .share-menu ul { list-style:none; margin:0; padding:6px; }
+        .share-menu li { margin:0; }
+        .share-menu button { width:100%; text-align:start; border:none; background:transparent; padding:8px 10px; border-radius:8px; display:flex; align-items:center; gap:8px; font-size:.9rem; color:#19324d; }
+        .share-menu button:hover { background:#f7f9fb; }
+        .share-menu i { width:16px; text-align:center; }
+        @media (max-width: 576px) { .share-menu { min-width: 180px; } }
+    </style>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+        
+        // Filter functionality
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const region = document.getElementById('regionFilter').value;
+            
+            // Get all media containers
+            const allMedia = document.getElementById('allMedia');
+            const imagesMedia = document.getElementById('imagesMedia');
+            const videosMedia = document.getElementById('videosMedia');
+            
+            // Filter function for each container
+            function filterMedia(container) {
+                if (!container) return;
+                
+                const items = container.querySelectorAll('[data-category], [data-type], [data-region]');
+                
+                items.forEach(item => {
+                    let show = true;
+                    
+                    // Check category filter
+                    if (category && item.getAttribute('data-category') !== category) {
+                        show = false;
+                    }
+                    
+                    // Check type filter
+                    if (type && item.getAttribute('data-type') !== type) {
+                        show = false;
+                    }
+                    
+                    // Check region filter
+                    if (region && item.getAttribute('data-region') !== region) {
+                        show = false;
+                    }
+                    
+                    // Show/hide item
+                    if (show) {
+                        item.style.display = 'block';
+                        item.classList.add('filtered-in');
+                        item.classList.remove('filtered-out');
+                    } else {
+                        item.style.display = 'none';
+                        item.classList.add('filtered-out');
+                        item.classList.remove('filtered-in');
+                    }
+                });
+            }
+            
+            // Apply filters to all containers
+            filterMedia(allMedia);
+            filterMedia(imagesMedia);
+            filterMedia(videosMedia);
+            
+            // Count visible items
+            const visibleItems = document.querySelectorAll('.filtered-in').length;
+            
+            // Show toast notification
+            Toastify({
+                text: `تم تطبيق المرشحات بنجاح! ${visibleItems} عنصر متاح`,
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #005EA6, #008ECC)",
+                stopOnFocus: true
+            }).showToast();
+        }
+        
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('regionFilter').value = '';
+            
+            // Show all items
+            const allItems = document.querySelectorAll('[data-category], [data-type], [data-region]');
+            allItems.forEach(item => {
+                item.style.display = 'block';
+                item.classList.remove('filtered-out', 'filtered-in');
+            });
+            
+            Toastify({
+                text: "تم مسح جميع المرشحات!",
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                stopOnFocus: true
+            }).showToast();
+        }
+        
+        // Load more stories
+        function loadMoreStories() {
+            Toastify({
+                text: "جاري تحميل المزيد من القصص...",
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #005EA6, #008ECC)",
+                stopOnFocus: true
+            }).showToast();
+        }
+
+        // Utilities for sharing
+        function buildSharePayload(cardEl) {
+            const titleEl = cardEl.querySelector('.story-title');
+            const title = titleEl ? titleEl.textContent.trim() : document.title;
+            // Compose a simple deep link with current page and an anchor
+            const url = window.location.origin + window.location.pathname + '#stories';
+            const text = title + ' - مجتمع التطوع';
+            return { title, text, url };
+        }
+
+        function openShare(network, payload) {
+            const encodedUrl = encodeURIComponent(payload.url);
+            const encodedText = encodeURIComponent(payload.text);
+            const encodedTitle = encodeURIComponent(payload.title);
+            let shareUrl = '';
+            switch (network) {
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+                    break;
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${encodedText}%20${encodedUrl}`;
+                    break;
+                case 'telegram':
+                    shareUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`;
+                    break;
+                case 'copy':
+                    navigator.clipboard.writeText(payload.url).then(() => {
+                        Toastify && Toastify({
+                            text: 'تم نسخ الرابط', duration: 2000, gravity: 'top', position: 'left',
+                            backgroundColor: 'linear-gradient(to right, #28a745, #20c997)'
+                        }).showToast();
+                    });
+                    return;
+                default:
+                    return;
+            }
+            window.open(shareUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        function createShareControls(cardEl) {
+            const actions = document.createElement('div');
+            actions.className = 'share-actions';
+            actions.innerHTML = `
+                <button type="button" class="share-btn" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-share-alt"></i>
+                    مشاركة
+                </button>
+                <div class="share-menu" role="menu">
+                    <ul>
+                        <li><button type="button" data-network="twitter"><i class="fab fa-x-twitter"></i> تويتر</button></li>
+                        <li><button type="button" data-network="facebook"><i class="fab fa-facebook-f"></i> فيسبوك</button></li>
+                        <li><button type="button" data-network="whatsapp"><i class="fab fa-whatsapp"></i> واتساب</button></li>
+                        <li><button type="button" data-network="telegram"><i class="fab fa-telegram-plane"></i> تيليجرام</button></li>
+                        <li><button type="button" data-network="copy"><i class="fas fa-link"></i> نسخ الرابط</button></li>
+                    </ul>
+                </div>
+            `;
+
+            // Append before stats if present, otherwise at end
+            const content = cardEl.querySelector('.story-content');
+            if (!content) return;
+            const stats = content.querySelector('.story-stats');
+            if (stats) {
+                content.insertBefore(actions, stats);
+            } else {
+                content.appendChild(actions);
+            }
+
+            const btn = actions.querySelector('.share-btn');
+            const menu = actions.querySelector('.share-menu');
+            btn.addEventListener('click', () => {
+                // If Web Share API is available, use it directly
+                const payload = buildSharePayload(cardEl);
+                if (navigator.share) {
+                    navigator.share(payload).catch(() => {});
+                    return;
+                }
+                // Fallback: toggle menu
+                const isOpen = menu.classList.contains('show');
+                document.querySelectorAll('.share-menu.show').forEach(m => m.classList.remove('show'));
+                menu.classList.toggle('show', !isOpen);
+            });
+
+            menu.addEventListener('click', (e) => {
+                const target = e.target.closest('button[data-network]');
+                if (!target) return;
+                const payload = buildSharePayload(cardEl);
+                openShare(target.getAttribute('data-network'), payload);
+                menu.classList.remove('show');
+            });
+        }
+
+        // Inject share controls into all story cards (including featured)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Regular story cards
+            document.querySelectorAll('.story-card').forEach(createShareControls);
+            // Featured story
+            const featured = document.querySelector('.featured-story-card');
+            if (featured) {
+                createShareControls(featured);
+            }
+        });
+
+        // Close any open share menus when clicking outside
+        document.addEventListener('click', (e) => {
+            const isShare = e.target.closest('.share-actions');
+            if (!isShare) {
+                document.querySelectorAll('.share-menu.show').forEach(m => m.classList.remove('show'));
+            }
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Scroll to top button
+        const scrollTop = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+        
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    const offsetTop = target.offsetTop - 80;
+                    
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

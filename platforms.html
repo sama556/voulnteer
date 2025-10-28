@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنصات الداعمة - منصة التطوع السعودية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/platforms.css">
+    
+  
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hands-helping me-2"></i>منصة صوت التطوع 
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="index.html">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#volunteers">المتطوعون</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#initiatives">المبادرات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="platforms.html">المنصات الداعمة</a>
+                    </li>
+                  
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html">مجتمع التطوع</a>
+                    </li>
+                </ul> 
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <a href="login.html" class="btn btn-outline-custom">تسجيل الدخول</a>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="platforms-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">المنصات الداعمة</h1>
+                    <p class="hero-subtitle">اكتشف المنصات التطوعية الرائدة في المملكة العربية السعودية وانضم إلى مجتمع العطاء والإنسانية</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <button class="btn btn-light btn-lg" onclick="scrollToSection('search')">
+                            <i class="fas fa-search me-2"></i>ابحث عن منصة
+                        </button>
+                        <button class="btn btn-outline-light btn-lg" onclick="scrollToSection('platforms')">
+                            <i class="fas fa-list me-2"></i>استكشف المنصات
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <div class="stats-card">
+                        <h3 class="text-center mb-4">إحصائيات المنصات</h3>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number">50+</span>
+                                    <span class="stat-label">منصة نشطة</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number">15</span>
+                                    <span class="stat-label">منطقة</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number">100K+</span>
+                                    <span class="stat-label">متطوع</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section id="search" class="search-section py-5">
+        <div class="container">
+            <div class="search-container">
+                <h3 class="search-title">ابحث عن المنصة المناسبة</h3>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <select class="form-select" id="regionFilter">
+                            <option value="">جميع المناطق</option>
+                            <option value="riyadh">الرياض</option>
+                            <option value="jeddah">جدة</option>
+                            <option value="dammam">الدمام</option>
+                            <option value="makkah">مكة المكرمة</option>
+                            <option value="medina">المدينة المنورة</option>
+                            <option value="taif">الطائف</option>
+                            <option value="abha">أبها</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="categoryFilter">
+                            <option value="">جميع المجالات</option>
+                            <option value="education">التعليم</option>
+                            <option value="health">الصحة</option>
+                            <option value="environment">البيئة</option>
+                            <option value="relief">الإغاثة</option>
+                            <option value="social">الاجتماعي</option>
+                            <option value="cultural">الثقافي</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="ابحث عن اسم المنصة...">
+                            <button class="search-btn" onclick="searchPlatforms()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Platforms -->
+    <section id="platforms" class="py-5 bg-white">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">جميع المنصات الداعمة</h2>
+                <p class="section-subtitle">اكتشف جميع المنصات التطوعية المتاحة في المملكة</p>
+            </div>
+            <div class="row g-4" id="allPlatforms">
+                <!-- All platforms will be loaded here -->
+            </div>
+            <div class="text-center mt-5">
+                <button class="btn btn-primary-custom btn-lg" onclick="loadMorePlatforms()">
+                    <i class="fas fa-plus-circle me-2"></i>تحميل المزيد من المنصات
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5>منصة التطوع السعودية</h5>
+                    <p>منصة وطنية تهدف إلى ربط المتطوعين مع المبادرات والمنصات الداعمة للتطوع في المملكة العربية السعودية، لنشر ثقافة العمل التطوعي وتعزيز المشاركة المجتمعية.</p>
+                    
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>روابط سريعة</h5>
+                    <div class="footer-links">
+                        <a href="index.html">الرئيسية</a>
+                        <a href="#volunteers">المتطوعون</a>
+                        <a href="#initiatives">المبادرات</a>
+                        <a href="platforms.html">المنصات الداعمة</a>
+                      
+                        <a href="community.html">مجتمع التطوع</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>المجالات التطوعية</h5>
+                    <div class="footer-links ">
+                        <a href="#">التعليم</a>
+                        <a href="#">الصحة</a>
+                        <a href="#">البيئة</a>
+                        <a href="#">الإغاثة</a>
+                        <a href="#">التوعية</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>اتصل بنا</h5>
+                    <div class="footer-links">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> الرياض، المملكة العربية السعودية</p>
+                      
+                        <p><i class="fas fa-envelope me-2"></i> info@volunteer-platform.sa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2025 منصة التطوع السعودية</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Scroll to Top -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast">
+        <i class="fas fa-check-circle text-success me-2"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Platform Data
+        const platformsData = [
+            {
+                id: 'ensan',
+                name: 'منصة إنسان',
+                logo: 'images/logo-Ensan-White.svg',
+                description: 'المنصة الوطنية للتطوع',
+                region: 'riyadh',
+                regionName: 'الرياض',
+                category: 'general',
+                categoryName: 'عام',
+                featured: true,
+                website: 'https://ensan.sa'
+            },
+            {
+                id: 'tawaf',
+                name: 'منصة تطوع',
+                logo: 'images/logo.svg',
+                description: 'منصة التطوع الاجتماعي',
+                region: 'jeddah',
+                regionName: 'جدة',
+                category: 'social',
+                categoryName: 'اجتماعي',
+                featured: true,
+                website: 'https://tawaf.sa'
+            },
+            {
+                id: 'donation',
+                name: 'منصة تبرع',
+                logo: 'images/logo-tabr.svg',
+                description: 'منصة وطنية لتيسير حملات التبرع ودعم الجهات الخيرية، تربط المتبرعين بالمشاريع الموثوقة وتوفر تقارير شفافة عن الأثر.',
+                region: 'riyadh',
+                regionName: 'الرياض',
+                category: 'social',
+                categoryName: 'اجتماعي',
+                featured: true,
+                website: 'https://donations.sa'
+            },
+            {
+                id: 'health',
+                name: 'منصة صحة',
+                logo: 'images/mainLogo.png',
+                description: 'منصة التطوع الصحي',
+                region: 'riyadh',
+                regionName: 'الرياض',
+                category: 'health',
+                categoryName: 'صحة',
+                featured: false,
+                website: 'https://health-volunteer.sa'
+            },
+            {
+                id: 'environment',
+                name: 'منصة بلدي',
+                logo: 'images/MoMaH-logo-V-s.png',
+                description: 'منصة بلدي للتطوع البلدي والبيئي؛ تربط المتطوعين بفرص تحسين المدن والخدمات البلدية، وتدعم مبادرات التشجير والنظافة والاستدامة.',
+                region: 'dammam',
+                regionName: 'الدمام',
+                category: 'environment',
+                categoryName: 'بيئة',
+                featured: false,
+                website: 'https://volunteer.balady.gov.sa/ar'
+            },
+            {
+                id: 'relief',
+                name: 'منصة إحسان',
+                logo: 'images/Ehsan-Logo.svg',
+                description: 'منصة إحسان للعمل الخيري والتنموي الاجتماعي في المملكة من خلال الاستفادة من المعلومات القائمة على البيانات؛ لتفعيل الربط الرقمي بين المتبرعين والجهات الخيرية، وتسويق العمل الخيري، وتقديم الإرشادات للجهات الخيرية واستخدام البيانات التي تم إنشاؤها',
+                region: 'makkah',
+                regionName: 'مكة المكرمة',
+                category: 'relief',
+                categoryName: 'إغاثة',
+                featured: false,
+                website: 'http://ehsan.sa/'
+            }
+        ];
+
+        // Load platforms on page load
+        window.addEventListener('load', () => {
+            loadAllPlatforms();
+        });
+
+        // Load all platforms
+        function loadAllPlatforms() {
+            const container = document.getElementById('allPlatforms');
+            
+            container.innerHTML = platformsData.map((platform, index) => `
+                <div class="col-md-6 col-lg-4" style="animation-delay: ${index * 0.1}s">
+                    <div class="platform-card filter-fade-in" data-region="${platform.region}" data-category="${platform.category}">
+                        <div class="platform-logo-container">
+                            <img src="${platform.logo}" alt="${platform.name}" class="platform-logo">
+                        </div>
+                        <div class="platform-content">
+                            <h5 class="platform-title">${platform.name}</h5>
+                            <p class="platform-description">${platform.description}</p>
+                            <div class="platform-meta">
+                                <span class="badge-custom"><i class="fas fa-map-marker-alt me-1"></i>${platform.regionName}</span>
+                                <span class="badge-custom"><i class="fas fa-tag me-1"></i>${platform.categoryName}</span>
+                            </div>
+                            <div class="platform-actions">
+                                <a href="${platform.website}" target="_blank" class="btn btn-outline-primary">
+                                    <i class="fas fa-external-link-alt me-2"></i>زيارة الموقع
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search platforms
+        function searchPlatforms() {
+            const region = document.getElementById('regionFilter').value;
+            const category = document.getElementById('categoryFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            const allCards = document.querySelectorAll('.platform-card');
+            let visibleCount = 0;
+            
+            allCards.forEach(card => {
+                const cardRegion = card.dataset.region;
+                const cardCategory = card.dataset.category;
+                const cardTitle = card.querySelector('.platform-title').textContent.toLowerCase();
+                const cardDesc = card.querySelector('.platform-description').textContent.toLowerCase();
+                
+                let show = true;
+                
+                if (region && cardRegion !== region) show = false;
+                if (category && cardCategory !== category) show = false;
+                if (searchTerm && !cardTitle.includes(searchTerm) && !cardDesc.includes(searchTerm)) show = false;
+                
+                if (show) {
+                    card.parentElement.style.display = 'block';
+                    card.classList.add('filter-fade-in');
+                    card.classList.remove('filter-fade-out');
+                    visibleCount++;
+                } else {
+                    card.classList.add('filter-fade-out');
+                    card.classList.remove('filter-fade-in');
+                    setTimeout(() => {
+                        card.parentElement.style.display = 'none';
+                    }, 300);
+                }
+            });
+            
+            showToast(`تم العثور على ${visibleCount} منصة`);
+        }
+
+        // Show platform details
+        function showPlatformDetails(platformId) {
+            const platform = platformsData.find(p => p.id === platformId);
+            if (!platform) return;
+            
+            alert(`تفاصيل ${platform.name}\n\nالمنطقة: ${platform.regionName}\nالمجال: ${platform.categoryName}\n\n${platform.description}\n\nالموقع: ${platform.website}`);
+        }
+
+        // Load more platforms
+        function loadMorePlatforms() {
+            showToast('جاري تحميل المزيد من المنصات...');
+            
+            // Simulate loading
+            setTimeout(() => {
+                showToast('لا توجد منصات إضافية للعرض');
+            }, 1000);
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const offsetTop = section.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            const scrollTop = document.getElementById('scrollTop');
+            
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+
+        // Scroll to top
+        document.getElementById('scrollTop').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Search on enter key
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchPlatforms();
+            }
+        });
+
+        // Filter changes trigger search
+        document.getElementById('regionFilter').addEventListener('change', searchPlatforms);
+        document.getElementById('categoryFilter').addEventListener('change', searchPlatforms);
+
+        // Smooth scroll for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    scrollToSection(href.substring(1));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

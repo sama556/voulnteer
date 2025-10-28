@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - لوحة تحكم المنصة التطوعية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-dark-navy: #001F4D;
+            --color-deep-blue: #003B73;
+            --color-blue: #005EA6;
+            --color-sky-blue: #008ECC;
+            --color-light-sky: #33BFE6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-dark-navy) 0%, var(--color-blue) 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            background: var(--color-dark-navy);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .login-header h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .login-body {
+            padding: 30px;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--color-light-sky);
+            box-shadow: 0 0 0 0.2rem rgba(51, 191, 230, 0.25);
+        }
+        
+        .btn-login {
+            background: var(--color-blue);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            background: var(--color-deep-blue);
+            transform: translateY(-2px);
+        }
+        
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2><i class="fas fa-hands-helping me-2"></i>تسجيل الدخول</h2>
+            <p class="mb-0">لوحة تحكم المنصة التطوعية</p>
+        </div>
+        <div class="login-body">
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">تذكرني</label>
+                </div>
+                <button type="submit" class="btn btn-login w-100">تسجيل الدخول</button>
+            </form>
+        </div>
+        <div class="login-footer">
+            <a href="../index.html" class="text-decoration-none"><i class="fas fa-arrow-right me-1"></i>العودة للموقع الرئيسي</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // في التطبيق الحقيقي، هنا سيتم التحقق من بيانات الدخول
+            window.location.href = 'admin-dashboard.html';
+        });
+    </script>
+</body>
+</html>
