@@ -9,6 +9,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/commntiy.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -135,7 +136,7 @@
                         <div class="row g-0">
                             <div class="col-md-6">
                                 <div class="story-media">
-                                    <video class="img-fluid" poster="images/featured-story-poster.jpg" controls>
+                                    <video class="img-fluid" poster="images/education.jpg" controls>
                                         <source src="https://pin.it/5j9ycxTSU" type="video/mp4">
                                         <source src="https://pin.it/5j9ycxTSU" type="video/mp4">
                                     </video>
@@ -338,20 +339,7 @@
     <!-- Toastify JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     
-    <style>
-        .share-actions { display:flex; align-items:center; gap:8px; margin-top:10px; position: relative; }
-        .share-btn { border:1px solid #e9ecef; background:#fff; color:#005EA6; border-radius:8px; padding:6px 10px; font-size:.9rem; display:inline-flex; align-items:center; gap:6px; }
-        .share-btn:hover { background:#f5f9ff; }
-        .share-menu { position:absolute; inset-inline-end:0; top: calc(100% + 6px); background:#fff; border:1px solid #e9ecef; box-shadow: 0 10px 24px rgba(0,0,0,.08); border-radius:10px; min-width:210px; z-index: 1000; display:none; }
-        .share-menu.show { display:block; }
-        .share-menu ul { list-style:none; margin:0; padding:6px; }
-        .share-menu li { margin:0; }
-        .share-menu button { width:100%; text-align:start; border:none; background:transparent; padding:8px 10px; border-radius:8px; display:flex; align-items:center; gap:8px; font-size:.9rem; color:#19324d; }
-        .share-menu button:hover { background:#f7f9fb; }
-        .share-menu i { width:16px; text-align:center; }
-        @media (max-width: 576px) { .share-menu { min-width: 180px; } }
-    </style>
-
+   
     <script>
         // Initialize AOS
         AOS.init({
@@ -462,117 +450,455 @@
             }).showToast();
         }
 
-        // Utilities for sharing
-        function buildSharePayload(cardEl) {
-            const titleEl = cardEl.querySelector('.story-title');
-            const title = titleEl ? titleEl.textContent.trim() : document.title;
-            // Compose a simple deep link with current page and an anchor
-            const url = window.location.origin + window.location.pathname + '#stories';
-            const text = title + ' - مجتمع التطوع';
-            return { title, text, url };
-        }
-
-        function openShare(network, payload) {
-            const encodedUrl = encodeURIComponent(payload.url);
-            const encodedText = encodeURIComponent(payload.text);
-            const encodedTitle = encodeURIComponent(payload.title);
-            let shareUrl = '';
-            switch (network) {
-                case 'twitter':
-                    shareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
-                    break;
-                case 'facebook':
-                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-                    break;
-                case 'whatsapp':
-                    shareUrl = `https://wa.me/?text=${encodedText}%20${encodedUrl}`;
-                    break;
-                case 'telegram':
-                    shareUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`;
-                    break;
-                case 'copy':
-                    navigator.clipboard.writeText(payload.url).then(() => {
-                        Toastify && Toastify({
-                            text: 'تم نسخ الرابط', duration: 2000, gravity: 'top', position: 'left',
-                            backgroundColor: 'linear-gradient(to right, #28a745, #20c997)'
-                        }).showToast();
-                    });
-                    return;
-                default:
-                    return;
-            }
-            window.open(shareUrl, '_blank', 'noopener,noreferrer');
-        }
-
-        function createShareControls(cardEl) {
-            const actions = document.createElement('div');
-            actions.className = 'share-actions';
-            actions.innerHTML = `
-                <button type="button" class="share-btn" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-share-alt"></i>
-                    مشاركة
-                </button>
-                <div class="share-menu" role="menu">
-                    <ul>
-                        <li><button type="button" data-network="twitter"><i class="fab fa-x-twitter"></i> تويتر</button></li>
-                        <li><button type="button" data-network="facebook"><i class="fab fa-facebook-f"></i> فيسبوك</button></li>
-                        <li><button type="button" data-network="whatsapp"><i class="fab fa-whatsapp"></i> واتساب</button></li>
-                        <li><button type="button" data-network="telegram"><i class="fab fa-telegram-plane"></i> تيليجرام</button></li>
-                        <li><button type="button" data-network="copy"><i class="fas fa-link"></i> نسخ الرابط</button></li>
-                    </ul>
-                </div>
-            `;
-
-            // Append before stats if present, otherwise at end
-            const content = cardEl.querySelector('.story-content');
-            if (!content) return;
-            const stats = content.querySelector('.story-stats');
-            if (stats) {
-                content.insertBefore(actions, stats);
-            } else {
-                content.appendChild(actions);
+        // Gallery functionality - Best Practice Implementation
+        class GalleryManager {
+            constructor() {
+                this.currentIndex = 0;
+                this.items = [];
+                this.modal = null;
+                this.isAnimating = false;
+                this.touchStartX = 0;
+                this.touchStartY = 0;
+                this.isSwipeStarted = false;
             }
 
-            const btn = actions.querySelector('.share-btn');
-            const menu = actions.querySelector('.share-menu');
-            btn.addEventListener('click', () => {
-                // If Web Share API is available, use it directly
-                const payload = buildSharePayload(cardEl);
-                if (navigator.share) {
-                    navigator.share(payload).catch(() => {});
-                    return;
+            createGalleryControls(cardEl) {
+                const actions = document.createElement('div');
+                actions.className = 'gallery-actions';
+                actions.innerHTML = `
+                    <button type="button" class="gallery-btn" onclick="galleryManager.openGallery(this)">
+                        <i class="fas fa-images"></i>
+                        معرض
+                    </button>
+                `;
+
+                const content = cardEl.querySelector('.story-content');
+                if (!content) return;
+                
+                const stats = content.querySelector('.story-stats');
+                if (stats) {
+                    content.insertBefore(actions, stats);
+                } else {
+                    content.appendChild(actions);
                 }
-                // Fallback: toggle menu
-                const isOpen = menu.classList.contains('show');
-                document.querySelectorAll('.share-menu.show').forEach(m => m.classList.remove('show'));
-                menu.classList.toggle('show', !isOpen);
-            });
+            }
 
-            menu.addEventListener('click', (e) => {
-                const target = e.target.closest('button[data-network]');
-                if (!target) return;
-                const payload = buildSharePayload(cardEl);
-                openShare(target.getAttribute('data-network'), payload);
-                menu.classList.remove('show');
-            });
+            openGallery(button) {
+                try {
+                    const cardEl = button.closest('.story-card, .featured-story-card');
+                    if (!cardEl) {
+                        this.showError('عنصر القصة غير موجود');
+                        return;
+                    }
+
+                    this.items = this.collectGalleryItems(cardEl);
+                    if (this.items.length === 0) {
+                        this.showError('لا توجد صور أو فيديوهات متاحة في المعرض');
+                        return;
+                    }
+
+                    this.currentIndex = 0;
+                    this.createModal();
+                    this.showModal();
+                } catch (error) {
+                    console.error('Error opening gallery:', error);
+                    this.showError('حدث خطأ في فتح المعرض');
+                }
+            }
+
+            collectGalleryItems(cardEl) {
+                const items = [];
+                const mediaEl = cardEl.querySelector('.story-media');
+                
+                if (!mediaEl) return items;
+
+                // Add main media
+                const mainImg = mediaEl.querySelector('img');
+                const mainVideo = mediaEl.querySelector('video');
+                
+                if (mainImg && mainImg.src) {
+                    items.push({
+                        type: 'image',
+                        src: mainImg.src,
+                        alt: mainImg.alt || 'صورة من المعرض',
+                        title: cardEl.querySelector('.story-title')?.textContent || ''
+                    });
+                }
+                
+                if (mainVideo) {
+                    const videoSrc = mainVideo.querySelector('source')?.src || mainVideo.src;
+                    if (videoSrc) {
+                        items.push({
+                            type: 'video',
+                            src: videoSrc,
+                            poster: mainVideo.poster || '',
+                            alt: 'فيديو من المعرض',
+                            title: cardEl.querySelector('.story-title')?.textContent || ''
+                        });
+                    }
+                }
+                
+                // Add related content based on story type
+                const storyTitle = cardEl.querySelector('.story-title')?.textContent || '';
+                const relatedItems = this.getRelatedContent(storyTitle);
+                items.push(...relatedItems);
+                
+                return items;
+            }
+
+            getRelatedContent(storyTitle) {
+                const relatedItems = [];
+                
+                if (storyTitle.includes('تعليم')) {
+                    relatedItems.push(
+                        { type: 'image', src: 'images/education.jpg', alt: 'صورة تعليمية', title: 'التعليم' },
+                        { type: 'image', src: 'images/4dd0f026e751148098e7004eae353068.jpg', alt: 'صورة تعليمية', title: 'التعليم' },
+                        { type: 'image', src: 'images/man1.jpg', alt: 'متطوع في التعليم', title: 'التعليم' },
+                        { type: 'image', src: 'images/woman4.jpg', alt: 'متطوعة في التعليم', title: 'التعليم' }
+                    );
+                } else if (storyTitle.includes('صحة')) {
+                    relatedItems.push(
+                        { type: 'image', src: 'images/health.jpg', alt: 'صورة صحية', title: 'الصحة' },
+                        { type: 'image', src: 'images/health2.jpg', alt: 'صورة صحية', title: 'الصحة' },
+                        { type: 'image', src: 'images/woman5.jpg', alt: 'متطوعة في الصحة', title: 'الصحة' },
+                        { type: 'image', src: 'images/fe5f8099c3041cec30afe8ed0d2df5e3.jpg', alt: 'صورة صحية', title: 'الصحة' }
+                    );
+                } else if (storyTitle.includes('بيئة')) {
+                    relatedItems.push(
+                        { type: 'image', src: 'images/736cb88a471f0ac9354ace1886ebab18.jpg', alt: 'صورة بيئية', title: 'البيئة' },
+                        { type: 'image', src: 'images/eartg.jpg', alt: 'صورة بيئية', title: 'البيئة' },
+                        { type: 'image', src: 'images/man2.jpg', alt: 'متطوع في البيئة', title: 'البيئة' },
+                        { type: 'image', src: 'images/slid2.jpg', alt: 'صورة بيئية', title: 'البيئة' }
+                    );
+                } else {
+                    // Default gallery items using available images
+                    relatedItems.push(
+                        { type: 'image', src: 'images/woman.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/woman3.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/wowan2.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater2.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater3.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater4.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater5.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater6.jpg', alt: 'صورة من المعرض', title: 'معرض' }
+                    );
+                }
+                
+                return relatedItems;
+            }
         }
 
-        // Inject share controls into all story cards (including featured)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Regular story cards
-            document.querySelectorAll('.story-card').forEach(createShareControls);
-            // Featured story
-            const featured = document.querySelector('.featured-story-card');
-            if (featured) {
-                createShareControls(featured);
+        // Create global gallery manager instance
+        const galleryManager = new GalleryManager();
+
+        // Add methods to GalleryManager class
+        Object.assign(GalleryManager.prototype, {
+            createModal() {
+                if (this.modal) {
+                    this.modal.remove();
+                }
+
+                this.modal = document.createElement('div');
+                this.modal.id = 'galleryModal';
+                this.modal.className = 'gallery-modal';
+                this.modal.innerHTML = `
+                    <div class="gallery-content">
+                        <button class="gallery-close" onclick="galleryManager.closeModal()" title="إغلاق المعرض">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button class="gallery-nav gallery-prev" onclick="galleryManager.previousSlide()" title="السابق">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="gallery-nav gallery-next" onclick="galleryManager.nextSlide()" title="التالي">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="gallery-slides"></div>
+                        <div class="gallery-thumbnails"></div>
+                        <div class="gallery-counter"></div>
+                    </div>
+                `;
+                
+                document.body.appendChild(this.modal);
+                this.setupEventListeners();
+            },
+
+            showModal() {
+                if (!this.modal) return;
+                
+                this.populateSlides();
+                this.modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                this.updateDisplay();
+            },
+
+            populateSlides() {
+                const slidesContainer = this.modal.querySelector('.gallery-slides');
+                const thumbnailsContainer = this.modal.querySelector('.gallery-thumbnails');
+                
+                slidesContainer.innerHTML = '';
+                thumbnailsContainer.innerHTML = '';
+                
+                this.items.forEach((item, index) => {
+                    // Create slide
+                    const slide = document.createElement('div');
+                    slide.className = `gallery-slide ${index === this.currentIndex ? 'active' : ''}`;
+                    
+                    if (item.type === 'image') {
+                        slide.innerHTML = `
+                            <img src="${item.src}" 
+                                 alt="${item.alt}" 
+                                 onerror="this.src='images/avater.jpg'"
+                                 loading="lazy">
+                        `;
+                    } else {
+                        slide.innerHTML = `
+                            <video controls poster="${item.poster || ''}">
+                                <source src="${item.src}" type="video/mp4">
+                                متصفحك لا يدعم تشغيل الفيديو
+                            </video>
+                        `;
+                    }
+                    
+                    slidesContainer.appendChild(slide);
+                    
+                    // Create thumbnail
+                    const thumb = document.createElement('div');
+                    thumb.className = `gallery-thumb ${index === this.currentIndex ? 'active' : ''}`;
+                    thumb.onclick = () => this.goToSlide(index);
+                    
+                    if (item.type === 'image') {
+                        thumb.innerHTML = `
+                            <img src="${item.src}" 
+                                 alt="${item.alt}" 
+                                 onerror="this.src='images/avater.jpg'">
+                        `;
+                    } else {
+                        thumb.innerHTML = `
+                            <img src="${item.poster || 'images/avater.jpg'}" 
+                                 alt="${item.alt}">
+                        `;
+                    }
+                    
+                    thumbnailsContainer.appendChild(thumb);
+                });
+            },
+
+            setupEventListeners() {
+                if (!this.modal) return;
+
+                // Touch events
+                this.modal.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
+                this.modal.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+                this.modal.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false });
+
+                // Mouse events
+                this.modal.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+                this.modal.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.modal.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+
+                // Click outside to close
+                this.modal.addEventListener('click', (e) => {
+                    if (e.target === this.modal) {
+                        this.closeModal();
+                    }
+                });
+
+                // Keyboard events
+                document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+            },
+
+            handleTouchStart(e) {
+                if (!this.modal.classList.contains('show')) return;
+                
+                this.touchStartX = e.touches[0].clientX;
+                this.touchStartY = e.touches[0].clientY;
+                this.isSwipeStarted = true;
+            },
+
+            handleTouchMove(e) {
+                if (!this.isSwipeStarted) return;
+                e.preventDefault();
+            },
+
+            handleTouchEnd(e) {
+                if (!this.isSwipeStarted || !this.modal.classList.contains('show')) return;
+                
+                const endX = e.changedTouches[0].clientX;
+                const endY = e.changedTouches[0].clientY;
+                const diffX = this.touchStartX - endX;
+                const diffY = this.touchStartY - endY;
+                
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
+                    e.preventDefault();
+                    if (diffX > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.previousSlide();
+                    }
+                }
+                
+                this.isSwipeStarted = false;
+            },
+
+            handleMouseDown(e) {
+                if (!this.modal.classList.contains('show')) return;
+                
+                this.isMouseDown = true;
+                this.mouseStartX = e.clientX;
+                e.preventDefault();
+            },
+
+            handleMouseMove(e) {
+                if (!this.isMouseDown) return;
+                e.preventDefault();
+            },
+
+            handleMouseUp(e) {
+                if (!this.isMouseDown || !this.modal.classList.contains('show')) return;
+                
+                const mouseEndX = e.clientX;
+                const diffX = this.mouseStartX - mouseEndX;
+                
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.previousSlide();
+                    }
+                }
+                
+                this.isMouseDown = false;
+            },
+
+            handleKeyDown(e) {
+                if (!this.modal || !this.modal.classList.contains('show')) return;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        this.nextSlide();
+                        break;
+                    case 'ArrowRight':
+                        this.previousSlide();
+                        break;
+                    case 'Escape':
+                        this.closeModal();
+                        break;
+                }
+            },
+
+            nextSlide() {
+                if (this.isAnimating) return;
+                
+                this.currentIndex = (this.currentIndex + 1) % this.items.length;
+                this.updateDisplay();
+            },
+
+            previousSlide() {
+                if (this.isAnimating) return;
+                
+                this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
+                this.updateDisplay();
+            },
+
+            goToSlide(index) {
+                if (this.isAnimating || index === this.currentIndex) return;
+                
+                this.currentIndex = index;
+                this.updateDisplay();
+            },
+
+            updateDisplay() {
+                const slides = this.modal.querySelectorAll('.gallery-slide');
+                const thumbs = this.modal.querySelectorAll('.gallery-thumb');
+                const counter = this.modal.querySelector('.gallery-counter');
+                
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === this.currentIndex);
+                });
+                
+                thumbs.forEach((thumb, index) => {
+                    thumb.classList.toggle('active', index === this.currentIndex);
+                });
+                
+                if (counter) {
+                    counter.textContent = `${this.currentIndex + 1} / ${this.items.length}`;
+                }
+            },
+
+            closeModal() {
+                if (!this.modal) return;
+                
+                try {
+                    // Remove show class to trigger close animation
+                    this.modal.classList.remove('show');
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = 'auto';
+                    
+                    // Clean up event listeners
+                    this.cleanupEventListeners();
+                    
+                    // Remove modal from DOM after animation
+                    setTimeout(() => {
+                        if (this.modal && this.modal.parentNode) {
+                            this.modal.parentNode.removeChild(this.modal);
+                        }
+                        this.modal = null;
+                        this.items = [];
+                        this.currentIndex = 0;
+                    }, 300);
+                    
+                } catch (error) {
+                    console.error('Error closing gallery:', error);
+                    // Force cleanup if there's an error
+                    if (this.modal && this.modal.parentNode) {
+                        this.modal.parentNode.removeChild(this.modal);
+                    }
+                    this.modal = null;
+                    document.body.style.overflow = 'auto';
+                }
+            },
+
+            cleanupEventListeners() {
+                if (!this.modal) return;
+                
+                // Remove keyboard listener
+                document.removeEventListener('keydown', this.handleKeyDown);
+                
+                // Remove modal event listeners
+                this.modal.removeEventListener('touchstart', this.handleTouchStart);
+                this.modal.removeEventListener('touchmove', this.handleTouchMove);
+                this.modal.removeEventListener('touchend', this.handleTouchEnd);
+                this.modal.removeEventListener('mousedown', this.handleMouseDown);
+                this.modal.removeEventListener('mousemove', this.handleMouseMove);
+                this.modal.removeEventListener('mouseup', this.handleMouseUp);
+                this.modal.removeEventListener('click', this.handleClick);
+            },
+
+            showError(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                    stopOnFocus: true
+                }).showToast();
             }
         });
 
-        // Close any open share menus when clicking outside
-        document.addEventListener('click', (e) => {
-            const isShare = e.target.closest('.share-actions');
-            if (!isShare) {
-                document.querySelectorAll('.share-menu.show').forEach(m => m.classList.remove('show'));
+        // Initialize gallery controls when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Regular story cards
+            document.querySelectorAll('.story-card').forEach(card => {
+                galleryManager.createGalleryControls(card);
+            });
+            
+            // Featured story
+            const featured = document.querySelector('.featured-story-card');
+            if (featured) {
+                galleryManager.createGalleryControls(featured);
             }
         });
         
