@@ -89,6 +89,32 @@
             border-color: #005EA6;
         }
         
+        .form-check {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .form-check:hover {
+            border-color: #005EA6;
+            background: #f5f9ff;
+        }
+        
+        .form-check-input:checked ~ .form-check-label,
+        .form-check:has(.form-check-input:checked) {
+            border-color: #005EA6;
+            background: #e3f2fd;
+        }
+        
+        .form-check-label {
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+        }
+        
         .login-footer {
             text-align: center;
             padding: 20px;
@@ -161,7 +187,7 @@
                         <a class="nav-link" href="index.html#volunteers">المتطوعون</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#initiatives">المبادرات</a>
+                        <a class="nav-link" href="initiatives.html">المبادرات</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="platforms.html">المنصات الداعمة</a>
@@ -171,7 +197,7 @@
                     </li>
                 </ul>
                 <div class="d-flex flex-column flex-sm-row gap-2">
-                    <a href="login.html" class="btn btn-outline-custom">تسجيل الدخول</a>
+                    <a href="login.html" class="btn btn-outline-custom">تسجيل جديد</a>
                 </div>
             </div>
         </div>
@@ -203,6 +229,23 @@
                         <div class="login-form">
                             <form id="loginForm">
                                 <div class="form-group">
+                                    <label class="form-label">نوع الحساب</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="userType" id="volunteerType" value="volunteer" checked>
+                                            <label class="form-check-label" for="volunteerType">
+                                                <i class="fas fa-user me-2"></i>متطوع
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="userType" id="adminType" value="admin">
+                                            <label class="form-check-label" for="adminType">
+                                                <i class="fas fa-user-shield me-2"></i>مدير النظام
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-label">البريد الإلكتروني</label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="أدخل البريد الإلكتروني" required>
                                 </div>
@@ -216,8 +259,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                
-                               
+                            
                                 
                                 <button type="submit" class="btn btn-login" id="loginBtn">
                                     <span class="btn-text">
@@ -242,7 +284,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row">
@@ -255,7 +296,7 @@
                     <div class="footer-links">
                         <a href="index.html">الرئيسية</a>
                         <a href="index.html#volunteers">المتطوعون</a>
-                        <a href="index.html#initiatives">المبادرات</a>
+                        <a href="initiatives.html">المبادرات</a>
                         <a href="platforms.html">المنصات الداعمة</a>
                         <a href="community.html">مجتمع التطوع</a>
                     </div>
@@ -263,11 +304,11 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h5>المجالات التطوعية</h5>
                     <div class="footer-links">
-                        <a href="#">التعليم</a>
-                        <a href="#">الصحة</a>
-                        <a href="#">البيئة</a>
-                        <a href="#">الإغاثة</a>
-                        <a href="#">التوعية</a>
+                        <a href="initiatives.html">التعليم</a>
+                        <a href="initiatives.html">الصحة</a>
+                        <a href="initiatives.html">البيئة</a>
+                        <a href="initiatives.html">الإغاثة</a>
+                        <a href="initiatives.html">التوعية</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -340,6 +381,8 @@
                 
                 // Simple validation
                 if (email && password) {
+                    const userType = document.querySelector('input[name="userType"]:checked').value;
+                    
                     Toastify({
                         text: "تم تسجيل الدخول بنجاح!",
                         duration: 3000,
@@ -349,9 +392,13 @@
                         stopOnFocus: true
                     }).showToast();
                     
-                    // Redirect to dashboard or main page
+                    // Redirect based on user type
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        if (userType === 'admin') {
+                            window.location.href = 'admin/admin-dashboard.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
                     }, 1500);
                 } else {
                     Toastify({

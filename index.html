@@ -10,43 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="css/style.css">
     
-    <style>
-        /* Volunteers cards enhancements */
-        #volunteers .volunteer-card {
-            border: 1px solid #e9ecef;
-            border-radius: 16px;
-            overflow: hidden;
-            background: #fff;
-            transition: box-shadow .25s ease, transform .25s ease;
-            box-shadow: 0 6px 18px rgba(0,0,0,.05);
-        }
-        #volunteers .volunteer-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0,0,0,.08);
-        }
-        #volunteers .volunteer-img {
-            height: 180px;
-            width: 100%;
-            object-fit: cover;
-        }
-        @media (max-width: 576px) {
-            #volunteers .volunteer-img { height: 160px; }
-        }
-        #volunteers .card-body { padding: 14px 16px 16px; }
-        #volunteers .card-title { font-weight: 800; color: #001F4D; margin-bottom: 6px; }
-        #volunteers .badge-custom {
-            background: #eef4ff;
-            color: #003B73;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: .8rem;
-        }
-        #volunteers .card-text { color: #5f6b7a; }
-        #volunteers .card-body .badge.bg-light {
-            background: #f7f9fb !important;
-        }
-        #volunteers .card-body small.text-muted { display: inline-block; margin-top: 4px; }
-    </style>
+   
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -67,7 +31,7 @@
                         <a class="nav-link" href="#volunteers">المتطوعون</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#initiatives">المبادرات</a>
+                        <a class="nav-link" href="initiatives.html">المبادرات</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="platforms.html">المنصات الداعمة</a>
@@ -78,7 +42,7 @@
                     </li>
                 </ul>
                 <div class="d-flex flex-column flex-sm-row gap-2">
-                    <a href="login.html" class="btn btn-outline-custom">تسجيل الدخول</a>
+                    <a href="login.html" class="btn btn-outline-custom">تسجيل جديد</a>
                 </div>
             </div>
         </div>
@@ -86,35 +50,38 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
+        <!-- Background Image Carousel -->
+        <div class="hero-background">
+            <div class="hero-background-slide active" style="background-image: url('images/5.jpg');"></div>
+            <div class="hero-background-slide" style="background-image: url('images/1.jpg');"></div>
+            <div class="hero-background-slide" style="background-image: url('images/2.jpg');"></div>
+            <div class="hero-background-slide" style="background-image: url('images/3.jpg');"></div>
+            <div class="hero-background-slide" style="background-image: url('images/4.jpg');"></div>
+        </div>
+        
+        <!-- Overlay -->
+        <div class="hero-background-overlay"></div>
+        
+        <!-- Carousel Indicators -->
+        <div class="hero-carousel-indicators">
+            <span class="hero-indicator active" data-slide="0"></span>
+            <span class="hero-indicator" data-slide="1"></span>
+            <span class="hero-indicator" data-slide="2"></span>
+            <span class="hero-indicator" data-slide="3"></span>
+            <span class="hero-indicator" data-slide="4"></span>
+        </div>
+        
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 hero-content" data-aos="fade-right" data-aos-duration="1000">
                     <h1 class="display-4 fw-bold mb-4">معاً نصنع الفرق في مجتمعنا</h1>
                     <p class="lead mb-4">منصة سعودية تجمع المتطوعين مع المبادرات والمنصات الداعمة للتطوع، لنشر ثقافة العمل التطوعي وتعزيز المشاركة المجتمعية.</p>
                     <div class="d-flex flex-column flex-sm-row gap-3">
-                        <a href="#initiatives" class="btn btn-primary-custom">استكشف المبادرات</a>
+                        <a href="initiatives.html" class="btn btn-primary-custom">استكشف المبادرات</a>
                         <a href="#volunteers" class="btn btn-outline-custom">تعرف على المتطوعين</a>
                     </div>
                 </div>
-                <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
-                    <div class="glass-card p-4 text-center floating">
-                        <h3 class="mb-4">إحصائيات المنصة</h3>
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <h4 class="fw-bold">1,250+</h4>
-                                <p>متطوع</p>
-                            </div>
-                            <div class="col-4">
-                                <h4 class="fw-bold">340+</h4>
-                                <p>مبادرة</p>
-                            </div>
-                            <div class="col-4">
-                                <h4 class="fw-bold">50+</h4>
-                                <p>منصة داعمة</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
@@ -247,7 +214,7 @@
                                 <span class="badge badge-custom">تعليم</span>
                                 <small class="text-muted">ينتهي في: 15/11/2025</small>
                             </div>
-                            <a href="#" class="btn btn-primary-custom w-100 mt-auto">انضم الآن</a>
+                            <a href="login.html" class="btn btn-primary-custom w-100 mt-auto">انضم الآن</a>
                         </div>
                     </div>
                 </div>
@@ -261,7 +228,7 @@
                                 <span class="badge badge-custom">بيئة</span>
                                 <small class="text-muted">ينتهي في: 30/12/2025</small>
                             </div>
-                            <a href="#" class="btn btn-primary-custom w-100 mt-auto">انضم الآن</a>
+                            <a href="login.html" class="btn btn-primary-custom w-100 mt-auto">انضم الآن</a>
                         </div>
                     </div>
                 </div>
@@ -275,7 +242,7 @@
                                 <span class="badge badge-custom">صحة</span>
                                 <small class="text-muted">ينتهي في: 20/11/2025</small>
                             </div>
-                            <a href="#" class="btn btn-primary-custom w-100 mt-auto">انضم الآن</a>
+                            <a href="login.html" class="btn btn-primary-custom w-100 mt-auto">انضم الآن</a>
                         </div>
                     </div>
                 </div>
@@ -347,6 +314,10 @@
     <!-- Statistics Section -->
     <section class="stats-section">
         <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up" data-aos-duration="1000">
+                <h2>إحصائيات منصة التطوع</h2>
+                <p class="text-muted">أرقام تعكس تأثيرنا الإيجابي في المجتمع</p>
+            </div>
             <div class="row g-4 text-center">
                 <div class="col-6 col-md-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                     <div class="stat-item">
@@ -430,44 +401,45 @@
                 </div>
             </div>
             
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                <a href="community.html" class="btn btn-primary-custom">
+                    عرض المزيد <i class="fas fa-arrow-left me-2"></i>
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5>منصة التطوع السعودية</h5>
                     <p>منصة وطنية تهدف إلى ربط المتطوعين مع المبادرات والمنصات الداعمة للتطوع في المملكة العربية السعودية، لنشر ثقافة العمل التطوعي وتعزيز المشاركة المجتمعية.</p>
-                    
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h5>روابط سريعة</h5>
                     <div class="footer-links">
-                        <a href="#">الرئيسية</a>
-                        <a href="#volunteers">المتطوعون</a>
-                        <a href="#initiatives">المبادرات</a>
+                        <a href="index.html">الرئيسية</a>
+                        <a href="index.html#volunteers">المتطوعون</a>
+                        <a href="initiatives.html">المبادرات</a>
                         <a href="platforms.html">المنصات الداعمة</a>
-                      
                         <a href="community.html">مجتمع التطوع</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h5>المجالات التطوعية</h5>
                     <div class="footer-links">
-                        <a href="#">التعليم</a>
-                        <a href="#">الصحة</a>
-                        <a href="#">البيئة</a>
-                        <a href="#">الإغاثة</a>
-                        <a href="#">التوعية</a>
+                        <a href="initiatives.html">التعليم</a>
+                        <a href="initiatives.html">الصحة</a>
+                        <a href="initiatives.html">البيئة</a>
+                        <a href="initiatives.html">الإغاثة</a>
+                        <a href="initiatives.html">التوعية</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h5>اتصل بنا</h5>
                     <div class="footer-links">
                         <p><i class="fas fa-map-marker-alt me-2"></i> الرياض، المملكة العربية السعودية</p>
-                      
                         <p><i class="fas fa-envelope me-2"></i> info@volunteer-platform.sa</p>
                     </div>
                 </div>
@@ -477,7 +449,6 @@
             </div>
         </div>
     </footer>
-
     <!-- Scroll to Top Button -->
     <div class="scroll-top" id="scrollTop">
         <i class="fas fa-arrow-up"></i>
@@ -496,6 +467,95 @@
             duration: 1000,
             once: true,
             offset: 100
+        });
+        
+        // Hero Background Image Carousel
+        class HeroCarousel {
+            constructor() {
+                this.currentSlide = 0;
+                this.slides = document.querySelectorAll('.hero-background-slide');
+                this.indicators = document.querySelectorAll('.hero-indicator');
+                this.interval = null;
+                this.slideDuration = 5000; // 5 seconds per slide
+                
+                this.init();
+            }
+            
+            init() {
+                // Set up indicator click handlers
+                this.indicators.forEach((indicator, index) => {
+                    indicator.addEventListener('click', () => {
+                        this.goToSlide(index);
+                    });
+                });
+                
+                // Start auto-play
+                this.startAutoPlay();
+                
+                // Pause on hover
+                const heroSection = document.querySelector('.hero-section');
+                heroSection.addEventListener('mouseenter', () => {
+                    this.stopAutoPlay();
+                });
+                
+                heroSection.addEventListener('mouseleave', () => {
+                    this.startAutoPlay();
+                });
+                
+                // Pause on touch (mobile)
+                if ('ontouchstart' in window) {
+                    heroSection.addEventListener('touchstart', () => {
+                        this.stopAutoPlay();
+                    });
+                }
+            }
+            
+            goToSlide(index) {
+                if (index === this.currentSlide) return;
+                
+                // Remove active class from current slide and indicator
+                this.slides[this.currentSlide].classList.remove('active');
+                this.indicators[this.currentSlide].classList.remove('active');
+                
+                // Set new slide
+                this.currentSlide = index;
+                
+                // Add active class to new slide and indicator
+                this.slides[this.currentSlide].classList.add('active');
+                this.indicators[this.currentSlide].classList.add('active');
+                
+                // Restart auto-play
+                this.restartAutoPlay();
+            }
+            
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.slides.length;
+                this.goToSlide(nextIndex);
+            }
+            
+            startAutoPlay() {
+                this.stopAutoPlay();
+                this.interval = setInterval(() => {
+                    this.nextSlide();
+                }, this.slideDuration);
+            }
+            
+            stopAutoPlay() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+            }
+            
+            restartAutoPlay() {
+                this.stopAutoPlay();
+                this.startAutoPlay();
+            }
+        }
+        
+        // Initialize hero carousel when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new HeroCarousel();
         });
         
         // Toastify notification example

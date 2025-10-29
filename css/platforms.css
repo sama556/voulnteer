@@ -118,7 +118,7 @@ body {
 
 /* Enhanced Search Section */
 .search-section {
-    margin-top: -40px;
+    margin-top: 40px;
     position: relative;
     z-index: 10;
 }

@@ -29,7 +29,7 @@
                         <a class="nav-link" href="index.html#volunteers">المتطوعون</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#initiatives">المبادرات</a>
+                        <a class="nav-link" href="initiatives.html">المبادرات</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="platforms.html">المنصات الداعمة</a>
@@ -40,57 +40,14 @@
                     </li>
                 </ul> 
                 <div class="d-flex flex-column flex-sm-row gap-2">
-                    <a href="login.html" class="btn btn-outline-custom">تسجيل الدخول</a>
+                    <a href="login.html" class="btn btn-outline-custom">تسجيل جديد</a>
                     
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="platforms-hero">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="hero-title">المنصات الداعمة</h1>
-                    <p class="hero-subtitle">اكتشف المنصات التطوعية الرائدة في المملكة العربية السعودية وانضم إلى مجتمع العطاء والإنسانية</p>
-                    <div class="d-flex gap-3 flex-wrap">
-                        <button class="btn btn-light btn-lg" onclick="scrollToSection('search')">
-                            <i class="fas fa-search me-2"></i>ابحث عن منصة
-                        </button>
-                        <button class="btn btn-outline-light btn-lg" onclick="scrollToSection('platforms')">
-                            <i class="fas fa-list me-2"></i>استكشف المنصات
-                        </button>
-                    </div>
-                </div>
-                <div class="col-lg-6 mt-5 mt-lg-0">
-                    <div class="stats-card">
-                        <h3 class="text-center mb-4">إحصائيات المنصات</h3>
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <span class="stat-number">50+</span>
-                                    <span class="stat-label">منصة نشطة</span>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <span class="stat-number">15</span>
-                                    <span class="stat-label">منطقة</span>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <span class="stat-number">100K+</span>
-                                    <span class="stat-label">متطوع</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  
 
     <!-- Search Section -->
     <section id="search" class="search-section py-5">
@@ -151,41 +108,37 @@
             </div>
         </div>
     </section>
-
     <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5>منصة التطوع السعودية</h5>
                     <p>منصة وطنية تهدف إلى ربط المتطوعين مع المبادرات والمنصات الداعمة للتطوع في المملكة العربية السعودية، لنشر ثقافة العمل التطوعي وتعزيز المشاركة المجتمعية.</p>
-                    
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h5>روابط سريعة</h5>
                     <div class="footer-links">
                         <a href="index.html">الرئيسية</a>
-                        <a href="#volunteers">المتطوعون</a>
-                        <a href="#initiatives">المبادرات</a>
+                        <a href="index.html#volunteers">المتطوعون</a>
+                        <a href="initiatives.html">المبادرات</a>
                         <a href="platforms.html">المنصات الداعمة</a>
-                      
                         <a href="community.html">مجتمع التطوع</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h5>المجالات التطوعية</h5>
-                    <div class="footer-links ">
-                        <a href="#">التعليم</a>
-                        <a href="#">الصحة</a>
-                        <a href="#">البيئة</a>
-                        <a href="#">الإغاثة</a>
-                        <a href="#">التوعية</a>
+                    <div class="footer-links">
+                        <a href="initiatives.html">التعليم</a>
+                        <a href="initiatives.html">الصحة</a>
+                        <a href="initiatives.html">البيئة</a>
+                        <a href="initiatives.html">الإغاثة</a>
+                        <a href="initiatives.html">التوعية</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h5>اتصل بنا</h5>
                     <div class="footer-links">
                         <p><i class="fas fa-map-marker-alt me-2"></i> الرياض، المملكة العربية السعودية</p>
-                      
                         <p><i class="fas fa-envelope me-2"></i> info@volunteer-platform.sa</p>
                     </div>
                 </div>
@@ -284,17 +237,32 @@
             }
         ];
 
+        // Pagination state
+        let currentPage = 1;
+        const pageSize = 6;
+        let filteredPlatforms = [...platformsData];
+
         // Load platforms on page load
         window.addEventListener('load', () => {
-            loadAllPlatforms();
+            currentPage = 1;
+            filteredPlatforms = [...platformsData];
+            renderPlatforms(true);
+            updateLoadMoreVisibility();
         });
 
-        // Load all platforms
-        function loadAllPlatforms() {
+        // Render platforms using pagination
+        function renderPlatforms(reset = false) {
             const container = document.getElementById('allPlatforms');
-            
-            container.innerHTML = platformsData.map((platform, index) => `
-                <div class="col-md-6 col-lg-4" style="animation-delay: ${index * 0.1}s">
+            if (reset) {
+                container.innerHTML = '';
+            }
+
+            const start = 0;
+            const end = Math.min(filteredPlatforms.length, currentPage * pageSize);
+            const itemsToRender = filteredPlatforms.slice(container.childElementCount / 1 || 0, end);
+
+            const html = itemsToRender.map((platform, index) => `
+                <div class="col-md-6 col-lg-4" style="animation-delay: ${(index % pageSize) * 0.1}s">
                     <div class="platform-card filter-fade-in" data-region="${platform.region}" data-category="${platform.category}">
                         <div class="platform-logo-container">
                             <img src="${platform.logo}" alt="${platform.name}" class="platform-logo">
@@ -315,44 +283,27 @@
                     </div>
                 </div>
             `).join('');
+
+            container.insertAdjacentHTML('beforeend', html);
         }
 
-        // Search platforms
+        // Search/filter platforms (no popup)
         function searchPlatforms() {
             const region = document.getElementById('regionFilter').value;
             const category = document.getElementById('categoryFilter').value;
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
-            const allCards = document.querySelectorAll('.platform-card');
-            let visibleCount = 0;
-            
-            allCards.forEach(card => {
-                const cardRegion = card.dataset.region;
-                const cardCategory = card.dataset.category;
-                const cardTitle = card.querySelector('.platform-title').textContent.toLowerCase();
-                const cardDesc = card.querySelector('.platform-description').textContent.toLowerCase();
-                
-                let show = true;
-                
-                if (region && cardRegion !== region) show = false;
-                if (category && cardCategory !== category) show = false;
-                if (searchTerm && !cardTitle.includes(searchTerm) && !cardDesc.includes(searchTerm)) show = false;
-                
-                if (show) {
-                    card.parentElement.style.display = 'block';
-                    card.classList.add('filter-fade-in');
-                    card.classList.remove('filter-fade-out');
-                    visibleCount++;
-                } else {
-                    card.classList.add('filter-fade-out');
-                    card.classList.remove('filter-fade-in');
-                    setTimeout(() => {
-                        card.parentElement.style.display = 'none';
-                    }, 300);
-                }
+            filteredPlatforms = platformsData.filter(p => {
+                const matchesRegion = region ? p.region === region : true;
+                const matchesCategory = category ? p.category === category : true;
+                const content = `${p.name} ${p.description}`.toLowerCase();
+                const matchesSearch = searchTerm ? content.includes(searchTerm) : true;
+                return matchesRegion && matchesCategory && matchesSearch;
             });
-            
-            showToast(`تم العثور على ${visibleCount} منصة`);
+
+            currentPage = 1;
+            renderPlatforms(true);
+            updateLoadMoreVisibility();
         }
 
         // Show platform details
@@ -363,14 +314,25 @@
             alert(`تفاصيل ${platform.name}\n\nالمنطقة: ${platform.regionName}\nالمجال: ${platform.categoryName}\n\n${platform.description}\n\nالموقع: ${platform.website}`);
         }
 
-        // Load more platforms
+        // Load more platforms (no popup)
         function loadMorePlatforms() {
-            showToast('جاري تحميل المزيد من المنصات...');
-            
-            // Simulate loading
-            setTimeout(() => {
-                showToast('لا توجد منصات إضافية للعرض');
-            }, 1000);
+            const totalPages = Math.ceil(filteredPlatforms.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPlatforms(false);
+            }
+            updateLoadMoreVisibility();
+        }
+
+        function updateLoadMoreVisibility() {
+            const btn = document.querySelector('#platforms .btn.btn-primary-custom');
+            if (!btn) return;
+            const totalPages = Math.ceil(filteredPlatforms.length / pageSize);
+            if (totalPages <= 1 || currentPage >= totalPages) {
+                btn.style.display = 'none';
+            } else {
+                btn.style.display = 'inline-block';
+            }
         }
 
         // Show toast notification
