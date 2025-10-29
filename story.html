@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/story.css">
+    
     <script>
         // Gallery navigation only
         document.addEventListener('DOMContentLoaded', () => {
@@ -95,31 +96,24 @@
                     <img src="images/man1.jpg" alt="thumb" data-src="images/man1.jpg" onerror="this.src='images/avater.jpg'">
                 </div>
             </div>
-            <div class="story-content mb-4">
-                <h5 class="mb-3">تفاصيل القصة</h5>
-                <div class="story-details-list row g-3 mb-3">
-                    <div class="col-12 col-sm-6 col-lg-4">
-                        <div class="item">
-                            <span class="label">عنوان القصة</span>
-                            <span class="value">تجربتي في تعليم الأطفال</span>
+            <article class="story-article mb-4">
+                <header class="article-header">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <h2 class="h5 mb-0">تجربتي في تعليم الأطفال</h2>
+                        <div class="meta-badges">
+                            <span class="meta-badge"><i class="fas fa-tag ms-1"></i> تعليم</span>
+                            <span class="meta-badge"><i class="fas fa-calendar-day ms-1"></i> نشر: 2025-01-15</span>
+                            <span class="meta-badge"><i class="fas fa-rotate ms-1"></i> تحديث: 2025-01-20</span>
+                          
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-lg-4">
-                        <div class="item">
-                            <span class="label">تاريخ النشر</span>
-                            <span class="value">2025-01-15</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-4">
-                        <div class="item">
-                            <span class="label">تاريخ التحديث</span>
-                            <span class="value">2025-01-20</span>
-                        </div>
-                    </div>
+                </header>
+                <div class="article-body">
+                    <p class="first-paragraph">شاركت في مبادرة "تعليم الأجيال" وكانت تجربة رائعة. استطعت مساعدة أكثر من 50 طفل في تحسين مستواهم التعليمي. الشعور بالإنجاز عندما ترى ابتسامة على وجه طفل استطاع فهم درس كان يصعب عليه لا يقدر بثمن.</p>
+                    <hr class="article-separator">
+                    <p>العمل التطوعي في مجال التعليم يعطيني شعوراً بالإنجاز والرضا، وأنا فخور بكل لحظة قضيتها في تعليم هؤلاء الأطفال ودعمهم. هذه التجربة عمّقت إيماني بأهمية العطاء وأثره الممتد على المجتمع.</p>
                 </div>
-                <h6 class="mb-2">نص القصة</h6>
-                <p class="mb-0">شاركت في مبادرة "تعليم الأجيال" وكانت تجربة رائعة. استطعت مساعدة أكثر من 50 طفل في تحسين مستواهم التعليمي. الشعور بالإنجاز عندما ترى ابتسامة على وجه طفل استطاع فهم درس كان يصعب عليه لا يقدر بثمن. العمل التطوعي في مجال التعليم يعطيني شعوراً بالإنجاز والرضا، وأنا فخور بكل لحظة قضيتها في تعليم هؤلاء الأطفال ودعمهم.</p>
-            </div>
+            </article>
 
             <div class="story-content mb-4">
                 <h5 class="mb-3">صور وفيديوهات القصة</h5>
@@ -157,65 +151,7 @@
                 </div>
             </div>
 
-            <div class="story-content mb-5">
-                <h5 class="mb-3">المعجبون بهذه القصة</h5>
-                <div class="row g-3">
-                    <div class="col-12 col-sm-6 col-lg-4">
-                        <div class="like-card">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="images/woman4.jpg" class="rounded-circle me-3" alt="فاطمة أحمد" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='images/avater.jpg'">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0">فاطمة أحمد</h6>
-                                    <small class="text-muted">متطوع</small>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <i class="fas fa-heart text-danger me-1"></i>
-                                    <span class="text-muted">أعجب بهذه القصة</span>
-                                </div>
-                                <small class="text-muted">2025-01-15</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-4">
-                        <div class="like-card">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="images/woman3.jpg" class="rounded-circle me-3" alt="سارة علي" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='images/avater.jpg'">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0">سارة علي</h6>
-                                    <small class="text-muted">متطوع</small>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <i class="fas fa-heart text-danger me-1"></i>
-                                    <span class="text-muted">أعجب بهذه القصة</span>
-                                </div>
-                                <small class="text-muted">2025-01-20</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-4">
-                        <div class="like-card">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="images/man2.jpg" class="rounded-circle me-3" alt="خالد سعيد" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='images/avater.jpg'">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0">خالد سعيد</h6>
-                                    <small class="text-muted">متطوع</small>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <i class="fas fa-heart text-danger me-1"></i>
-                                    <span class="text-muted">أعجب بهذه القصة</span>
-                                </div>
-                                <small class="text-muted">2025-01-18</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+         
 
             <div class="section-header mb-3">
                 <h4>قصص أخرى لنفس المتطوع</h4>

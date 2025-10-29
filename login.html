@@ -227,7 +227,7 @@
                         </div>
                         
                         <div class="login-form">
-                            <form id="loginForm">
+                            <form id="loginForm" novalidate>
                                 <div class="form-group">
                                     <label class="form-label">نوع الحساب</label>
                                     <div class="d-flex gap-3">
@@ -247,13 +247,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">البريد الإلكتروني</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="أدخل البريد الإلكتروني" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="أدخل البريد الإلكتروني">
                                 </div>
                                 
                                 <div class="form-group">
                                     <label class="form-label">كلمة المرور</label>
                                     <div class="position-relative">
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="أدخل كلمة المرور">
                                         <button type="button" class="btn btn-link position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%); padding: 0; color: #6c757d;" onclick="togglePassword()">
                                             <i class="fas fa-eye" id="passwordToggle"></i>
                                         </button>
@@ -361,61 +361,15 @@
             }
         }
 
-        // Handle form submission
+        // Handle form submission: instant redirect without validation
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const loginBtn = document.getElementById('loginBtn');
-            const btnText = loginBtn.querySelector('.btn-text');
-            const spinner = loginBtn.querySelector('.loading-spinner');
-            
-            // Show loading state
-            loginBtn.disabled = true;
-            btnText.style.display = 'none';
-            spinner.style.display = 'inline-block';
-            
-            // Simulate API call
-            setTimeout(() => {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // Simple validation
-                if (email && password) {
-                    const userType = document.querySelector('input[name="userType"]:checked').value;
-                    
-                    Toastify({
-                        text: "تم تسجيل الدخول بنجاح!",
-                        duration: 3000,
-                        gravity: "top",
-                        position: 'left',
-                        backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
-                        stopOnFocus: true
-                    }).showToast();
-                    
-                    // Redirect based on user type
-                    setTimeout(() => {
-                        if (userType === 'admin') {
-                            window.location.href = 'admin/admin-dashboard.html';
-                        } else {
-                            window.location.href = 'index.html';
-                        }
-                    }, 1500);
-                } else {
-                    Toastify({
-                        text: "يرجى ملء جميع الحقول المطلوبة",
-                        duration: 3000,
-                        gravity: "top",
-                        position: 'left',
-                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
-                        stopOnFocus: true
-                    }).showToast();
-                }
-                
-                // Reset button state
-                loginBtn.disabled = false;
-                btnText.style.display = 'inline';
-                spinner.style.display = 'none';
-            }, 2000);
+            const userType = document.querySelector('input[name="userType"]:checked')?.value || 'volunteer';
+            if (userType === 'admin') {
+                window.location.href = 'admin/admin-dashboard.html';
+            } else {
+                window.location.href = 'index.html';
+            }
         });
 
         // Navbar scroll effect
