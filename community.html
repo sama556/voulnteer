@@ -157,8 +157,8 @@
                             </div>
                             <div class="story-stats">
                                 <span><i class="fas fa-heart text-danger"></i> 89</span>
-                               
                             </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
                         </div>
                     </div>
                 </div>
@@ -193,6 +193,7 @@
                                 <span><i class="fas fa-heart text-danger"></i> 156</span>
                               
                             </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
                         </div>
                     </div>
                 </div>
@@ -225,6 +226,7 @@
                                 <span><i class="fas fa-heart text-danger"></i> 203</span>
                               
                             </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
                         </div>
                     </div>
                 </div>
@@ -256,6 +258,7 @@
                                 <span><i class="fas fa-heart text-danger"></i> 89</span>
                                
                             </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
                         </div>
                     </div>
                 </div>
@@ -287,6 +290,7 @@
                                 <span><i class="fas fa-heart text-danger"></i> 89</span>
                                
                             </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
                         </div>
                     </div>
                 </div>
@@ -318,6 +322,7 @@
                                 <span><i class="fas fa-heart text-danger"></i> 89</span>
                                
                             </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
                         </div>
                     </div>
                 </div>
@@ -414,21 +419,24 @@
                 const compact = document.createElement('span');
                 compact.className = 'meta-author';
                 compact.innerHTML = `
-                    <img class=\"meta-avatar\" src=\"${avatar ? avatar.getAttribute('src') : 'images/avater.jpg'}\" alt=\"المؤلف\" onerror=\"this.src='images/avater.jpg'\">\n                    <span class=\"meta-name\">${nameEl ? nameEl.textContent.trim() : 'متطوع'}</span>
+                    <img class="meta-avatar" src="${avatar ? avatar.getAttribute('src') : 'images/avater.jpg'}" alt="المؤلف" onerror="this.src='images/avater.jpg'">
+                    <span class="meta-name">${nameEl ? nameEl.textContent.trim() : 'متطوع'}</span>
                 `;
+                meta.appendChild(compact);
 
-                // Move likes into meta BEFORE author
+                // Move likes beside author in meta
                 const stats = card.querySelector('.story-stats');
                 if (stats) {
                     const metaStats = document.createElement('span');
                     metaStats.className = 'meta-stats';
                     metaStats.innerHTML = stats.innerHTML;
-                    meta.appendChild(metaStats);
+                    // Make sure author added first, then stats
+                    meta.appendChild(compact); // add author
+                    meta.appendChild(metaStats); // add likes state after author
                     stats.style.display = 'none';
+                } else {
+                    meta.appendChild(compact);
                 }
-                // Append author compact after stats and badge (story state already first)
-                meta.appendChild(compact);
-
                 author.style.display = 'none';
             });
             document.querySelectorAll('.story-card, .featured-story-card').forEach(card => {
