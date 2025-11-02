@@ -8,34 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/story.css">
-    
-    <script>
-        // Gallery navigation only
-        document.addEventListener('DOMContentLoaded', () => {
-            const thumbs = document.querySelectorAll('.gallery-thumb img');
-            const mainEl = document.getElementById('galleryMain');
-            
-            function renderMain(idx) {
-                const activeThumb = thumbs[idx];
-                if (!activeThumb) return;
-                
-                const src = activeThumb.dataset.src || activeThumb.src;
-                const isVideo = activeThumb.dataset.type === 'video' || /\.mp4($|\?)/i.test(src);
-                
-                mainEl.innerHTML = isVideo
-                    ? `<div class="ratio ratio-16x9"><video class="w-100 h-100" controls autoplay muted><source src="${src}" type="video/mp4"></video></div>`
-                    : `<img class="img-fluid" src="${src}" alt="صورة القصة" onerror="this.src='images/avater.jpg'">`;
-                
-                thumbs.forEach((img, i) => {
-                    img.classList.toggle('active', i === idx);
-                });
-            }
-            
-            thumbs.forEach((img, i) => {
-                img.addEventListener('click', () => renderMain(i));
-            });
-        });
-    </script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+   
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -55,7 +29,24 @@
                     <li class="nav-item"><a class="nav-link" href="community.html">مجتمع التطوع</a></li>
                 </ul>
                 <div class="d-flex flex-column flex-sm-row gap-2">
-                    <a href="login.html" class="btn btn-outline-custom">تسجيل الدخول</a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-custom dropdown-toggle" type="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-2"></i>حسابي
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
+                            <li>
+                                <a class="dropdown-item" href="volunteer-profile.html">
+                                    <i class="fas fa-user-circle me-2"></i>الملف الشخصي
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="../login.html">
+                                    <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,17 +86,39 @@
             </div>
             <article class="story-article mb-4">
                 <header class="article-header">
-                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                        <h2 class="h5 mb-0">تجربتي في تعليم الأطفال</h2>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <h2 class="h5 mb-0" id="storyTitleHeader">تجربتي في تعليم الأطفال</h2>
                         <div class="meta-badges">
-                            <span class="meta-badge"><i class="fas fa-tag ms-1"></i> تعليم</span>
-                            <span class="meta-badge"><i class="fas fa-calendar-day ms-1"></i> نشر: 2025-01-15</span>
-                            <span class="meta-badge"><i class="fas fa-rotate ms-1"></i> تحديث: 2025-01-20</span>
-                          
+                            <span class="meta-badge" id="categoryBadge"><i class="fas fa-tag ms-1"></i> <span id="categoryName">تعليم</span></span>
+                            <span class="meta-badge"><i class="fas fa-calendar-day ms-1"></i> نشر: <span id="publishDate">2025-01-15</span></span>
+                            <span class="meta-badge"><i class="fas fa-rotate ms-1"></i> تحديث: <span id="updateDate">2025-01-20</span></span>
+                        </div>
+                    </div>
+                    <div class="story-actions-header d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="like-btn" id="storyLikeBtn" data-story-id="1" onclick="toggleLike(this);">
+                                <i class="far fa-heart text-danger"></i> <span class="like-count" id="storyLikeCount">89</span>
+                            </span>
+                        </div>
+                        <div class="story-owner-actions" id="storyOwnerActions" style="display: none;">
+                            <button class="btn btn-outline-warning btn-sm" onclick="editStory(1);" title="تعديل">
+                                <i class="fas fa-edit me-1"></i>تعديل
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteStory(1);" title="حذف">
+                                <i class="fas fa-trash me-1"></i>حذف
+                            </button>
+                        </div>
+                    </div>
+                    <div class="keywords-section mb-3" id="keywordsSection">
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <strong class="text-muted">الكلمات المفتاحية:</strong>
+                            <div id="keywordsContainer" class="d-flex flex-wrap gap-2">
+                                <!-- Keywords will be added here -->
+                            </div>
                         </div>
                     </div>
                 </header>
-                <div class="article-body">
+                <div class="article-body" id="storyContent">
                     <p class="first-paragraph">شاركت في مبادرة "تعليم الأجيال" وكانت تجربة رائعة. استطعت مساعدة أكثر من 50 طفل في تحسين مستواهم التعليمي. الشعور بالإنجاز عندما ترى ابتسامة على وجه طفل استطاع فهم درس كان يصعب عليه لا يقدر بثمن.</p>
                     <hr class="article-separator">
                     <p>العمل التطوعي في مجال التعليم يعطيني شعوراً بالإنجاز والرضا، وأنا فخور بكل لحظة قضيتها في تعليم هؤلاء الأطفال ودعمهم. هذه التجربة عمّقت إيماني بأهمية العطاء وأثره الممتد على المجتمع.</p>
@@ -113,38 +126,14 @@
             </article>
 
             <div class="story-content mb-4">
-                <h5 class="mb-3">صور وفيديوهات القصة</h5>
-                <div class="row g-3">
-                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                        <div class="media-card">
-                            <img src="images/education.jpg" alt="صورة 1" onerror="this.src='images/avater.jpg'">
-                            <div class="p-3">
-                                <small class="text-muted d-block mb-1">
-                                    <i class="fas fa-image me-1"></i>صورة
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                        <div class="media-card">
-                            <img src="images/4dd0f026e751148098e7004eae353068.jpg" alt="صورة 2" onerror="this.src='images/avater.jpg'">
-                            <div class="p-3">
-                                <small class="text-muted d-block mb-1">
-                                    <i class="fas fa-image me-1"></i>صورة
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                        <div class="media-card">
-                            <img src="images/man1.jpg" alt="صورة 3" onerror="this.src='images/avater.jpg'">
-                            <div class="p-3">
-                                <small class="text-muted d-block mb-1">
-                                    <i class="fas fa-image me-1"></i>صورة
-                                </small>
-                            </div>
-                        </div>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">معرض الوسائط</h5>
+                    <span class="badge bg-secondary">
+                        <i class="fas fa-images me-1"></i><span id="mediaCount">0</span> ملف
+                    </span>
+                </div>
+                <div class="row g-3" id="mediaGallery">
+                    <!-- Media cards will be added here -->
                 </div>
             </div>
 
@@ -154,27 +143,31 @@
                 <h4>قصص أخرى لنفس المتطوع</h4>
                 <p class="text-muted">اكتشف مزيداً من أعمال هذا المتطوع</p>
             </div>
-            <div class="row g-3">
+            <div class="row g-3" id="relatedStories">
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card border-0 shadow-sm h-100 story-card" onclick="window.location.href='community.html#stories'" style="cursor:pointer">
-                        <img src="images/education.jpg" class="card-img-top" alt="مبادرة دعم المجتمع" onerror="this.src='images/avater.jpg'">
+                    <div class="card border-0 shadow-sm h-100 story-card">
+                        <img src="images/education.jpg" class="card-img-top" alt="مبادرة دعم المجتمع" onclick="window.location.href='community.html#stories'" style="cursor:pointer" onerror="this.src='images/avater.jpg'">
                         <div class="card-body">
-                            <h6 class="card-title">مبادرة دعم المجتمع</h6>
+                            <h6 class="card-title" onclick="window.location.href='community.html#stories'" style="cursor:pointer">مبادرة دعم المجتمع</h6>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="small text-muted">بقلم أحمد محمد</span>
-                                <span class="small"><i class="fas fa-heart text-danger"></i> 23</span>
+                                <span class="like-btn-related" data-story-id="11" onclick="event.stopPropagation(); toggleRelatedStoryLike(this);">
+                                    <i class="far fa-heart text-danger"></i> <span class="like-count-related">23</span>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card border-0 shadow-sm h-100 story-card" onclick="window.location.href='community.html#stories'" style="cursor:pointer">
-                        <img src="images/eartg.jpg" class="card-img-top" alt="تنظيف الشواطئ" onerror="this.src='images/avater.jpg'">
+                    <div class="card border-0 shadow-sm h-100 story-card">
+                        <img src="images/eartg.jpg" class="card-img-top" alt="تنظيف الشواطئ" onclick="window.location.href='community.html#stories'" style="cursor:pointer" onerror="this.src='images/avater.jpg'">
                         <div class="card-body">
-                            <h6 class="card-title">تنظيف الشواطئ</h6>
+                            <h6 class="card-title" onclick="window.location.href='community.html#stories'" style="cursor:pointer">تنظيف الشواطئ</h6>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="small text-muted">بقلم أحمد محمد</span>
-                                <span class="small"><i class="fas fa-heart text-danger"></i> 41</span>
+                                <span class="like-btn-related" data-story-id="12" onclick="event.stopPropagation(); toggleRelatedStoryLike(this);">
+                                    <i class="far fa-heart text-danger"></i> <span class="like-count-related">41</span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -224,7 +217,607 @@
         </div>
     </footer>
 
+    <!-- Edit Story Modal -->
+    <div class="modal fade" id="editStoryModal" tabindex="-1" aria-labelledby="editStoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStoryModalLabel">
+                        <i class="fas fa-edit me-2"></i>تعديل القصة
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editStoryForm">
+                        <input type="hidden" id="edit-story-id">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="edit-story-title" class="form-label">عنوان القصة <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="edit-story-title" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="edit-story-category" class="form-label">الفئة <span class="text-danger">*</span></label>
+                                <select class="form-select" id="edit-story-category" required>
+                                    <option value="">اختر الفئة</option>
+                                    <option value="education">التعليم</option>
+                                    <option value="health">الصحة</option>
+                                    <option value="environment">البيئة</option>
+                                    <option value="relief">الإغاثة</option>
+                                    <option value="awareness">التوعية</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-story-region" class="form-label">المنطقة <span class="text-danger">*</span></label>
+                                <select class="form-select" id="edit-story-region" required>
+                                    <option value="">اختر المنطقة</option>
+                                    <option value="riyadh">الرياض</option>
+                                    <option value="jeddah">جدة</option>
+                                    <option value="dammam">الدمام</option>
+                                    <option value="makkah">مكة المكرمة</option>
+                                    <option value="medina">المدينة المنورة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="edit-story-description" class="form-label">وصف القصة <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="edit-story-description" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="edit-story-keywords" class="form-label">الكلمات المفتاحية</label>
+                                <input type="text" class="form-control" id="edit-story-keywords" placeholder="مثال: تعليم، أطفال، تطوع، مجتمع (افصل بين الكلمات بفواصل)">
+                                <small class="text-muted">افصل بين الكلمات بفواصل أو مسافات</small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="edit-story-media" class="form-label">إضافة وسائط جديدة</label>
+                                <input type="file" class="form-control" id="edit-story-media" accept="image/*,video/*" multiple>
+                                <small class="text-muted">يمكنك إضافة صور أو فيديوهات جديدة (اتركه فارغاً للاحتفاظ بالوسائط الحالية)</small>
+                                <div id="edit-new-media-preview" class="mt-3" style="display: none;">
+                                    <div class="d-flex flex-wrap gap-2" id="edit-new-media-preview-container">
+                                        <!-- New media previews will be added here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="form-label">الوسائط الحالية</label>
+                                <div id="edit-current-media-preview" class="d-flex flex-wrap gap-2 mt-2">
+                                    <!-- Current media previews will be shown here -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary-custom" onclick="saveEditedStory()">
+                        <i class="fas fa-save me-2"></i>حفظ التعديلات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        // Current user (simulated - in real app, get from session)
+        const currentUser = 'ahmed';
+        const likedStories = JSON.parse(localStorage.getItem('likedStories') || '[]');
+        const userStories = JSON.parse(localStorage.getItem('userStories') || '[]');
+        
+        // Get story ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const storyId = parseInt(urlParams.get('id')) || 1;
+        
+        // Story data (simulated - in real app, fetch from API based on story ID)
+        let storyData = {
+            id: storyId,
+            postId: 1001,
+            volunteerId: 101,
+            volunteerName: 'أحمد محمد',
+            volunteerAvatar: 'images/man1.jpg',
+            title: urlParams.get('t') || 'تجربتي في تعليم الأطفال',
+            category: urlParams.get('c') || 'education',
+            region: 'riyadh',
+            content: `شاركت في مبادرة "تعليم الأجيال" وكانت تجربة رائعة. استطعت مساعدة أكثر من 50 طفل في تحسين مستواهم التعليمي. الشعور بالإنجاز عندما ترى ابتسامة على وجه طفل استطاع فهم درس كان يصعب عليه لا يقدر بثمن.
+
+العمل التطوعي في مجال التعليم يعطيني شعوراً بالإنجاز والرضا، وأنا فخور بكل لحظة قضيتها في تعليم هؤلاء الأطفال ودعمهم. هذه التجربة عمّقت إيماني بأهمية العطاء وأثره الممتد على المجتمع.
+
+من خلال هذه التجربة، تعلمت أن التعليم ليس مجرد نقل معلومات، بل هو بناء جيل قادر على مواجهة التحديات وتحقيق أحلامه. كل طفل قابلته كان له قصة فريدة وآمال عظيمة، وكان شرفاً لي أن أكون جزءاً من رحلته التعليمية.`,
+            description: 'شاركت في مبادرة "تعليم الأجيال" وكانت تجربة رائعة.',
+            publishDate: '2025-01-15',
+            updateDate: '2025-01-20',
+            keywords: ['تعليم', 'أطفال', 'تطوع', 'مجتمع', 'تنمية'],
+            media: [
+                { fileId: 1, type: 'image', src: 'images/education.jpg', thumbnail: 'images/education.jpg' },
+                { fileId: 2, type: 'image', src: 'images/4dd0f026e751148098e7004eae353068.jpg', thumbnail: 'images/4dd0f026e751148098e7004eae353068.jpg' },
+                { fileId: 3, type: 'image', src: 'images/man1.jpg', thumbnail: 'images/man1.jpg' }
+            ],
+            likes: 89,
+            owner: 'ahmed'
+        };
+
+        // Category names mapping
+        const categoryNames = {
+            'education': 'تعليم',
+            'health': 'صحة',
+            'environment': 'بيئة',
+            'relief': 'إغاثة',
+            'awareness': 'توعية'
+        };
+
+        // Initialize story details
+        function initializeStory() {
+            // Update title
+            document.getElementById('storyTitleHeader').textContent = storyData.title;
+            document.querySelector('.story-title').textContent = storyData.title;
+            
+            // Update category
+            document.getElementById('categoryName').textContent = categoryNames[storyData.category] || storyData.category;
+            
+            // Update dates
+            document.getElementById('publishDate').textContent = storyData.publishDate;
+            document.getElementById('updateDate').textContent = storyData.updateDate;
+            
+            // Update content
+            const contentElement = document.getElementById('storyContent');
+            contentElement.innerHTML = storyData.content.split('\n\n').map(paragraph => 
+                `<p>${paragraph}</p>`
+            ).join('');
+            
+            // Update keywords
+            const keywordsContainer = document.getElementById('keywordsContainer');
+            keywordsContainer.innerHTML = '';
+            storyData.keywords.forEach(keyword => {
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-secondary';
+                badge.textContent = keyword;
+                keywordsContainer.appendChild(badge);
+            });
+            
+            // Update likes
+            document.getElementById('storyLikeCount').textContent = storyData.likes;
+            const likeBtn = document.getElementById('storyLikeBtn');
+            const icon = likeBtn.querySelector('i');
+            if (likedStories.includes(storyId)) {
+                likeBtn.classList.add('liked');
+                if (icon) icon.className = 'fas fa-heart text-danger';
+            } else {
+                if (icon) icon.className = 'far fa-heart text-danger';
+            }
+            
+            // Show edit/delete buttons if user is owner
+            if (storyData.owner === currentUser) {
+                document.getElementById('storyOwnerActions').style.display = 'flex';
+            }
+            
+            // Update gallery
+            updateGallery();
+        }
+
+        // Update gallery with media
+        function updateGallery() {
+            const galleryMain = document.getElementById('galleryMain');
+            const thumbsContainer = document.querySelector('.gallery-thumb');
+            const mediaGallery = document.getElementById('mediaGallery');
+            
+            document.getElementById('mediaCount').textContent = storyData.media ? storyData.media.length : 0;
+            
+            if (storyData.media && storyData.media.length > 0) {
+                const firstMedia = storyData.media[0];
+                if (firstMedia.type === 'image') {
+                    galleryMain.innerHTML = `<img class="img-fluid" src="${firstMedia.src}" alt="صورة القصة" onerror="this.src='images/avater.jpg'">`;
+                } else {
+                    galleryMain.innerHTML = `<div class="ratio ratio-16x9"><video class="w-100 h-100" controls><source src="${firstMedia.src}" type="video/mp4"></video></div>`;
+                }
+                
+                // Update thumbnails
+                if (thumbsContainer) {
+                    thumbsContainer.innerHTML = '';
+                    storyData.media.forEach((media, index) => {
+                        const thumb = document.createElement('img');
+                        thumb.src = media.thumbnail || media.src;
+                        thumb.alt = `thumb ${index + 1}`;
+                        thumb.className = index === 0 ? 'active' : '';
+                        thumb.setAttribute('data-src', media.src);
+                        thumb.setAttribute('data-type', media.type);
+                        thumb.onerror = function() { this.src = 'images/avater.jpg'; };
+                        thumbsContainer.appendChild(thumb);
+                    });
+                }
+                
+                // Update media gallery cards
+                if (mediaGallery) {
+                    mediaGallery.innerHTML = '';
+                    storyData.media.forEach((media, index) => {
+                        const col = document.createElement('div');
+                        col.className = 'col-12 col-sm-6 col-lg-4 col-xl-3';
+                        
+                        const card = document.createElement('div');
+                        card.className = 'media-card';
+                        
+                        if (media.type === 'image') {
+                            card.innerHTML = `
+                                <img src="${media.src}" alt="صورة ${index + 1}" onclick="showMediaInGallery(${index})" style="cursor: pointer;" onerror="this.src='images/avater.jpg'">
+                                <div class="p-3">
+                                    <small class="text-muted d-block mb-1">
+                                        <i class="fas fa-image me-1"></i>صورة
+                                    </small>
+                                </div>
+                            `;
+                        } else {
+                            card.innerHTML = `
+                                <video src="${media.src}" poster="${media.poster || ''}" onclick="showMediaInGallery(${index})" style="cursor: pointer;" controls>
+                                    <source src="${media.src}" type="video/mp4">
+                                </video>
+                                <div class="p-3">
+                                    <small class="text-muted d-block mb-1">
+                                        <i class="fas fa-video me-1"></i>فيديو
+                                    </small>
+                                </div>
+                            `;
+                        }
+                        
+                        col.appendChild(card);
+                        mediaGallery.appendChild(col);
+                    });
+                }
+            }
+        }
+        
+        // Show media in main gallery
+        function showMediaInGallery(index) {
+            const media = storyData.media[index];
+            const galleryMain = document.getElementById('galleryMain');
+            const thumbs = document.querySelectorAll('.gallery-thumb img');
+            
+            if (media.type === 'image') {
+                galleryMain.innerHTML = `<img class="img-fluid" src="${media.src}" alt="صورة القصة" onerror="this.src='images/avater.jpg'">`;
+            } else {
+                galleryMain.innerHTML = `<div class="ratio ratio-16x9"><video class="w-100 h-100" controls><source src="${media.src}" type="video/mp4"></video></div>`;
+            }
+            
+            thumbs.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        // Toggle like functionality
+        function toggleLike(btn) {
+            const likeCount = btn.querySelector('.like-count');
+            const icon = btn.querySelector('i');
+            let currentLikes = parseInt(likeCount.textContent) || 0;
+            
+            if (likedStories.includes(storyId)) {
+                // Unlike
+                likedStories.splice(likedStories.indexOf(storyId), 1);
+                currentLikes--;
+                btn.classList.remove('liked');
+                icon.className = 'far fa-heart text-danger';
+                
+                Toastify({
+                    text: "تم إلغاء الإعجاب بالقصة",
+                    duration: 2000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #6c757d, #5a6268)",
+                    stopOnFocus: true
+                }).showToast();
+            } else {
+                // Like
+                likedStories.push(storyId);
+                currentLikes++;
+                btn.classList.add('liked');
+                icon.className = 'fas fa-heart text-danger';
+                
+                Toastify({
+                    text: "تم الإعجاب بالقصة!",
+                    duration: 2000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                    stopOnFocus: true
+                }).showToast();
+            }
+            
+            likeCount.textContent = currentLikes;
+            storyData.likes = currentLikes;
+            localStorage.setItem('likedStories', JSON.stringify(likedStories));
+        }
+
+        // Edit Story
+        function editStory(id) {
+            document.getElementById('edit-story-id').value = id;
+            document.getElementById('edit-story-title').value = storyData.title;
+            document.getElementById('edit-story-category').value = storyData.category;
+            document.getElementById('edit-story-region').value = storyData.region;
+            document.getElementById('edit-story-description').value = storyData.description;
+            document.getElementById('edit-story-keywords').value = storyData.keywords ? storyData.keywords.join('، ') : '';
+            
+            // Show current media previews
+            const currentMediaContainer = document.getElementById('edit-current-media-preview');
+            currentMediaContainer.innerHTML = '';
+            
+            if (storyData.media && storyData.media.length > 0) {
+                storyData.media.forEach((mediaItem, index) => {
+                    const mediaDiv = document.createElement('div');
+                    mediaDiv.className = 'position-relative';
+                    mediaDiv.style.width = '150px';
+                    
+                    if (mediaItem.type === 'image') {
+                        mediaDiv.innerHTML = `
+                            <img src="${mediaItem.src}" class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" onclick="removeCurrentMedia(${id}, ${index})" style="transform: translate(50%, -50%);">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    } else {
+                        mediaDiv.innerHTML = `
+                            <video class="img-thumbnail" poster="${mediaItem.poster || ''}" style="width: 150px; height: 150px; object-fit: cover;">
+                                <source src="${mediaItem.src}" type="video/mp4">
+                            </video>
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" onclick="removeCurrentMedia(${id}, ${index})" style="transform: translate(50%, -50%);">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    }
+                    currentMediaContainer.appendChild(mediaDiv);
+                });
+            }
+            
+            const editModal = new bootstrap.Modal(document.getElementById('editStoryModal'));
+            editModal.show();
+        }
+
+        // Delete Story
+        function deleteStory(id) {
+            if (!confirm('هل أنت متأكد من حذف هذه القصة؟ سيتم إعادتك إلى صفحة المجتمع.')) {
+                return;
+            }
+            
+            Toastify({
+                text: "تم حذف القصة بنجاح",
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                stopOnFocus: true
+            }).showToast();
+            
+            setTimeout(() => {
+                window.location.href = 'community.html';
+            }, 1500);
+        }
+
+        // Remove current media from edit
+        function removeCurrentMedia(storyId, mediaIndex) {
+            if (storyData.media && storyData.media.length > mediaIndex) {
+                storyData.media.splice(mediaIndex, 1);
+                editStory(storyId);
+            }
+        }
+
+        // Save Edited Story
+        function saveEditedStory() {
+            const form = document.getElementById('editStoryForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            storyData.title = document.getElementById('edit-story-title').value;
+            storyData.category = document.getElementById('edit-story-category').value;
+            storyData.region = document.getElementById('edit-story-region').value;
+            storyData.description = document.getElementById('edit-story-description').value;
+            
+            // Update keywords
+            const keywordsInput = document.getElementById('edit-story-keywords').value.trim();
+            storyData.keywords = keywordsInput ? keywordsInput.split(/[،,,\s]+/).filter(k => k.trim()).map(k => k.trim()) : [];
+            
+            // Add new media files if any
+            const newMediaFiles = document.getElementById('edit-story-media').files;
+            if (newMediaFiles && newMediaFiles.length > 0) {
+                for (let i = 0; i < newMediaFiles.length; i++) {
+                    const file = newMediaFiles[i];
+                    const mediaUrl = URL.createObjectURL(file);
+                    const mediaType = file.type.startsWith('image/') ? 'image' : 'video';
+                    storyData.media.push({
+                        fileId: storyData.media.length + 1,
+                        type: mediaType,
+                        src: mediaUrl,
+                        thumbnail: mediaType === 'image' ? mediaUrl : '',
+                        poster: mediaType === 'video' ? '' : undefined
+                    });
+                }
+            }
+            
+            // Update story display
+            initializeStory();
+            updateGallery();
+            
+            // Reset form
+            document.getElementById('edit-story-media').value = '';
+            document.getElementById('edit-new-media-preview').style.display = 'none';
+            document.getElementById('edit-new-media-preview-container').innerHTML = '';
+            
+            // Close modal
+            const editModal = bootstrap.Modal.getInstance(document.getElementById('editStoryModal'));
+            editModal.hide();
+            
+            Toastify({
+                text: "تم تحديث القصة بنجاح!",
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                stopOnFocus: true
+            }).showToast();
+        }
+
+        // Preview new media for edit form (multiple files)
+        document.getElementById('edit-story-media')?.addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (!files || files.length === 0) {
+                document.getElementById('edit-new-media-preview').style.display = 'none';
+                return;
+            }
+            
+            const previewContainer = document.getElementById('edit-new-media-preview-container');
+            previewContainer.innerHTML = '';
+            
+            Array.from(files).forEach((file, index) => {
+                const mediaDiv = document.createElement('div');
+                mediaDiv.className = 'position-relative';
+                mediaDiv.style.width = '150px';
+                
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        mediaDiv.innerHTML = `
+                            <img src="${e.target.result}" class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" onclick="removeEditMediaPreview(${index})" style="transform: translate(50%, -50%);">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file.type.startsWith('video/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        mediaDiv.innerHTML = `
+                            <video class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                                <source src="${e.target.result}" type="video/mp4">
+                            </video>
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" onclick="removeEditMediaPreview(${index})" style="transform: translate(50%, -50%);">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                }
+                
+                previewContainer.appendChild(mediaDiv);
+            });
+            
+            document.getElementById('edit-new-media-preview').style.display = 'block';
+        });
+
+        // Remove media preview from edit form
+        function removeEditMediaPreview(index) {
+            const input = document.getElementById('edit-story-media');
+            const dt = new DataTransfer();
+            const files = Array.from(input.files);
+            
+            files.forEach((file, i) => {
+                if (i !== index) {
+                    dt.items.add(file);
+                }
+            });
+            
+            input.files = dt.files;
+            input.dispatchEvent(new Event('change'));
+        }
+
+        // Toggle like for related stories
+        function toggleRelatedStoryLike(btn) {
+            const storyId = parseInt(btn.getAttribute('data-story-id'));
+            const likeCount = btn.querySelector('.like-count-related');
+            const icon = btn.querySelector('i');
+            let currentLikes = parseInt(likeCount.textContent) || 0;
+            
+            if (likedStories.includes(storyId)) {
+                // Unlike
+                likedStories.splice(likedStories.indexOf(storyId), 1);
+                currentLikes--;
+                btn.classList.remove('liked');
+                icon.className = 'far fa-heart text-danger';
+                
+                Toastify({
+                    text: "تم إلغاء الإعجاب بالقصة",
+                    duration: 1500,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #6c757d, #5a6268)",
+                    stopOnFocus: true
+                }).showToast();
+            } else {
+                // Like
+                likedStories.push(storyId);
+                currentLikes++;
+                btn.classList.add('liked');
+                icon.className = 'fas fa-heart text-danger';
+                
+                Toastify({
+                    text: "تم الإعجاب بالقصة!",
+                    duration: 1500,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                    stopOnFocus: true
+                }).showToast();
+            }
+            
+            likeCount.textContent = currentLikes;
+            localStorage.setItem('likedStories', JSON.stringify(likedStories));
+        }
+        
+        // Initialize related stories likes
+        function initializeRelatedStories() {
+            document.querySelectorAll('.like-btn-related').forEach(btn => {
+                const storyId = parseInt(btn.getAttribute('data-story-id'));
+                const icon = btn.querySelector('i');
+                
+                if (likedStories.includes(storyId)) {
+                    btn.classList.add('liked');
+                    if (icon) icon.className = 'fas fa-heart text-danger';
+                } else {
+                    if (icon) icon.className = 'far fa-heart text-danger';
+                }
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeStory();
+            initializeRelatedStories();
+            
+            // Gallery navigation
+            const thumbs = document.querySelectorAll('.gallery-thumb img');
+            const mainEl = document.getElementById('galleryMain');
+            
+            function renderMain(idx) {
+                const activeThumb = thumbs[idx];
+                if (!activeThumb) return;
+                
+                const src = activeThumb.dataset.src || activeThumb.src;
+                const isVideo = activeThumb.dataset.type === 'video' || /\.mp4($|\?)/i.test(src);
+                
+                mainEl.innerHTML = isVideo
+                    ? `<div class="ratio ratio-16x9"><video class="w-100 h-100" controls autoplay muted><source src="${src}" type="video/mp4"></video></div>`
+                    : `<img class="img-fluid" src="${src}" alt="صورة القصة" onerror="this.src='images/avater.jpg'">`;
+                
+                thumbs.forEach((img, i) => {
+                    img.classList.toggle('active', i === idx);
+                });
+            }
+            
+            // Re-attach event listeners after gallery update
+            setTimeout(() => {
+                const updatedThumbs = document.querySelectorAll('.gallery-thumb img');
+                updatedThumbs.forEach((img, i) => {
+                    img.addEventListener('click', () => renderMain(i));
+                });
+            }, 100);
+        });
+    </script>
 </body>
 </html>
 

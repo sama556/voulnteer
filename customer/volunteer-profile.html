@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - منصة التطوع السعودية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/volunteer-profile.css">
+   
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-hands-helping me-2"></i>منصة صوت التطوع 
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#volunteers">المتطوعون</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="initiatives.html">المبادرات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="platforms.html">المنصات الداعمة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html">مجتمع التطوع</a>
+                    </li>
+                </ul>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-custom dropdown-toggle" type="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-2"></i>حسابي
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
+                            <li>
+                                <a class="dropdown-item" href="volunteer-profile.html">
+                                    <i class="fas fa-user-circle me-2"></i>الملف الشخصي
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="../login.html">
+                                    <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <button class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="fas fa-edit me-2"></i>تعديل الملف الشخصي
+                        </button>
+                        <div class="profile-avatar" onclick="document.getElementById('profileImageInput').click()">
+                            <img id="profileImagePreview" src="../images/man1.jpg" alt="صورة المتطوع" style="display: block;">
+
+                            <div class="upload-overlay">
+                                <i class="fas fa-camera me-2"></i>تغيير الصورة
+                            </div>
+                            <input type="file" id="profileImageInput" accept="image/*" style="display: none;" onchange="previewProfileImage(this)">
+                        </div>
+                        <h3 id="profileName">أحمد محمد</h3>
+                        <p>متطوع</p>
+                    </div>
+
+                    <!-- View Mode - Display Information -->
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-user me-2"></i>الاسم الكامل
+                            </div>
+                            <div class="info-card-value" id="viewFullName">أحمد محمد</div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-envelope me-2"></i>البريد الإلكتروني
+                            </div>
+                            <div class="info-card-value" id="viewEmail">ahmed@example.com</div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-key me-2"></i>كلمة المرور
+                            </div>
+                            <div class="info-card-value">
+                                <span class="text-muted d-block mb-2">••••••••</span>
+                                <button type="button" class="btn btn-change-password btn-sm" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                    <i class="fas fa-edit me-1"></i>تغيير
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-map-marker-alt me-2"></i>المنطقة
+                            </div>
+                            <div class="info-card-value" id="viewRegion">الرياض</div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-file-alt me-2"></i>النبذة الشخصية
+                            </div>
+                            <div class="info-card-value" id="viewBio">متطوع نشط في المجتمع، يساهم في العديد من المبادرات التطوعية ويهتم بالتعليم والبيئة. لديه خبرة واسعة في العمل التطوعي.</div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-heart me-2"></i>الاهتمامات والمجالات
+                            </div>
+                            <div class="interests-view" id="viewInterests">
+                                <span class="interest-badge"><i class="fas fa-graduation-cap me-1"></i>التعليم</span>
+                                <span class="interest-badge"><i class="fas fa-heartbeat me-1"></i>الصحة</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-shield-alt me-2"></i>حالة الحظر
+                            </div>
+                            <div class="info-card-value">
+                                <span class="badge-status active" id="viewBanStatus">
+                                    <i class="fas fa-check-circle me-2"></i>نشط
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-label">
+                                <i class="fas fa-calendar-alt me-2"></i>تاريخ الإنشاء
+                            </div>
+                            <div class="info-card-value" id="viewCreationDate">2025 -03-15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">
+                        <i class="fas fa-edit me-2"></i>تعديل الملف الشخصي
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editFullName" class="form-label">الاسم الكامل *</label>
+                                <input type="text" class="form-control" id="editFullName" name="fullName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editEmail" class="form-label">البريد الإلكتروني *</label>
+                                <input type="email" class="form-control" id="editEmail" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editRegion" class="form-label">المنطقة *</label>
+                                <select class="form-select" id="editRegion" name="region" required>
+                                    <option value="الرياض">الرياض</option>
+                                    <option value="مكة المكرمة">مكة المكرمة</option>
+                                    <option value="المدينة المنورة">المدينة المنورة</option>
+                                    <option value="القصيم">القصيم</option>
+                                    <option value="الشرقية">الشرقية</option>
+                                    <option value="عسير">عسير</option>
+                                    <option value="تبوك">تبوك</option>
+                                    <option value="حائل">حائل</option>
+                                    <option value="الحدود الشمالية">الحدود الشمالية</option>
+                                    <option value="جازان">جازان</option>
+                                    <option value="نجران">نجران</option>
+                                    <option value="الباحة">الباحة</option>
+                                    <option value="الجوف">الجوف</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editProfileImage" class="form-label">الصورة الشخصية</label>
+                                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+                                    <div class="position-relative" style="width: 100px; height: 100px; flex-shrink: 0; max-width: 100px;">
+                                        <img id="editImagePreview" src="" alt="معاينة" class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover; display: none; border: 3px solid #005EA6; max-width: 100%;">
+                                        <div id="editImagePlaceholder" class="rounded-circle d-flex align-items-center justify-content-center bg-light" style="width: 100%; height: 100%; border: 3px dashed #005EA6; max-width: 100%;">
+                                            <i class="fas fa-user fa-3x text-muted"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1" style="min-width: 0; width: 100%;">
+                                        <input type="file" class="form-control" id="editProfileImage" accept="image/*" onchange="previewEditImage(this)" style="max-width: 100%;">
+                                        <small class="text-muted d-block mt-1">حدد صورة JPG, PNG أو GIF (حد أقصى 5MB)</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editBio" class="form-label">النبذة الشخصية *</label>
+                            <textarea class="form-control" id="editBio" name="bio" rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">الاهتمامات والمجالات التطوعية *</label>
+                            <p class="text-muted mb-3">اختر المجالات التي تهتم بها (يمكنك اختيار أكثر من مجال)</p>
+                            <div class="interests-container">
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'التعليم')">
+                                    <input type="checkbox" name="interests" value="التعليم">
+                                    <i class="fas fa-graduation-cap me-2"></i>
+                                    التعليم
+                                </div>
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'الصحة')">
+                                    <input type="checkbox" name="interests" value="الصحة">
+                                    <i class="fas fa-heartbeat me-2"></i>
+                                    الصحة
+                                </div>
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'البيئة')">
+                                    <input type="checkbox" name="interests" value="البيئة">
+                                    <i class="fas fa-leaf me-2"></i>
+                                    البيئة
+                                </div>
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'الإغاثة')">
+                                    <input type="checkbox" name="interests" value="الإغاثة">
+                                    <i class="fas fa-hands-helping me-2"></i>
+                                    الإغاثة
+                                </div>
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'التوعية')">
+                                    <input type="checkbox" name="interests" value="التوعية">
+                                    <i class="fas fa-bullhorn me-2"></i>
+                                    التوعية
+                                </div>
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'الرياضة')">
+                                    <input type="checkbox" name="interests" value="الرياضة">
+                                    <i class="fas fa-running me-2"></i>
+                                    الرياضة
+                                </div>
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'الثقافة')">
+                                    <input type="checkbox" name="interests" value="الثقافة">
+                                    <i class="fas fa-book me-2"></i>
+                                    الثقافة
+                                </div>
+                                <div class="interest-tag" onclick="toggleEditInterest(this, 'التقنية')">
+                                    <input type="checkbox" name="interests" value="التقنية">
+                                    <i class="fas fa-laptop me-2"></i>
+                                    التقنية
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">تاريخ الإنشاء</label>
+                                <input type="text" class="form-control readonly-field" id="editCreationDate" readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary-custom" onclick="saveProfileChanges()">
+                        <i class="fas fa-save me-2"></i>حفظ التغييرات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">
+                        <i class="fas fa-key me-2"></i>تغيير كلمة المرور
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">كلمة المرور الحالية *</label>
+                            <div class="position-relative">
+                                <input type="password" class="form-control" id="currentPassword" required>
+                                <button type="button" class="password-toggle" onclick="togglePasswordVisibility('currentPassword', 'currentPasswordToggle')">
+                                    <i class="fas fa-eye" id="currentPasswordToggle"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">كلمة المرور الجديدة *</label>
+                            <div class="position-relative">
+                                <input type="password" class="form-control" id="newPassword" required>
+                                <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword', 'newPasswordToggle')">
+                                    <i class="fas fa-eye" id="newPasswordToggle"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmNewPassword" class="form-label">تأكيد كلمة المرور الجديدة *</label>
+                            <div class="position-relative">
+                                <input type="password" class="form-control" id="confirmNewPassword" required>
+                                <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmNewPassword', 'confirmNewPasswordToggle')">
+                                    <i class="fas fa-eye" id="confirmNewPasswordToggle"></i>
+                                </button>
+                            </div>
+                            <div id="passwordMatchError" class="text-danger mt-2" style="display: none;">
+                                <i class="fas fa-exclamation-circle me-2"></i>كلمات المرور غير متطابقة
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary-custom" onclick="submitPasswordChange()">
+                        <i class="fas fa-save me-2"></i>حفظ التغييرات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5>منصة التطوع السعودية</h5>
+                    <p>منصة وطنية تهدف إلى ربط المتطوعين مع المبادرات والمنصات الداعمة للتطوع في المملكة العربية السعودية، لنشر ثقافة العمل التطوعي وتعزيز المشاركة المجتمعية.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>روابط سريعة</h5>
+                    <div class="footer-links">
+                        <a href="index.html">الرئيسية</a>
+                        <a href="index.html#volunteers">المتطوعون</a>
+                        <a href="initiatives.html">المبادرات</a>
+                        <a href="platforms.html">المنصات الداعمة</a>
+                        <a href="community.html">مجتمع التطوع</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>المجالات التطوعية</h5>
+                    <div class="footer-links">
+                        <a href="initiatives.html">التعليم</a>
+                        <a href="initiatives.html">الصحة</a>
+                        <a href="initiatives.html">البيئة</a>
+                        <a href="initiatives.html">الإغاثة</a>
+                        <a href="initiatives.html">التوعية</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>اتصل بنا</h5>
+                    <div class="footer-links">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> الرياض، المملكة العربية السعودية</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@volunteer-platform.sa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2025 منصة التطوع السعودية</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Toastify JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Profile data
+        let profileData = {
+            fullName: 'أحمد محمد',
+            email: 'ahmed@example.com',
+            region: 'الرياض',
+            bio: 'متطوع نشط في المجتمع، يساهم في العديد من المبادرات التطوعية ويهتم بالتعليم والبيئة. لديه خبرة واسعة في العمل التطوعي.',
+            interests: ['التعليم', 'الصحة'],
+            creationDate: '2022-03-15',
+            banStatus: 'active'
+        };
+
+        // Load profile data into edit modal
+        document.getElementById('editProfileModal').addEventListener('show.bs.modal', function() {
+            document.getElementById('editFullName').value = profileData.fullName;
+            document.getElementById('editEmail').value = profileData.email;
+            document.getElementById('editRegion').value = profileData.region;
+            document.getElementById('editBio').value = profileData.bio;
+            document.getElementById('editCreationDate').value = profileData.creationDate;
+            
+            // Reset and set interests
+            document.querySelectorAll('#editProfileModal input[name="interests"]').forEach(function(checkbox) {
+                checkbox.checked = profileData.interests.includes(checkbox.value);
+                const tag = checkbox.parentElement;
+                if (checkbox.checked) {
+                    tag.classList.add('selected');
+                } else {
+                    tag.classList.remove('selected');
+                }
+            });
+            
+            // Reset image preview
+            document.getElementById('editImagePreview').style.display = 'none';
+            document.getElementById('editImagePlaceholder').style.display = 'flex';
+            document.getElementById('editProfileImage').value = '';
+        });
+
+        // Preview profile image (main avatar)
+        function previewProfileImage(input) {
+            if (input.files && input.files[0]) {
+                // Validate file size (max 5MB)
+                if (input.files[0].size > 5 * 1024 * 1024) {
+                    Toastify({
+                        text: "حجم الصورة كبير جداً. الحد الأقصى 5MB",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profileImagePreview').src = e.target.result;
+                    document.getElementById('profileImagePreview').style.display = 'block';
+                    document.getElementById('avatarInitials').style.display = 'none';
+                    
+                    // Update profile data
+                    profileData.profileImage = e.target.result;
+                    
+                    Toastify({
+                        text: "تم تحديث الصورة الشخصية!",
+                        duration: 2000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                        stopOnFocus: true
+                    }).showToast();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Preview edit image (in modal)
+        function previewEditImage(input) {
+            if (input.files && input.files[0]) {
+                // Validate file size (max 5MB)
+                if (input.files[0].size > 5 * 1024 * 1024) {
+                    Toastify({
+                        text: "حجم الصورة كبير جداً. الحد الأقصى 5MB",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('editImagePreview').src = e.target.result;
+                    document.getElementById('editImagePreview').style.display = 'block';
+                    document.getElementById('editImagePlaceholder').style.display = 'none';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Toggle edit interest selection
+        function toggleEditInterest(element, value) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+                element.classList.add('selected');
+            } else {
+                element.classList.remove('selected');
+            }
+        }
+
+        // Toggle password visibility
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Submit password change
+        function submitPasswordChange() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            const errorDiv = document.getElementById('passwordMatchError');
+
+            // Validate passwords match
+            if (newPassword !== confirmNewPassword) {
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+
+            // Validate password length
+            if (newPassword.length < 6) {
+                Toastify({
+                    text: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                    stopOnFocus: true
+                }).showToast();
+                return;
+            }
+
+            // Simulate API call
+            Toastify({
+                text: "تم تغيير كلمة المرور بنجاح!",
+                duration: 3000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                stopOnFocus: true
+            }).showToast();
+
+            // Close modal and reset form
+            const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+            modal.hide();
+            document.getElementById('changePasswordForm').reset();
+        }
+
+        // Save profile changes
+        function saveProfileChanges() {
+            const fullName = document.getElementById('editFullName').value;
+            const email = document.getElementById('editEmail').value;
+            const region = document.getElementById('editRegion').value;
+            const bio = document.getElementById('editBio').value;
+            
+            // Get selected interests
+            const selectedInterests = [];
+            document.querySelectorAll('#editProfileModal input[name="interests"]:checked').forEach(function(checkbox) {
+                selectedInterests.push(checkbox.value);
+            });
+
+            if (selectedInterests.length === 0) {
+                Toastify({
+                    text: "يرجى اختيار مجال تطوعي واحد على الأقل",
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                    stopOnFocus: true
+                }).showToast();
+                return;
+            }
+
+            // Update profile data
+            profileData.fullName = fullName;
+            profileData.email = email;
+            profileData.region = region;
+            profileData.bio = bio;
+            profileData.interests = selectedInterests;
+
+            // Update image if changed
+            const imageInput = document.getElementById('editProfileImage');
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileData.profileImage = e.target.result;
+                    document.getElementById('profileImagePreview').src = e.target.result;
+                    document.getElementById('profileImagePreview').style.display = 'block';
+                    document.getElementById('avatarInitials').style.display = 'none';
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            }
+
+            // Update view
+            updateProfileView();
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+            modal.hide();
+
+            Toastify({
+                text: "تم حفظ التغييرات بنجاح!",
+                duration: 3000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                stopOnFocus: true
+            }).showToast();
+        }
+
+        // Update profile view with current data
+        function updateProfileView() {
+            document.getElementById('profileName').textContent = profileData.fullName;
+            document.getElementById('viewFullName').textContent = profileData.fullName;
+            document.getElementById('viewEmail').textContent = profileData.email;
+            document.getElementById('viewRegion').textContent = profileData.region;
+            document.getElementById('viewBio').textContent = profileData.bio;
+            document.getElementById('viewCreationDate').textContent = profileData.creationDate;
+
+            // Update interests view
+            const interestsContainer = document.getElementById('viewInterests');
+            interestsContainer.innerHTML = '';
+            profileData.interests.forEach(function(interest) {
+                const icons = {
+                    'التعليم': 'fa-graduation-cap',
+                    'الصحة': 'fa-heartbeat',
+                    'البيئة': 'fa-leaf',
+                    'الإغاثة': 'fa-hands-helping',
+                    'التوعية': 'fa-bullhorn',
+                    'الرياضة': 'fa-running',
+                    'الثقافة': 'fa-book',
+                    'التقنية': 'fa-laptop'
+                };
+                const icon = icons[interest] || 'fa-circle';
+                const badge = document.createElement('span');
+                badge.className = 'interest-badge';
+                badge.innerHTML = `<i class="fas ${icon} me-1"></i>${interest}`;
+                interestsContainer.appendChild(badge);
+            });
+
+            // Update avatar initials if no image
+            if (!profileData.profileImage || 
+                (!document.getElementById('profileImagePreview').style.display || 
+                 document.getElementById('profileImagePreview').style.display === 'none')) {
+                const initials = profileData.fullName.split(' ').map(n => n[0]).join('').substring(0, 2);
+                document.getElementById('avatarInitials').textContent = initials;
+            }
+        }
+
+        // Validate password match on input
+        document.getElementById('confirmNewPassword').addEventListener('input', function() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = this.value;
+            const errorDiv = document.getElementById('passwordMatchError');
+            
+            if (confirmNewPassword && newPassword !== confirmNewPassword) {
+                errorDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+        });
+
+        // Scroll to top button
+        const scrollTop = document.getElementById('scrollTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
+

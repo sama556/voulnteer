@@ -9,7 +9,26 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="css/style.css">
-    
+    <style>
+        #userMenuDropdown:hover,
+        #userMenuDropdown:focus,
+        #userMenuDropdown:active {
+            background-color: transparent !important;
+            color: white !important;
+            border-color: white !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        #userMenuDropdown.show,
+        #userMenuDropdown[aria-expanded="true"] {
+            background-color: transparent !important;
+            color: white !important;
+            border-color: white !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+    </style>
    
 </head>
 <body>
@@ -42,7 +61,24 @@
                     </li>
                 </ul>
                 <div class="d-flex flex-column flex-sm-row gap-2">
-                    <a href="login.html" class="btn btn-outline-custom">تسجيل جديد</a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-custom dropdown-toggle" type="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-2"></i>حسابي
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
+                            <li>
+                                <a class="dropdown-item" href="volunteer-profile.html">
+                                    <i class="fas fa-user-circle me-2"></i>الملف الشخصي
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="login.html">
+                                    <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
