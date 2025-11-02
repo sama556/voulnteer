@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجتمع التطوع - منصة التطوع السعودية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/commntiy.css">
+    <style>
+        /* Responsive spacing for story cards */
+        .story-card { margin-top: 16px; }
+        @media (min-width: 992px) { /* lg and up */
+            .story-card { margin-top: 24px; }
+        }
+        /* Ensure unified gaps even when multiple rows are used */
+        #stories .row.g-4 { --bs-gutter-y: 1.5rem; }
+        /* Hide gallery actions button */
+        .gallery-actions { display: none !important; }
+        /* Compact author in meta */
+        .meta-author { display: inline-flex; align-items: center; gap: 8px; }
+        .meta-author .meta-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+        .meta-author .meta-name { font-size: 0.9rem; color: #445870; }
+        .meta-stats { display: inline-flex; align-items: center; gap: 6px; margin-inline-start: 12px; color: #e63946; font-weight: 600; }
+        .meta-stats i { font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hands-helping me-2"></i>منصة صوت التطوع 
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="index.html">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#volunteers">المتطوعون</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="initiatives.html">المبادرات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="platforms.html">المنصات الداعمة</a>
+                    </li>
+                  
+                    <li class="nav-item">
+                        <a class="nav-link active" href="community.html">مجتمع التطوع</a>
+                    </li>
+                </ul>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <a href="login.html" class="btn btn-outline-custom">تسجيل جديد </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (matching initiatives.html style) -->
+    <section class="py-5" style="padding-top: 140px !important; background: linear-gradient(135deg, #003B73 0%, #005EA6 50%, #008ECC 100%); color: white;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center" data-aos="fade-up" data-aos-duration="1000">
+                    <h1 class="display-4 fw-bold mb-4">مجتمع التطوع</h1>
+                    <p class="lead mb-4">اكتشف قصص المتطوعين الملهمة، شاهد تجاربهم، وشارك في رحلة العطاء والإنسانية</p>
+                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                        <a href="#stories" class="btn btn-light text-primary fw-semibold">
+                            استكشف القصص
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="filter-box">
+                        <h3 class="text-center mb-4">تصفح المحتوى</h3>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">جميع الفئات</option>
+                                    <option value="education">التعليم</option>
+                                    <option value="health">الصحة</option>
+                                    <option value="environment">البيئة</option>
+                                    <option value="relief">الإغاثة</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-5">
+                                <select class="form-select" id="regionFilter">
+                                    <option value="">جميع المناطق</option>
+                                    <option value="riyadh">الرياض</option>
+                                    <option value="jeddah">جدة</option>
+                                    <option value="dammam">الدمام</option>
+                                    <option value="makkah">مكة المكرمة</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary-custom w-100" onclick="applyFilters()">
+                                    <i class="fas fa-search me-2"></i>بحث
+                                </button>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories Section -->
+    <section id="stories" class="py-5">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up" data-aos-duration="1000">
+                <h2>قصص وتجارب المتطوعين</h2>
+                <p class="text-muted">اقرأ عن تجارب المتطوعين الملهمة في مجتمعنا</p>
+            </div>
+            
+         
+            <!-- Stories Grid -->
+            <div class="row g-4">
+                <div class="col-12 col-sm-6 col-lg-6 col-xl-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <img src="images/4dd0f026e751148098e7004eae353068.jpg" class="img-fluid" alt="قصة تطوعية">
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">تعليم</span>
+                                <span class="story-date">منذ أسبوع</span>
+                            </div>
+                            <h5 class="story-title">تجربتي في تعليم الكبار</h5>
+                            <p class="story-excerpt">كيف ساعدت في تعليم الكبار القراءة والكتابة في مجتمعي المحلي</p>
+                            <div class="story-author">
+                                <img src="images/man1.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>أحمد محمد</h6>
+                                    <small>متطوع منذ 2021</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 89</span>
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-6 col-xl-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <video class="img-fluid" poster="images/fe5f8099c3041cec30afe8ed0d2df5e3.jpg">
+                                <source src="videos/volunteer-story1.mp4" type="video/mp4">
+                            </video>
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">صحة</span>
+                                <span class="story-date">منذ 5 أيام</span>
+                            </div>
+                            <h5 class="story-title">رحلة العطاء في المجال الصحي</h5>
+                            <p class="story-excerpt">فيديو يوثق تجربة متطوعة في تقديم الخدمات الصحية للمجتمع</p>
+                            <div class="story-author">
+                                <img src="images/woman5.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>نورة عبدالله</h6>
+                                    <small>متطوعة منذ 2019</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 156</span>
+                              
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-6 col-xl-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <img src="images/736cb88a471f0ac9354ace1886ebab18.jpg" class="img-fluid" alt="قصة تطوعية">
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">بيئة</span>
+                                <span class="story-date">منذ 10 أيام</span>
+                            </div>
+                            <h5 class="story-title">حملة تنظيف الشواطئ</h5>
+                            <p class="story-excerpt">مشاركة في حملة تنظيف شواطئ جدة وحماية البيئة البحرية</p>
+                            <div class="story-author">
+                                <img src="images/man2.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>خالد سعيد</h6>
+                                    <small>متطوع منذ 2020</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 203</span>
+                              
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-6 col-xl-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <img src="images/4dd0f026e751148098e7004eae353068.jpg" class="img-fluid" alt="قصة تطوعية">
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">تعليم</span>
+                                <span class="story-date">منذ أسبوع</span>
+                            </div>
+                            <h5 class="story-title">تجربتي في تعليم الكبار</h5>
+                            <p class="story-excerpt">كيف ساعدت في تعليم الكبار القراءة والكتابة في مجتمعي المحلي</p>
+                            <div class="story-author">
+                                <img src="images/man1.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>أحمد محمد</h6>
+                                    <small>متطوع منذ 2021</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 89</span>
+                               
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-6 col-xl-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <img src="images/4dd0f026e751148098e7004eae353068.jpg" class="img-fluid" alt="قصة تطوعية">
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">تعليم</span>
+                                <span class="story-date">منذ أسبوع</span>
+                            </div>
+                            <h5 class="story-title">تجربتي في تعليم الكبار</h5>
+                            <p class="story-excerpt">كيف ساعدت في تعليم الكبار القراءة والكتابة في مجتمعي المحلي</p>
+                            <div class="story-author">
+                                <img src="images/man1.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>أحمد محمد</h6>
+                                    <small>متطوع منذ 2021</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 89</span>
+                               
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-6 col-xl-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                    <div class="story-card h-100">
+                        <div class="story-media">
+                            <img src="images/4dd0f026e751148098e7004eae353068.jpg" class="img-fluid" alt="قصة تطوعية">
+                            <div class="media-overlay">
+                                <div class="media-type">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="story-content">
+                            <div class="story-meta">
+                                <span class="badge badge-custom">تعليم</span>
+                                <span class="story-date">منذ أسبوع</span>
+                            </div>
+                            <h5 class="story-title">تجربتي في تعليم الكبار</h5>
+                            <p class="story-excerpt">كيف ساعدت في تعليم الكبار القراءة والكتابة في مجتمعي المحلي</p>
+                            <div class="story-author">
+                                <img src="images/man1.jpg" class="author-avatar" alt="المؤلف">
+                                <div class="author-info">
+                                    <h6>أحمد محمد</h6>
+                                    <small>متطوع منذ 2021</small>
+                                </div>
+                            </div>
+                            <div class="story-stats">
+                                <span><i class="fas fa-heart text-danger"></i> 89</span>
+                               
+                            </div>
+                            <button class="btn btn-outline-primary w-100 mt-2" onclick="event.stopPropagation(); window.location.href='story.html';">عرض التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         
+
+            <!-- Load More Button -->
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                <button class="btn btn-primary-custom" onclick="loadMoreStories()">
+                    <i class="fas fa-plus me-2"></i>تحميل المزيد
+                </button>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5>منصة التطوع السعودية</h5>
+                    <p>منصة وطنية تهدف إلى ربط المتطوعين مع المبادرات والمنصات الداعمة للتطوع في المملكة العربية السعودية، لنشر ثقافة العمل التطوعي وتعزيز المشاركة المجتمعية.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>روابط سريعة</h5>
+                    <div class="footer-links">
+                        <a href="index.html">الرئيسية</a>
+                        <a href="index.html#volunteers">المتطوعون</a>
+                        <a href="initiatives.html">المبادرات</a>
+                        <a href="platforms.html">المنصات الداعمة</a>
+                        <a href="community.html">مجتمع التطوع</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>المجالات التطوعية</h5>
+                    <div class="footer-links">
+                        <a href="initiatives.html">التعليم</a>
+                        <a href="initiatives.html">الصحة</a>
+                        <a href="initiatives.html">البيئة</a>
+                        <a href="initiatives.html">الإغاثة</a>
+                        <a href="initiatives.html">التوعية</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>اتصل بنا</h5>
+                    <div class="footer-links">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> الرياض، المملكة العربية السعودية</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@volunteer-platform.sa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2025 منصة التطوع السعودية</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Toastify JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+   
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Story card navigation to detail page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Move author info into meta and remove date
+            document.querySelectorAll('.story-card').forEach(card => {
+                const meta = card.querySelector('.story-meta');
+                const author = card.querySelector('.story-author');
+                if (!meta || !author) return;
+
+                const dateEl = meta.querySelector('.story-date');
+                if (dateEl) dateEl.remove();
+
+                const avatar = author.querySelector('img');
+                const nameEl = author.querySelector('.author-info h6');
+                const compact = document.createElement('span');
+                compact.className = 'meta-author';
+                compact.innerHTML = `
+                    <img class="meta-avatar" src="${avatar ? avatar.getAttribute('src') : 'images/avater.jpg'}" alt="المؤلف" onerror="this.src='images/avater.jpg'">
+                    <span class="meta-name">${nameEl ? nameEl.textContent.trim() : 'متطوع'}</span>
+                `;
+                meta.appendChild(compact);
+
+                // Move likes beside author in meta
+                const stats = card.querySelector('.story-stats');
+                if (stats) {
+                    const metaStats = document.createElement('span');
+                    metaStats.className = 'meta-stats';
+                    metaStats.innerHTML = stats.innerHTML;
+                    // Make sure author added first, then stats
+                    meta.appendChild(compact); // add author
+                    meta.appendChild(metaStats); // add likes state after author
+                    stats.style.display = 'none';
+                } else {
+                    meta.appendChild(compact);
+                }
+                author.style.display = 'none';
+            });
+            document.querySelectorAll('.story-card, .featured-story-card').forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', (e) => {
+                    const isInteractive = e.target.closest('a, button, .gallery-actions, .share-actions');
+                    if (isInteractive) return;
+
+                    const titleEl = card.querySelector('.story-title, .card-title');
+                    const title = titleEl ? titleEl.textContent.trim() : 'قصة تطوعية';
+                    const authorEl = card.querySelector('.author-info h6, .d-flex.align-items-center h5');
+                    const author = authorEl ? authorEl.textContent.trim() : 'متطوع';
+                    const badgeEl = card.querySelector('.badge, .badge-custom');
+                    const category = badgeEl ? badgeEl.textContent.trim() : '';
+
+                    const mediaImg = card.querySelector('.story-media img');
+                    const mediaVideo = card.querySelector('.story-media video source');
+                    const mainMedia = mediaImg ? mediaImg.getAttribute('src') : (mediaVideo ? mediaVideo.getAttribute('src') : '');
+
+                    const params = new URLSearchParams();
+                    params.set('t', title);
+                    params.set('a', author);
+                    if (category) params.set('c', category);
+                    if (mainMedia) params.set('m', mainMedia);
+
+                    window.location.href = `story.html?${params.toString()}`;
+                });
+            });
+        });
+        
+        // Filter functionality
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const region = document.getElementById('regionFilter').value;
+            
+            // Get all media containers
+            const allMedia = document.getElementById('allMedia');
+            const imagesMedia = document.getElementById('imagesMedia');
+            const videosMedia = document.getElementById('videosMedia');
+            
+            // Filter function for each container
+            function filterMedia(container) {
+                if (!container) return;
+                
+                const items = container.querySelectorAll('[data-category], [data-type], [data-region]');
+                
+                items.forEach(item => {
+                    let show = true;
+                    
+                    // Check category filter
+                    if (category && item.getAttribute('data-category') !== category) {
+                        show = false;
+                    }
+                    
+                    // Check type filter
+                    if (type && item.getAttribute('data-type') !== type) {
+                        show = false;
+                    }
+                    
+                    // Check region filter
+                    if (region && item.getAttribute('data-region') !== region) {
+                        show = false;
+                    }
+                    
+                    // Show/hide item
+                    if (show) {
+                        item.style.display = 'block';
+                        item.classList.add('filtered-in');
+                        item.classList.remove('filtered-out');
+                    } else {
+                        item.style.display = 'none';
+                        item.classList.add('filtered-out');
+                        item.classList.remove('filtered-in');
+                    }
+                });
+            }
+            
+            // Apply filters to all containers
+            filterMedia(allMedia);
+            filterMedia(imagesMedia);
+            filterMedia(videosMedia);
+            
+            // Count visible items
+            const visibleItems = document.querySelectorAll('.filtered-in').length;
+            
+            // Show toast notification
+            Toastify({
+                text: `تم تطبيق المرشحات بنجاح! ${visibleItems} عنصر متاح`,
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #005EA6, #008ECC)",
+                stopOnFocus: true
+            }).showToast();
+        }
+        
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('regionFilter').value = '';
+            
+            // Show all items
+            const allItems = document.querySelectorAll('[data-category], [data-type], [data-region]');
+            allItems.forEach(item => {
+                item.style.display = 'block';
+                item.classList.remove('filtered-out', 'filtered-in');
+            });
+            
+            Toastify({
+                text: "تم مسح جميع المرشحات!",
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                stopOnFocus: true
+            }).showToast();
+        }
+        
+        // Load more stories
+        function loadMoreStories() {
+            Toastify({
+                text: "جاري تحميل المزيد من القصص...",
+                duration: 2000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #005EA6, #008ECC)",
+                stopOnFocus: true
+            }).showToast();
+        }
+
+        // Gallery functionality - Best Practice Implementation
+        class GalleryManager {
+            constructor() {
+                this.currentIndex = 0;
+                this.items = [];
+                this.modal = null;
+                this.isAnimating = false;
+                this.touchStartX = 0;
+                this.touchStartY = 0;
+                this.isSwipeStarted = false;
+            }
+
+            createGalleryControls(cardEl) {
+                const actions = document.createElement('div');
+                actions.className = 'gallery-actions';
+                actions.innerHTML = `
+                    <button type="button" class="gallery-btn" onclick="galleryManager.openGallery(this)">
+                        <i class="fas fa-images"></i>
+                        معرض
+                    </button>
+                `;
+
+                const content = cardEl.querySelector('.story-content');
+                if (!content) return;
+                
+                const stats = content.querySelector('.story-stats');
+                if (stats) {
+                    content.insertBefore(actions, stats);
+                } else {
+                    content.appendChild(actions);
+                }
+            }
+
+            openGallery(button) {
+                try {
+                    const cardEl = button.closest('.story-card, .featured-story-card');
+                    if (!cardEl) {
+                        this.showError('عنصر القصة غير موجود');
+                        return;
+                    }
+
+                    this.items = this.collectGalleryItems(cardEl);
+                    if (this.items.length === 0) {
+                        this.showError('لا توجد صور أو فيديوهات متاحة في المعرض');
+                        return;
+                    }
+
+                    this.currentIndex = 0;
+                    this.createModal();
+                    this.showModal();
+                } catch (error) {
+                    console.error('Error opening gallery:', error);
+                    this.showError('حدث خطأ في فتح المعرض');
+                }
+            }
+
+            collectGalleryItems(cardEl) {
+                const items = [];
+                const mediaEl = cardEl.querySelector('.story-media');
+                
+                if (!mediaEl) return items;
+
+                // Add main media
+                const mainImg = mediaEl.querySelector('img');
+                const mainVideo = mediaEl.querySelector('video');
+                
+                if (mainImg && mainImg.src) {
+                    items.push({
+                        type: 'image',
+                        src: mainImg.src,
+                        alt: mainImg.alt || 'صورة من المعرض',
+                        title: cardEl.querySelector('.story-title')?.textContent || ''
+                    });
+                }
+                
+                if (mainVideo) {
+                    const videoSrc = mainVideo.querySelector('source')?.src || mainVideo.src;
+                    if (videoSrc) {
+                        items.push({
+                            type: 'video',
+                            src: videoSrc,
+                            poster: mainVideo.poster || '',
+                            alt: 'فيديو من المعرض',
+                            title: cardEl.querySelector('.story-title')?.textContent || ''
+                        });
+                    }
+                }
+                
+                // Add related content based on story type
+                const storyTitle = cardEl.querySelector('.story-title')?.textContent || '';
+                const relatedItems = this.getRelatedContent(storyTitle);
+                items.push(...relatedItems);
+                
+                return items;
+            }
+
+            getRelatedContent(storyTitle) {
+                const relatedItems = [];
+                
+                if (storyTitle.includes('تعليم')) {
+                    relatedItems.push(
+                        { type: 'image', src: 'images/education.jpg', alt: 'صورة تعليمية', title: 'التعليم' },
+                        { type: 'image', src: 'images/4dd0f026e751148098e7004eae353068.jpg', alt: 'صورة تعليمية', title: 'التعليم' },
+                        { type: 'image', src: 'images/man1.jpg', alt: 'متطوع في التعليم', title: 'التعليم' },
+                        { type: 'image', src: 'images/woman4.jpg', alt: 'متطوعة في التعليم', title: 'التعليم' }
+                    );
+                } else if (storyTitle.includes('صحة')) {
+                    relatedItems.push(
+                        { type: 'image', src: 'images/health.jpg', alt: 'صورة صحية', title: 'الصحة' },
+                        { type: 'image', src: 'images/health2.jpg', alt: 'صورة صحية', title: 'الصحة' },
+                        { type: 'image', src: 'images/woman5.jpg', alt: 'متطوعة في الصحة', title: 'الصحة' },
+                        { type: 'image', src: 'images/fe5f8099c3041cec30afe8ed0d2df5e3.jpg', alt: 'صورة صحية', title: 'الصحة' }
+                    );
+                } else if (storyTitle.includes('بيئة')) {
+                    relatedItems.push(
+                        { type: 'image', src: 'images/736cb88a471f0ac9354ace1886ebab18.jpg', alt: 'صورة بيئية', title: 'البيئة' },
+                        { type: 'image', src: 'images/eartg.jpg', alt: 'صورة بيئية', title: 'البيئة' },
+                        { type: 'image', src: 'images/man2.jpg', alt: 'متطوع في البيئة', title: 'البيئة' },
+                        { type: 'image', src: 'images/slid2.jpg', alt: 'صورة بيئية', title: 'البيئة' }
+                    );
+                } else {
+                    // Default gallery items using available images
+                    relatedItems.push(
+                        { type: 'image', src: 'images/woman.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/woman3.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/wowan2.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater2.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater3.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater4.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater5.jpg', alt: 'صورة من المعرض', title: 'معرض' },
+                        { type: 'image', src: 'images/avater6.jpg', alt: 'صورة من المعرض', title: 'معرض' }
+                    );
+                }
+                
+                return relatedItems;
+            }
+        }
+
+        // Create global gallery manager instance
+        const galleryManager = new GalleryManager();
+
+        // Add methods to GalleryManager class
+        Object.assign(GalleryManager.prototype, {
+            createModal() {
+                if (this.modal) {
+                    this.modal.remove();
+                }
+
+                this.modal = document.createElement('div');
+                this.modal.id = 'galleryModal';
+                this.modal.className = 'gallery-modal';
+                this.modal.innerHTML = `
+                    <div class="gallery-content">
+                        <button class="gallery-close" onclick="galleryManager.closeModal()" title="إغلاق المعرض">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button class="gallery-nav gallery-prev" onclick="galleryManager.previousSlide()" title="السابق">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="gallery-nav gallery-next" onclick="galleryManager.nextSlide()" title="التالي">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="gallery-slides"></div>
+                        <div class="gallery-thumbnails"></div>
+                        <div class="gallery-counter"></div>
+                    </div>
+                `;
+                
+                document.body.appendChild(this.modal);
+                this.setupEventListeners();
+            },
+
+            showModal() {
+                if (!this.modal) return;
+                
+                this.populateSlides();
+                this.modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                this.updateDisplay();
+            },
+
+            populateSlides() {
+                const slidesContainer = this.modal.querySelector('.gallery-slides');
+                const thumbnailsContainer = this.modal.querySelector('.gallery-thumbnails');
+                
+                slidesContainer.innerHTML = '';
+                thumbnailsContainer.innerHTML = '';
+                
+                this.items.forEach((item, index) => {
+                    // Create slide
+                    const slide = document.createElement('div');
+                    slide.className = `gallery-slide ${index === this.currentIndex ? 'active' : ''}`;
+                    
+                    if (item.type === 'image') {
+                        slide.innerHTML = `
+                            <img src="${item.src}" 
+                                 alt="${item.alt}" 
+                                 onerror="this.src='images/avater.jpg'"
+                                 loading="lazy">
+                        `;
+                    } else {
+                        slide.innerHTML = `
+                            <video controls poster="${item.poster || ''}">
+                                <source src="${item.src}" type="video/mp4">
+                                متصفحك لا يدعم تشغيل الفيديو
+                            </video>
+                        `;
+                    }
+                    
+                    slidesContainer.appendChild(slide);
+                    
+                    // Create thumbnail
+                    const thumb = document.createElement('div');
+                    thumb.className = `gallery-thumb ${index === this.currentIndex ? 'active' : ''}`;
+                    thumb.onclick = () => this.goToSlide(index);
+                    
+                    if (item.type === 'image') {
+                        thumb.innerHTML = `
+                            <img src="${item.src}" 
+                                 alt="${item.alt}" 
+                                 onerror="this.src='images/avater.jpg'">
+                        `;
+                    } else {
+                        thumb.innerHTML = `
+                            <img src="${item.poster || 'images/avater.jpg'}" 
+                                 alt="${item.alt}">
+                        `;
+                    }
+                    
+                    thumbnailsContainer.appendChild(thumb);
+                });
+            },
+
+            setupEventListeners() {
+                if (!this.modal) return;
+
+                // Touch events
+                this.modal.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
+                this.modal.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+                this.modal.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false });
+
+                // Mouse events
+                this.modal.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+                this.modal.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.modal.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+
+                // Click outside to close
+                this.modal.addEventListener('click', (e) => {
+                    if (e.target === this.modal) {
+                        this.closeModal();
+                    }
+                });
+
+                // Keyboard events
+                document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+            },
+
+            handleTouchStart(e) {
+                if (!this.modal.classList.contains('show')) return;
+                
+                this.touchStartX = e.touches[0].clientX;
+                this.touchStartY = e.touches[0].clientY;
+                this.isSwipeStarted = true;
+            },
+
+            handleTouchMove(e) {
+                if (!this.isSwipeStarted) return;
+                e.preventDefault();
+            },
+
+            handleTouchEnd(e) {
+                if (!this.isSwipeStarted || !this.modal.classList.contains('show')) return;
+                
+                const endX = e.changedTouches[0].clientX;
+                const endY = e.changedTouches[0].clientY;
+                const diffX = this.touchStartX - endX;
+                const diffY = this.touchStartY - endY;
+                
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
+                    e.preventDefault();
+                    if (diffX > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.previousSlide();
+                    }
+                }
+                
+                this.isSwipeStarted = false;
+            },
+
+            handleMouseDown(e) {
+                if (!this.modal.classList.contains('show')) return;
+                
+                this.isMouseDown = true;
+                this.mouseStartX = e.clientX;
+                e.preventDefault();
+            },
+
+            handleMouseMove(e) {
+                if (!this.isMouseDown) return;
+                e.preventDefault();
+            },
+
+            handleMouseUp(e) {
+                if (!this.isMouseDown || !this.modal.classList.contains('show')) return;
+                
+                const mouseEndX = e.clientX;
+                const diffX = this.mouseStartX - mouseEndX;
+                
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.previousSlide();
+                    }
+                }
+                
+                this.isMouseDown = false;
+            },
+
+            handleKeyDown(e) {
+                if (!this.modal || !this.modal.classList.contains('show')) return;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        this.nextSlide();
+                        break;
+                    case 'ArrowRight':
+                        this.previousSlide();
+                        break;
+                    case 'Escape':
+                        this.closeModal();
+                        break;
+                }
+            },
+
+            nextSlide() {
+                if (this.isAnimating) return;
+                
+                this.currentIndex = (this.currentIndex + 1) % this.items.length;
+                this.updateDisplay();
+            },
+
+            previousSlide() {
+                if (this.isAnimating) return;
+                
+                this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
+                this.updateDisplay();
+            },
+
+            goToSlide(index) {
+                if (this.isAnimating || index === this.currentIndex) return;
+                
+                this.currentIndex = index;
+                this.updateDisplay();
+            },
+
+            updateDisplay() {
+                const slides = this.modal.querySelectorAll('.gallery-slide');
+                const thumbs = this.modal.querySelectorAll('.gallery-thumb');
+                const counter = this.modal.querySelector('.gallery-counter');
+                
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === this.currentIndex);
+                });
+                
+                thumbs.forEach((thumb, index) => {
+                    thumb.classList.toggle('active', index === this.currentIndex);
+                });
+                
+                if (counter) {
+                    counter.textContent = `${this.currentIndex + 1} / ${this.items.length}`;
+                }
+            },
+
+            closeModal() {
+                if (!this.modal) return;
+                
+                try {
+                    // Remove show class to trigger close animation
+                    this.modal.classList.remove('show');
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = 'auto';
+                    
+                    // Clean up event listeners
+                    this.cleanupEventListeners();
+                    
+                    // Remove modal from DOM after animation
+                    setTimeout(() => {
+                        if (this.modal && this.modal.parentNode) {
+                            this.modal.parentNode.removeChild(this.modal);
+                        }
+                        this.modal = null;
+                        this.items = [];
+                        this.currentIndex = 0;
+                    }, 300);
+                    
+                } catch (error) {
+                    console.error('Error closing gallery:', error);
+                    // Force cleanup if there's an error
+                    if (this.modal && this.modal.parentNode) {
+                        this.modal.parentNode.removeChild(this.modal);
+                    }
+                    this.modal = null;
+                    document.body.style.overflow = 'auto';
+                }
+            },
+
+            cleanupEventListeners() {
+                if (!this.modal) return;
+                
+                // Remove keyboard listener
+                document.removeEventListener('keydown', this.handleKeyDown);
+                
+                // Remove modal event listeners
+                this.modal.removeEventListener('touchstart', this.handleTouchStart);
+                this.modal.removeEventListener('touchmove', this.handleTouchMove);
+                this.modal.removeEventListener('touchend', this.handleTouchEnd);
+                this.modal.removeEventListener('mousedown', this.handleMouseDown);
+                this.modal.removeEventListener('mousemove', this.handleMouseMove);
+                this.modal.removeEventListener('mouseup', this.handleMouseUp);
+                this.modal.removeEventListener('click', this.handleClick);
+            },
+
+            showError(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'left',
+                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                    stopOnFocus: true
+                }).showToast();
+            }
+        });
+
+        // Initialize gallery controls when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Regular story cards
+            document.querySelectorAll('.story-card').forEach(card => {
+                galleryManager.createGalleryControls(card);
+            });
+            
+            // Featured story
+            const featured = document.querySelector('.featured-story-card');
+            if (featured) {
+                galleryManager.createGalleryControls(featured);
+            }
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Scroll to top button
+        const scrollTop = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+        
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    const offsetTop = target.offsetTop - 80;
+                    
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

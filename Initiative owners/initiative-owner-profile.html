@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - أصحاب المبادرات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        :root {
+            --color-dark-navy: #001F4D;
+            --color-deep-blue: #003B73;
+            --color-blue: #005EA6;
+            --color-sky-blue: #008ECC;
+            --color-light-sky: #33BFE6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--color-dark-navy);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-right: 3px solid var(--color-light-sky);
+        }
+        
+        .sidebar-menu i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-dark-navy);
+            margin: 0;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, var(--color-dark-navy) 0%, var(--color-blue) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin: 0 auto 15px;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .profile-body {
+            padding: 30px;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--color-light-sky);
+            box-shadow: 0 0 0 0.2rem rgba(51, 191, 230, 0.25);
+        }
+        
+        .btn-save {
+            background: var(--color-blue);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-save:hover {
+            background: var(--color-deep-blue);
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .sidebar-menu i {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-info {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-lightbulb me-2"></i> صاحب المبادرة</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="initiative-owner-dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+            </li>
+            <li>
+                <a href="initiative-owner-profile.html" class="active">
+                    <i class="fas fa-user"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+            </li>
+            <li>
+                <a href="initiative-owner-initiatives.html">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>إدارة المبادرات</span>
+                </a>
+            </li>
+            <li>
+                <a href="../index.html">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>تسجيل الخروج</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1>الملف الشخصي</h1>
+            <div class="admin-info">
+                <div class="admin-avatar">س</div>
+                <span>سالم العتيبي</span>
+            </div>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">س</div>
+                <h3>سالم العتيبي</h3>
+                <p>صاحب مبادرة - جمعية البر الخيرية</p>
+            </div>
+            <div class="profile-body">
+                <form id="profileForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="fullName" class="form-label">الاسم الكامل</label>
+                            <input type="text" class="form-control" id="fullName" value="سالم العتيبي" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="organization" class="form-label">اسم الجهة</label>
+                            <input type="text" class="form-control" id="organization" value="جمعية البر الخيرية" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="email" value="salem@example.com" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">رقم الجوال</label>
+                            <input type="tel" class="form-control" id="phone" value="+9661234567" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="field" class="form-label">المجال التطوعي</label>
+                            <select class="form-select" id="field" required>
+                                <option value="education" selected>التعليم</option>
+                                <option value="health">الصحة</option>
+                                <option value="environment">البيئة</option>
+                                <option value="relief">الإغاثة</option>
+                                <option value="cultural">الثقافي</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="region" class="form-label">المنطقة</label>
+                            <select class="form-select" id="region" required>
+                                <option value="riyadh" selected>الرياض</option>
+                                <option value="jeddah">جدة</option>
+                                <option value="dammam">الدمام</option>
+                                <option value="makkah">مكة المكرمة</option>
+                                <option value="medina">المدينة المنورة</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">حالة الحظر</label>
+                            <div>
+                                <span class="badge bg-success">نشط</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">تاريخ الإنشاء</label>
+                            <div>
+                                <span class="text-muted">2025-03-12</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="bio" class="form-label">نبذة عن الجهة</label>
+                        <textarea class="form-control" id="bio" rows="4">جمعية البر الخيرية هي منظمة غير ربحية تهدف إلى تقديم خدمات تعليمية للمجتمع المحلي في المناطق النائية. نحن نؤمن بأهمية التعليم في بناء المجتمعات وتطوير الأفراد.</textarea>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-save">حفظ التغييرات</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            Toastify({
+                text: "تم تحديث الملف الشخصي بنجاح",
+                duration: 3000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #218838)",
+                stopOnFocus: true
+            }).showToast();
+        });
+    </script>
+</body>
+</html>

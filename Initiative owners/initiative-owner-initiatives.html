@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المبادرات - أصحاب المبادرات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        :root {
+            --color-dark-navy: #001F4D;
+            --color-deep-blue: #003B73;
+            --color-blue: #005EA6;
+            --color-sky-blue: #008ECC;
+            --color-light-sky: #33BFE6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--color-dark-navy);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-right: 3px solid var(--color-light-sky);
+        }
+        
+        .sidebar-menu i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-dark-navy);
+            margin: 0;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* Search and Filter */
+        .search-filter {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-header {
+            background: var(--color-dark-navy);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Initiative Image */
+        .initiative-img {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        /* Action Buttons */
+        .action-btn {
+            border: none;
+            background: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .action-btn.view {
+            color: var(--color-blue);
+        }
+        
+        .action-btn.edit {
+            color: var(--color-light-sky);
+        }
+        
+        .action-btn.delete {
+            color: #dc3545;
+        }
+        
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Modal Styles */
+        .modal-dialog-scrollable {
+            max-height: 90vh;
+        }
+        
+        .modal-dialog-scrollable .modal-content {
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-dialog-scrollable .modal-body {
+            max-height: calc(90vh - 120px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .modal-body {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .detail-row {
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        
+        .detail-row:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .detail-row.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--color-dark-navy);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .detail-value {
+            color: #495057;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+        }
+        
+        .detail-image {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .keywords-badge {
+            display: inline-block;
+            margin: 3px;
+            padding: 5px 10px;
+            background: #CCF3FB;
+            color: var(--color-blue);
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        /* Edit Form Styles */
+        .edit-row {
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        
+        .edit-row:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .edit-row.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .edit-row .form-label {
+            font-weight: 600;
+            color: var(--color-dark-navy);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .edit-row .form-control,
+        .edit-row .form-select {
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            font-size: 0.95rem;
+        }
+        
+        .edit-row .form-control:focus,
+        .edit-row .form-select:focus {
+            border-color: var(--color-blue);
+            box-shadow: 0 0 0 0.2rem rgba(0, 94, 166, 0.25);
+        }
+        
+        .modal-header {
+            background: var(--color-dark-navy);
+            color: white;
+        }
+        
+        .modal-header .btn-close,
+        button.btn-close.btn-close-white {
+            filter: invert(1);
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .detail-row.full-width,
+            .edit-row.full-width {
+                grid-column: 1;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .sidebar-menu i {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-info {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-lightbulb me-2"></i> صاحب المبادرة</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="initiative-owner-dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+            </li>
+            <li>
+                <a href="initiative-owner-profile.html">
+                    <i class="fas fa-user"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+            </li>
+            <li>
+                <a href="initiative-owner-initiatives.html" class="active">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>إدارة المبادرات</span>
+                </a>
+            </li>
+            <li>
+                <a href="../index.html">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>تسجيل الخروج</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1>إدارة المبادرات</h1>
+            <div class="admin-info">
+                <div class="admin-avatar">س</div>
+                <span>سالم العتيبي</span>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="ابحث في المبادرات...">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="">جميع الحالات</option>
+                        <option value="active">نشط</option>
+                        <option value="upcoming">قادم</option>
+                        <option value="completed">منتهي</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100">بحث</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Initiative Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>قائمة المبادرات</h4>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addInitiativeModal">
+                <i class="fas fa-plus me-1"></i> إضافة مبادرة جديدة
+            </button>
+        </div>
+
+        <!-- Initiatives Table -->
+        <div class="data-table">
+            <div class="table-header">
+                <h3>المبادرات المنشأة</h3>
+               
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>صورة الغلاف</th>
+                            <th>اسم المبادرة</th>
+                            <th>الفئة المستهدفة</th>
+                            <th>الحالة</th>
+                            <th>تاريخ البداية</th>
+                            <th>تاريخ النهاية</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="../images/education.jpg" class="initiative-img" alt="صورة المبادرة"></td>
+                            <td>تعليم الأجيال</td>
+                            <td>الأطفال والشباب</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>2025-01-15</td>
+                            <td>2025-04-30</td>
+                            <td>
+                                <button class="action-btn view" title="عرض" data-bs-toggle="modal" data-bs-target="#detailModal" onclick="showInitiativeDetails({
+                                    name: 'تعليم الأجيال',
+                                    description: 'مبادرة تعليمية تهدف إلى تطوير مهارات الأطفال والشباب في مجالات متنوعة من خلال برامج تعليمية وورش عمل تفاعلية',
+                                    targetCategory: 'الأطفال والشباب',
+                                    status: 'نشط',
+                                    startDate: '2025-01-15',
+                                    endDate: '2025-04-30',
+                                    registrationLink: 'https://example.com/register/education',
+                                    coverImage: '../images/education.jpg',
+                                    creationDate: '2025-01-01',
+                                    keywords: ['تعليم', 'أطفال', 'شباب', 'تنمية مهارات']
+                                })"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل" data-bs-toggle="modal" data-bs-target="#editModal" onclick="showEditInitiative({
+                                    id: 'INV-001',
+                                    name: 'تعليم الأجيال',
+                                    description: 'مبادرة تعليمية تهدف إلى تطوير مهارات الأطفال والشباب في مجالات متنوعة من خلال برامج تعليمية وورش عمل تفاعلية',
+                                    targetCategory: 'الأطفال والشباب',
+                                    status: 'نشط',
+                                    startDate: '2025-01-15',
+                                    endDate: '2025-04-30',
+                                    registrationLink: 'https://example.com/register/education',
+                                    coverImage: '../images/fe5f8099c3041cec30afe8ed0d2df5e3.jpg',
+                                    creationDate: '2025-01-01',
+                                    keywords: ['تعليم', 'أطفال', 'شباب', 'تنمية مهارات']
+                                })"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../images/eartg.jpg" class="initiative-img" alt="صورة المبادرة"></td>
+                            <td>بيئتنا مسؤوليتنا</td>
+                            <td>عام</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>2025-02-01</td>
+                            <td>2025-03-31</td>
+                            <td>
+                                <button class="action-btn view" title="عرض" data-bs-toggle="modal" data-bs-target="#detailModal" onclick="showInitiativeDetails({
+                                    name: 'بيئتنا مسؤوليتنا',
+                                    description: 'مبادرة بيئية تهدف إلى زيادة الوعي البيئي والحفاظ على البيئة من خلال أنشطة تنظيف وحملات توعوية',
+                                    targetCategory: 'عام',
+                                    status: 'نشط',
+                                    startDate: '2025-02-01',
+                                    endDate: '2025-03-31',
+                                    registrationLink: 'https://example.com/register/environment',
+                                    coverImage: '../images/eartg.jpg',
+                                    creationDate: '2025-01-15',
+                                    keywords: ['بيئة', 'حماية', 'توعية', 'نظافة']
+                                })"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل" data-bs-toggle="modal" data-bs-target="#editModal" onclick="showEditInitiative({
+                                    id: 'INV-002',
+                                    name: 'بيئتنا مسؤوليتنا',
+                                    description: 'مبادرة بيئية تهدف إلى زيادة الوعي البيئي والحفاظ على البيئة من خلال أنشطة تنظيف وحملات توعوية',
+                                    targetCategory: 'عام',
+                                    status: 'نشط',
+                                    startDate: '2025-02-01',
+                                    endDate: '2025-03-31',
+                                    registrationLink: 'https://example.com/register/environment',
+                                    coverImage: '../images/eartg.jpg',
+                                    creationDate: '2025-01-15',
+                                    keywords: ['بيئة', 'حماية', 'توعية', 'نظافة']
+                                })"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../images/health.jpg" class="initiative-img" alt="صورة المبادرة"></td>
+                            <td>صحتك تهمنا</td>
+                            <td>كبار السن</td>
+                            <td><span class="badge bg-warning">منتهي</span></td>
+                            <td>2025-01-10</td>
+                            <td>2025-02-28</td>
+                            <td>
+                                <button class="action-btn view" title="عرض" data-bs-toggle="modal" data-bs-target="#detailModal" onclick="showInitiativeDetails({
+                                    name: 'صحتك تهمنا',
+                                    description: 'مبادرة صحية تهدف إلى نشر الوعي الصحي وإجراء فحوصات صحية مجانية للمجتمع',
+                                    targetCategory: 'كبار السن',
+                                    status: 'منتهي',
+                                    startDate: '2025-01-10',
+                                    endDate: '2025-02-28',
+                                    registrationLink: 'https://example.com/register/health',
+                                    coverImage: '../images/health.jpg',
+                                    creationDate: '2025-01-05',
+                                    keywords: ['صحة', 'فحوصات', 'وعي صحي', 'مجتمع']
+                                })"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل" data-bs-toggle="modal" data-bs-target="#editModal" onclick="showEditInitiative({
+                                    id: 'INV-003',
+                                    name: 'صحتك تهمنا',
+                                    description: 'مبادرة صحية تهدف إلى نشر الوعي الصحي وإجراء فحوصات صحية مجانية للمجتمع',
+                                    targetCategory: 'كبار السن',
+                                    status: 'منتهي',
+                                    startDate: '2025-01-10',
+                                    endDate: '2025-02-28',
+                                    registrationLink: 'https://example.com/register/health',
+                                    coverImage: '../images/health.jpg',
+                                    creationDate: '2025-01-05',
+                                    keywords: ['صحة', 'فحوصات', 'وعي صحي', 'مجتمع']
+                                })"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+       
+    </div>
+
+    <!-- Add Initiative Modal -->
+    <div class="modal fade" id="addInitiativeModal" tabindex="-1" aria-labelledby="addInitiativeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addInitiativeModalLabel">إضافة مبادرة جديدة</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addInitiativeForm">
+                    <div class="modal-body">
+                        <div class="edit-row">
+                            <label for="add-name" class="form-label">اسم المبادرة <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add-name" required>
+                        </div>
+                        <div class="edit-row">
+                            <label for="add-targetCategory" class="form-label">الفئة المستهدفة <span class="text-danger">*</span></label>
+                            <select class="form-select" id="add-targetCategory" required>
+                                <option value="">اختر الفئة</option>
+                                <option value="الأطفال والشباب">الأطفال والشباب</option>
+                                <option value="كبار السن">كبار السن</option>
+                                <option value="النساء">النساء</option>
+                                <option value="عام">عام</option>
+                            </select>
+                        </div>
+                        <div class="edit-row">
+                            <label for="add-status" class="form-label">الحالة <span class="text-danger">*</span></label>
+                            <select class="form-select" id="add-status" required>
+                                <option value="">اختر الحالة</option>
+                                <option value="نشط">نشط</option>
+                                <option value="منتهي">منتهي</option>
+                                <option value="قيد المراجعة">قيد المراجعة</option>
+                            </select>
+                        </div>
+                        <div class="edit-row">
+                            <label for="add-startDate" class="form-label">تاريخ البداية <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="add-startDate" required>
+                        </div>
+                        <div class="edit-row">
+                            <label for="add-endDate" class="form-label">تاريخ النهاية <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="add-endDate" required>
+                        </div>
+                        <div class="edit-row">
+                            <label for="add-creationDate" class="form-label">تاريخ الإنشاء</label>
+                            <input type="date" class="form-control" id="add-creationDate" value="" readonly>
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="add-description" class="form-label">وصف المبادرة <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="add-description" rows="4" required></textarea>
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="add-registrationLink" class="form-label">رابط التسجيل</label>
+                            <input type="url" class="form-control" id="add-registrationLink" placeholder="https://example.com">
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="add-coverImage" class="form-label">صورة الغلاف</label>
+                            <input type="file" class="form-control" id="add-coverImage" accept="image/*">
+                            <small class="text-muted">يمكنك رفع صورة بحد أقصى 5MB</small>
+                            <div id="add-imagePreview" class="mt-2"></div>
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="add-keywords" class="form-label">الكلمات المفتاحية</label>
+                            <input type="text" class="form-control" id="add-keywords" placeholder="أدخل الكلمات مفصولة بفواصل">
+                            <small class="text-muted">مثال: تعليم، أطفال، شباب</small>
+                            <div id="add-keywordsTags" class="mt-2"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                        <button type="submit" class="btn btn-primary">إضافة المبادرة</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModalLabel">تفاصيل المبادرة</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-row">
+                        <div class="detail-label">اسم المبادرة</div>
+                        <div class="detail-value" id="detail-name">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">الفئة المستهدفة</div>
+                        <div class="detail-value" id="detail-targetCategory">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">الحالة</div>
+                        <div class="detail-value" id="detail-status">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">تاريخ الإنشاء</div>
+                        <div class="detail-value" id="detail-creationDate">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">تاريخ البداية</div>
+                        <div class="detail-value" id="detail-startDate">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">تاريخ النهاية</div>
+                        <div class="detail-value" id="detail-endDate">-</div>
+                    </div>
+                    <div class="detail-row full-width">
+                        <div class="detail-label">وصف المبادرة</div>
+                        <div class="detail-value" id="detail-description">-</div>
+                    </div>
+                    <div class="detail-row full-width">
+                        <div class="detail-label">رابط التسجيل</div>
+                        <div class="detail-value">
+                            <a href="#" id="detail-registrationLink" target="_blank" style="color: var(--color-blue); word-break: break-all;">-</a>
+                        </div>
+                    </div>
+                    <div class="detail-row full-width">
+                        <div class="detail-label">صورة الغلاف</div>
+                        <div class="detail-value">
+                            <img src="" id="detail-coverImage" class="detail-image" alt="صورة الغلاف" style="max-height: 200px; display: none;">
+                        </div>
+                    </div>
+                    <div class="detail-row full-width">
+                        <div class="detail-label">الكلمات المفتاحية</div>
+                        <div class="detail-value" id="detail-keywords">-</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">تعديل المبادرة</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editInitiativeForm">
+                    <div class="modal-body">
+                        <div class="edit-row">
+                            <label for="edit-name" class="form-label">اسم المبادرة <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edit-name" required>
+                        </div>
+                        <div class="edit-row">
+                            <label for="edit-targetCategory" class="form-label">الفئة المستهدفة <span class="text-danger">*</span></label>
+                            <select class="form-select" id="edit-targetCategory" required>
+                                <option value="">اختر الفئة</option>
+                                <option value="الأطفال والشباب">الأطفال والشباب</option>
+                                <option value="كبار السن">كبار السن</option>
+                                <option value="النساء">النساء</option>
+                                <option value="عام">عام</option>
+                            </select>
+                        </div>
+                        <div class="edit-row">
+                            <label for="edit-status" class="form-label">الحالة <span class="text-danger">*</span></label>
+                            <select class="form-select" id="edit-status" required>
+                                <option value="">اختر الحالة</option>
+                                <option value="نشط">نشط</option>
+                                <option value="منتهي">منتهي</option>
+                                <option value="قيد المراجعة">قيد المراجعة</option>
+                            </select>
+                        </div>
+                        <div class="edit-row">
+                            <label for="edit-startDate" class="form-label">تاريخ البداية <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="edit-startDate" required>
+                        </div>
+                        <div class="edit-row">
+                            <label for="edit-endDate" class="form-label">تاريخ النهاية <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="edit-endDate" required>
+                        </div>
+                        <div class="edit-row">
+                            <label for="edit-creationDate" class="form-label">تاريخ الإنشاء</label>
+                            <input type="date" class="form-control" id="edit-creationDate" readonly>
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="edit-description" class="form-label">وصف المبادرة <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="edit-description" rows="4" required></textarea>
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="edit-registrationLink" class="form-label">رابط التسجيل</label>
+                            <input type="url" class="form-control" id="edit-registrationLink" placeholder="https://example.com">
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="edit-coverImage" class="form-label">صورة الغلاف</label>
+                            <input type="file" class="form-control" id="edit-coverImage" accept="image/*">
+                            <small class="text-muted">يمكنك رفع صورة بحد أقصى 5MB. اتركه فارغاً للاحتفاظ بالصورة الحالية.</small>
+                            <div id="edit-imagePreview" class="mt-2"></div>
+                            <button type="button" class="btn btn-sm btn-outline-danger mt-2" id="edit-removeImage" style="display: none;" onclick="removeEditImage()">إزالة الصورة</button>
+                        </div>
+                        <div class="edit-row full-width">
+                            <label for="edit-keywords" class="form-label">الكلمات المفتاحية</label>
+                            <input type="text" class="form-control" id="edit-keywords" placeholder="أدخل الكلمات مفصولة بفواصل">
+                            <small class="text-muted">مثال: تعليم، أطفال، شباب</small>
+                            <div id="edit-keywordsTags" class="mt-2"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        function showInitiativeDetails(data) {
+            document.getElementById('detail-name').textContent = data.name || '-';
+            document.getElementById('detail-description').textContent = data.description || '-';
+            document.getElementById('detail-targetCategory').textContent = data.targetCategory || '-';
+            
+            // Status with badge
+            const statusEl = document.getElementById('detail-status');
+            statusEl.innerHTML = '';
+            if (data.status) {
+                const badgeClass = data.status === 'نشط' ? 'bg-success' : 'bg-warning';
+                statusEl.innerHTML = `<span class="badge ${badgeClass}">${data.status}</span>`;
+            } else {
+                statusEl.textContent = '-';
+            }
+            
+            document.getElementById('detail-startDate').textContent = data.startDate || '-';
+            document.getElementById('detail-endDate').textContent = data.endDate || '-';
+            
+            // Registration link
+            const linkEl = document.getElementById('detail-registrationLink');
+            if (data.registrationLink) {
+                linkEl.href = data.registrationLink;
+                linkEl.textContent = data.registrationLink;
+            } else {
+                linkEl.href = '#';
+                linkEl.textContent = '-';
+            }
+            
+            // Cover image
+            const imgEl = document.getElementById('detail-coverImage');
+            if (data.coverImage) {
+                imgEl.src = data.coverImage;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+            
+            document.getElementById('detail-creationDate').textContent = data.creationDate || '-';
+            
+            // Keywords
+            const keywordsEl = document.getElementById('detail-keywords');
+            keywordsEl.innerHTML = '';
+            if (data.keywords && data.keywords.length > 0) {
+                data.keywords.forEach(keyword => {
+                    const badge = document.createElement('span');
+                    badge.className = 'keywords-badge';
+                    badge.textContent = keyword;
+                    keywordsEl.appendChild(badge);
+                });
+            } else {
+                keywordsEl.textContent = '-';
+            }
+        }
+
+        function showEditInitiative(data) {
+            document.getElementById('edit-name').value = data.name || '';
+            document.getElementById('edit-description').value = data.description || '';
+            document.getElementById('edit-targetCategory').value = data.targetCategory || '';
+            document.getElementById('edit-status').value = data.status || '';
+            document.getElementById('edit-startDate').value = data.startDate || '';
+            document.getElementById('edit-endDate').value = data.endDate || '';
+            document.getElementById('edit-registrationLink').value = data.registrationLink || '';
+            document.getElementById('edit-coverImage').value = data.coverImage || '';
+            
+            // Set creation date if available (readonly)
+            const creationDateInput = document.getElementById('edit-creationDate');
+            if (creationDateInput && data.creationDate) {
+                creationDateInput.value = data.creationDate;
+            }
+            
+            // Show existing image preview if available
+            const imagePreview = document.getElementById('edit-imagePreview');
+            const removeBtn = document.getElementById('edit-removeImage');
+            if (data.coverImage) {
+                imagePreview.innerHTML = `<img src="${data.coverImage}" class="detail-image" alt="معاينة الصورة الحالية" style="max-height: 200px; margin-top: 10px;">`;
+                if (removeBtn) removeBtn.style.display = 'inline-block';
+            } else {
+                imagePreview.innerHTML = '';
+                if (removeBtn) removeBtn.style.display = 'none';
+            }
+            
+            // Clear file input
+            document.getElementById('edit-coverImage').value = '';
+            
+            // Handle keywords
+            const keywordsInput = document.getElementById('edit-keywords');
+            const keywordsTags = document.getElementById('edit-keywordsTags');
+            if (data.keywords && data.keywords.length > 0) {
+                keywordsInput.value = data.keywords.join('، ');
+                updateKeywordsTags(data.keywords);
+            } else {
+                keywordsInput.value = '';
+                keywordsTags.innerHTML = '';
+            }
+            
+            // Store the initiative ID for form submission
+            document.getElementById('editInitiativeForm').dataset.initiativeId = data.id || '';
+        }
+
+        function updateKeywordsTags(keywordsArray) {
+            const keywordsTags = document.getElementById('edit-keywordsTags');
+            keywordsTags.innerHTML = '';
+            keywordsArray.forEach(keyword => {
+                const badge = document.createElement('span');
+                badge.className = 'keywords-badge';
+                badge.textContent = keyword;
+                keywordsTags.appendChild(badge);
+            });
+        }
+
+        // Handle keywords input
+        document.addEventListener('DOMContentLoaded', function() {
+            const keywordsInput = document.getElementById('edit-keywords');
+            if (keywordsInput) {
+                keywordsInput.addEventListener('input', function(e) {
+                    const value = e.target.value.trim();
+                    if (value) {
+                        const keywords = value.split(/[,،]/).map(k => k.trim()).filter(k => k);
+                        updateKeywordsTags(keywords);
+                    } else {
+                        document.getElementById('edit-keywordsTags').innerHTML = '';
+                    }
+                });
+            }
+
+            // Handle cover image preview
+            const coverImageInput = document.getElementById('edit-coverImage');
+            if (coverImageInput) {
+                coverImageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    const imagePreview = document.getElementById('edit-imagePreview');
+                    const removeBtn = document.getElementById('edit-removeImage');
+                    
+                    if (file) {
+                        // Check file size (5MB max)
+                        if (file.size > 5 * 1024 * 1024) {
+                            alert('حجم الصورة كبير جداً. الحد الأقصى 5MB');
+                            e.target.value = '';
+                            imagePreview.innerHTML = '';
+                            if (removeBtn) removeBtn.style.display = 'none';
+                            return;
+                        }
+                        
+                        // Check file type
+                        if (!file.type.startsWith('image/')) {
+                            alert('الرجاء اختيار ملف صورة صحيح');
+                            e.target.value = '';
+                            imagePreview.innerHTML = '';
+                            if (removeBtn) removeBtn.style.display = 'none';
+                            return;
+                        }
+                        
+                        // Show preview
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.innerHTML = `
+                                <img src="${e.target.result}" class="detail-image" alt="معاينة الصورة" style="max-height: 200px; margin-top: 10px;">
+                            `;
+                            if (removeBtn) removeBtn.style.display = 'inline-block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        // If no file selected, keep existing preview if available
+                        const existingPreview = imagePreview.querySelector('img');
+                        if (!existingPreview) {
+                            imagePreview.innerHTML = '';
+                            if (removeBtn) removeBtn.style.display = 'none';
+                        }
+                    }
+                });
+            }
+            
+            // Function to remove image
+            window.removeEditImage = function() {
+                document.getElementById('edit-coverImage').value = '';
+                document.getElementById('edit-imagePreview').innerHTML = '';
+                document.getElementById('edit-removeImage').style.display = 'none';
+            };
+
+            // Handle form submission
+            const editForm = document.getElementById('editInitiativeForm');
+            if (editForm) {
+                editForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = {
+                        id: editForm.dataset.initiativeId,
+                        name: document.getElementById('edit-name').value,
+                        description: document.getElementById('edit-description').value,
+                        targetCategory: document.getElementById('edit-targetCategory').value,
+                        status: document.getElementById('edit-status').value,
+                        startDate: document.getElementById('edit-startDate').value,
+                        endDate: document.getElementById('edit-endDate').value,
+                        registrationLink: document.getElementById('edit-registrationLink').value,
+                        coverImage: document.getElementById('edit-coverImage').files[0] || null,
+                        existingImageUrl: document.getElementById('edit-imagePreview').querySelector('img')?.src || null,
+                        keywords: document.getElementById('edit-keywords').value.split(/[,،]/).map(k => k.trim()).filter(k => k)
+                    };
+
+                    console.log('Form data:', formData);
+                    
+                    if (typeof Toastify !== 'undefined') {
+                        Toastify({
+                            text: "تم حفظ التغييرات بنجاح!",
+                            duration: 3000,
+                            gravity: "top",
+                            position: "left",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    }
+                    
+                    // Close modal
+                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+                    if (editModal) {
+                        editModal.hide();
+                    }
+                    
+                    // Refresh the page or update the table
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
+                });
+            }
+
+            // Add event listeners to action buttons
+            document.querySelectorAll('.action-btn.delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const initiativeName = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                    
+                    if(confirm(`هل أنت متأكد من حذف المبادرة "${initiativeName}"؟`)) {
+                        Toastify({
+                            text: `تم حذف المبادرة "${initiativeName}" بنجاح`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: 'left',
+                            backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                            stopOnFocus: true
+                        }).showToast();
+                    }
+                });
+            });
+        });
+
+        // Handle add form keywords input
+        const addKeywordsInput = document.getElementById('add-keywords');
+        if (addKeywordsInput) {
+            addKeywordsInput.addEventListener('input', function(e) {
+                const value = e.target.value.trim();
+                if (value) {
+                    const keywords = value.split(/[,،]/).map(k => k.trim()).filter(k => k);
+                    updateAddKeywordsTags(keywords);
+                } else {
+                    document.getElementById('add-keywordsTags').innerHTML = '';
+                }
+            });
+        }
+
+        function updateAddKeywordsTags(keywordsArray) {
+            const keywordsTags = document.getElementById('add-keywordsTags');
+            keywordsTags.innerHTML = '';
+            keywordsArray.forEach(keyword => {
+                const badge = document.createElement('span');
+                badge.className = 'keywords-badge';
+                badge.textContent = keyword;
+                keywordsTags.appendChild(badge);
+            });
+        }
+
+        // Handle add form cover image preview
+        const addCoverImageInput = document.getElementById('add-coverImage');
+        if (addCoverImageInput) {
+            addCoverImageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                const imagePreview = document.getElementById('add-imagePreview');
+                
+                if (file) {
+                    // Check file size (5MB max)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('حجم الصورة كبير جداً. الحد الأقصى 5MB');
+                        e.target.value = '';
+                        imagePreview.innerHTML = '';
+                        return;
+                    }
+                    
+                    // Check file type
+                    if (!file.type.startsWith('image/')) {
+                        alert('الرجاء اختيار ملف صورة صحيح');
+                        e.target.value = '';
+                        imagePreview.innerHTML = '';
+                        return;
+                    }
+                    
+                    // Show preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.innerHTML = `
+                            <img src="${e.target.result}" class="detail-image" alt="معاينة الصورة" style="max-height: 200px; margin-top: 10px;">
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.innerHTML = '';
+                }
+            });
+        }
+
+        // Set creation date to today when modal opens
+        document.getElementById('addInitiativeModal')?.addEventListener('show.bs.modal', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('add-creationDate').value = today;
+        });
+
+        // Handle add form submission
+        const addForm = document.getElementById('addInitiativeForm');
+        if (addForm) {
+            addForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const initiativeName = document.getElementById('add-name').value;
+                
+                // Get form data
+                const formData = {
+                    name: initiativeName,
+                    description: document.getElementById('add-description').value,
+                    targetCategory: document.getElementById('add-targetCategory').value,
+                    status: document.getElementById('add-status').value,
+                    startDate: document.getElementById('add-startDate').value,
+                    endDate: document.getElementById('add-endDate').value,
+                    registrationLink: document.getElementById('add-registrationLink').value,
+                    coverImage: document.getElementById('add-coverImage').files[0] || null,
+                    creationDate: document.getElementById('add-creationDate').value,
+                    keywords: document.getElementById('add-keywords').value.split(/[,،]/).map(k => k.trim()).filter(k => k)
+                };
+
+                console.log('Add form data:', formData);
+                
+                if (typeof Toastify !== 'undefined') {
+                    Toastify({
+                        text: `تم إضافة المبادرة "${initiativeName}" بنجاح`,
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #28a745, #218838)",
+                        stopOnFocus: true
+                    }).showToast();
+                }
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addInitiativeModal'));
+                if (modal) {
+                    modal.hide();
+                }
+                
+                // Reset form
+                addForm.reset();
+                document.getElementById('add-imagePreview').innerHTML = '';
+                document.getElementById('add-keywordsTags').innerHTML = '';
+                
+                // Refresh the page or update the table
+                setTimeout(function() {
+                    location.reload();
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>

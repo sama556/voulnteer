@@ -112,6 +112,7 @@
         .form-check-label {
             cursor: pointer;
             font-weight: 500;
+            font-size: 14px;
             width: 100%;
         }
         
@@ -230,11 +231,17 @@
                             <form id="loginForm" novalidate>
                                 <div class="form-group">
                                     <label class="form-label">نوع الحساب</label>
-                                    <div class="d-flex gap-3">
+                                    <div class="d-flex flex-wrap gap-3">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="userType" id="volunteerType" value="volunteer" checked>
                                             <label class="form-check-label" for="volunteerType">
                                                 <i class="fas fa-user me-2"></i>متطوع
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="userType" id="ownerType" value="owner">
+                                            <label class="form-check-label" for="ownerType">
+                                                <i class="fas fa-lightbulb me-2"></i>صاحب مبادرة
                                             </label>
                                         </div>
                                         <div class="form-check">
@@ -365,8 +372,11 @@
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const userType = document.querySelector('input[name="userType"]:checked')?.value || 'volunteer';
+            
             if (userType === 'admin') {
                 window.location.href = 'admin/admin-dashboard.html';
+            } else if (userType === 'owner') {
+                window.location.href = 'Initiative owners/initiative-owner-dashboard.html';
             } else {
                 window.location.href = 'index.html';
             }

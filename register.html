@@ -113,6 +113,26 @@
             text-decoration: underline;
         }
         
+        .form-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .loading-spinner {
             display: none;
             width: 20px;
@@ -237,8 +257,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h1 class="display-4 fw-bold mb-4">انضم إلينا كمتطوع</h1>
-                    <p class="lead mb-4">سجل بياناتك لتصبح جزءاً من مجتمع التطوع السعودي</p>
+                    <h1 class="display-4 fw-bold mb-4" id="heroTitle">انضم إلينا</h1>
+                    <p class="lead mb-4" id="heroSubtitle">سجل بياناتك لتصبح جزءاً من مجتمع التطوع السعودي</p>
                 </div>
             </div>
         </div>
@@ -251,12 +271,32 @@
                 <div class="col-lg-8">
                     <div class="register-container" data-aos="fade-up" data-aos-duration="1000">
                         <div class="register-header">
-                            <h2 class="mb-0">تسجيل متطوع جديد</h2>
-                            <p class="mb-0">املأ البيانات التالية لإنشاء حسابك</p>
+                            <h2 class="mb-0" id="formTitle">تسجيل متطوع جديد</h2>
+                            <p class="mb-0" id="formSubtitle">املأ البيانات التالية لإنشاء حسابك</p>
                         </div>
                         
                         <div class="register-form">
                             <form id="registerForm" enctype="multipart/form-data">
+                                <div class="form-group mb-4">
+                                    <label class="form-label">نوع الحساب *</label>
+                                    <div class="d-flex flex-wrap gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="accountType" id="volunteerAccount" value="volunteer" checked onchange="switchAccountType('volunteer')">
+                                            <label class="form-check-label" for="volunteerAccount">
+                                                <i class="fas fa-user me-2"></i>متطوع
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="accountType" id="ownerAccount" value="owner" onchange="switchAccountType('owner')">
+                                            <label class="form-check-label" for="ownerAccount">
+                                                <i class="fas fa-lightbulb me-2"></i>صاحب مبادرة
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Volunteer Form Section -->
+                                <div class="form-section active" id="volunteerSection">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -385,10 +425,108 @@
                                     </div>
                                 </div>
                                 
-                              
+                                </div>
+                                
+                                <!-- Owner Form Section -->
+                                <div class="form-section" id="ownerSection">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">الاسم الكامل *</label>
+                                                <input type="text" class="form-control" id="ownerFullName" name="ownerFullName" placeholder="أدخل اسمك الكامل" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">اسم الجهة *</label>
+                                                <input type="text" class="form-control" id="organizationName" name="organizationName" placeholder="أدخل اسم الجهة" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">البريد الإلكتروني *</label>
+                                                <input type="email" class="form-control" id="ownerEmail" name="ownerEmail" placeholder="أدخل البريد الإلكتروني" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">رقم الجوال *</label>
+                                                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="05XXXXXXXX" pattern="^05\d{8}$" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">المجال التطوعي *</label>
+                                                <select class="form-select" id="volunteerField" name="volunteerField" required>
+                                                    <option value="">اختر المجال التطوعي</option>
+                                                    <option value="التعليم">التعليم</option>
+                                                    <option value="الصحة">الصحة</option>
+                                                    <option value="البيئة">البيئة</option>
+                                                    <option value="الإغاثة">الإغاثة</option>
+                                                    <option value="التوعية">التوعية</option>
+                                                    <option value="الرياضة">الرياضة</option>
+                                                    <option value="الثقافة">الثقافة</option>
+                                                    <option value="التقنية">التقنية</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">المنطقة *</label>
+                                                <select class="form-select" id="ownerRegion" name="ownerRegion" required>
+                                                    <option value="">اختر المنطقة</option>
+                                                    <option value="الرياض">الرياض</option>
+                                                    <option value="مكة المكرمة">مكة المكرمة</option>
+                                                    <option value="المدينة المنورة">المدينة المنورة</option>
+                                                    <option value="القصيم">القصيم</option>
+                                                    <option value="الشرقية">الشرقية</option>
+                                                    <option value="عسير">عسير</option>
+                                                    <option value="تبوك">تبوك</option>
+                                                    <option value="حائل">حائل</option>
+                                                    <option value="الحدود الشمالية">الحدود الشمالية</option>
+                                                    <option value="جازان">جازان</option>
+                                                    <option value="نجران">نجران</option>
+                                                    <option value="الباحة">الباحة</option>
+                                                    <option value="الجوف">الجوف</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">كلمة المرور *</label>
+                                                <div class="position-relative">
+                                                    <input type="password" class="form-control" id="ownerPassword" name="ownerPassword" placeholder="أدخل كلمة المرور" required>
+                                                    <button type="button" class="btn btn-link position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%); padding: 0; color: #6c757d;" onclick="togglePassword('ownerPassword')">
+                                                        <i class="fas fa-eye" id="ownerPasswordToggle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">تأكيد كلمة المرور *</label>
+                                                <div class="position-relative">
+                                                    <input type="password" class="form-control" id="ownerConfirmPassword" name="ownerConfirmPassword" placeholder="أعد إدخال كلمة المرور" required>
+                                                    <button type="button" class="btn btn-link position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%); padding: 0; color: #6c757d;" onclick="togglePassword('ownerConfirmPassword')">
+                                                        <i class="fas fa-eye" id="ownerConfirmPasswordToggle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <button type="submit" class="btn btn-register" id="registerBtn">
-                                    <span class="btn-text">
+                                    <span class="btn-text" id="btnText">
                                         <i class="fas fa-user-plus me-2"></i>إنشاء حساب متطوع
                                     </span>
                                     <div class="loading-spinner"></div>
@@ -466,19 +604,88 @@
             offset: 100
         });
 
+        // Initialize account type on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkedType = document.querySelector('input[name="accountType"]:checked')?.value || 'volunteer';
+            switchAccountType(checkedType);
+        });
+
+        // Switch account type
+        function switchAccountType(type) {
+            const volunteerSection = document.getElementById('volunteerSection');
+            const ownerSection = document.getElementById('ownerSection');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            const formTitle = document.getElementById('formTitle');
+            const formSubtitle = document.getElementById('formSubtitle');
+            const btnText = document.getElementById('btnText');
+            
+            // Remove required attributes from both sections first
+            const volunteerFields = volunteerSection.querySelectorAll('[required]');
+            const ownerFields = ownerSection.querySelectorAll('[required]');
+            
+            if (type === 'volunteer') {
+                // Hide owner section and show volunteer section
+                ownerSection.classList.remove('active');
+                volunteerSection.classList.add('active');
+                
+                // Update titles
+                heroTitle.textContent = 'انضم إلينا كمتطوع';
+                heroSubtitle.textContent = 'سجل بياناتك لتصبح جزءاً من مجتمع التطوع السعودي';
+                formTitle.textContent = 'تسجيل متطوع جديد';
+                formSubtitle.textContent = 'املأ البيانات التالية لإنشاء حسابك';
+                btnText.innerHTML = '<i class="fas fa-user-plus me-2"></i>إنشاء حساب متطوع';
+                
+                // Make volunteer fields required
+                volunteerFields.forEach(field => {
+                    field.removeAttribute('required');
+                    field.setAttribute('required', 'required');
+                });
+                
+                // Remove required from owner fields
+                ownerFields.forEach(field => {
+                    field.removeAttribute('required');
+                });
+            } else {
+                // Hide volunteer section and show owner section
+                volunteerSection.classList.remove('active');
+                ownerSection.classList.add('active');
+                
+                // Update titles
+                heroTitle.textContent = 'انضم كصاحب مبادرة';
+                heroSubtitle.textContent = 'سجل بياناتك لإنشاء مبادراتك التطوعية';
+                formTitle.textContent = 'تسجيل صاحب مبادرة جديد';
+                formSubtitle.textContent = 'املأ البيانات التالية لإنشاء حسابك';
+                btnText.innerHTML = '<i class="fas fa-lightbulb me-2"></i>إنشاء حساب صاحب مبادرة';
+                
+                // Make owner fields required
+                ownerFields.forEach(field => {
+                    field.removeAttribute('required');
+                    field.setAttribute('required', 'required');
+                });
+                
+                // Remove required from volunteer fields
+                volunteerFields.forEach(field => {
+                    field.removeAttribute('required');
+                });
+            }
+        }
+
         // Toggle password visibility
         function togglePassword(fieldId) {
             const passwordInput = document.getElementById(fieldId);
             const toggleIcon = document.getElementById(fieldId + 'Toggle');
             
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
+            if (passwordInput && toggleIcon) {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleIcon.classList.remove('fa-eye');
+                    toggleIcon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    toggleIcon.classList.remove('fa-eye-slash');
+                    toggleIcon.classList.add('fa-eye');
+                }
             }
         }
 
@@ -512,66 +719,143 @@
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const accountType = document.querySelector('input[name="accountType"]:checked')?.value || 'volunteer';
             const registerBtn = document.getElementById('registerBtn');
             const btnText = registerBtn.querySelector('.btn-text');
             const spinner = registerBtn.querySelector('.loading-spinner');
             
-            // Validate passwords match
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                Toastify({
-                    text: "كلمة المرور وتأكيد كلمة المرور غير متطابقتين",
-                    duration: 3000,
-                    gravity: "top",
-                    position: 'left',
-                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
-                    stopOnFocus: true
-                }).showToast();
-                return;
-            }
-            
-            // Validate interests selection
-            const selectedInterests = document.querySelectorAll('input[name="interests"]:checked');
-            if (selectedInterests.length === 0) {
-                Toastify({
-                    text: "يرجى اختيار مجال واحد على الأقل من الاهتمامات",
-                    duration: 3000,
-                    gravity: "top",
-                    position: 'left',
-                    backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
-                    stopOnFocus: true
-                }).showToast();
-                return;
-            }
-            
-            // Show loading state
-            registerBtn.disabled = true;
-            btnText.style.display = 'none';
-            spinner.style.display = 'inline-block';
-            
-            // Simulate API call
-            setTimeout(() => {
-                Toastify({
-                    text: "تم إنشاء حساب المتطوع بنجاح!",
-                    duration: 3000,
-                    gravity: "top",
-                    position: 'left',
-                    backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
-                    stopOnFocus: true
-                }).showToast();
+            if (accountType === 'volunteer') {
+                // Validate passwords match
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
                 
-                // Redirect to login page
+                if (password !== confirmPassword) {
+                    Toastify({
+                        text: "كلمة المرور وتأكيد كلمة المرور غير متطابقتين",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                    return;
+                }
+                
+                // Validate interests selection
+                const selectedInterests = document.querySelectorAll('input[name="interests"]:checked');
+                if (selectedInterests.length === 0) {
+                    Toastify({
+                        text: "يرجى اختيار مجال واحد على الأقل من الاهتمامات",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                    return;
+                }
+                
+                // Show loading state
+                registerBtn.disabled = true;
+                btnText.style.display = 'none';
+                spinner.style.display = 'inline-block';
+                
+                // Simulate API call
                 setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 1500);
+                    Toastify({
+                        text: "تم إنشاء حساب المتطوع بنجاح!",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                        stopOnFocus: true
+                    }).showToast();
+                    
+                    // Redirect to login page
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                    
+                    // Reset button state
+                    registerBtn.disabled = false;
+                    btnText.style.display = 'inline';
+                    spinner.style.display = 'none';
+                }, 2000);
+            } else if (accountType === 'owner') {
+                // Validate owner form
+                const ownerFullName = document.getElementById('ownerFullName').value;
+                const organizationName = document.getElementById('organizationName').value;
+                const ownerEmail = document.getElementById('ownerEmail').value;
+                const phoneNumber = document.getElementById('phoneNumber').value;
+                const volunteerField = document.getElementById('volunteerField').value;
+                const ownerRegion = document.getElementById('ownerRegion').value;
+                const ownerPassword = document.getElementById('ownerPassword').value;
+                const ownerConfirmPassword = document.getElementById('ownerConfirmPassword').value;
                 
-                // Reset button state
-                registerBtn.disabled = false;
-                btnText.style.display = 'inline';
-                spinner.style.display = 'none';
-            }, 2000);
+                if (!ownerFullName || !organizationName || !ownerEmail || !phoneNumber || !volunteerField || !ownerRegion || !ownerPassword || !ownerConfirmPassword) {
+                    Toastify({
+                        text: "يرجى ملء جميع الحقول المطلوبة",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                    return;
+                }
+                
+                if (ownerPassword !== ownerConfirmPassword) {
+                    Toastify({
+                        text: "كلمة المرور وتأكيد كلمة المرور غير متطابقتين",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                    return;
+                }
+                
+                // Validate phone number format
+                if (!/^05\d{8}$/.test(phoneNumber)) {
+                    Toastify({
+                        text: "يرجى إدخال رقم جوال صحيح (05XXXXXXXX)",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                    return;
+                }
+                
+                // Show loading state
+                registerBtn.disabled = true;
+                btnText.style.display = 'none';
+                spinner.style.display = 'inline-block';
+                
+                // Simulate API call
+                setTimeout(() => {
+                    Toastify({
+                        text: "تم إنشاء حساب صاحب المبادرة بنجاح!",
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #28a745, #20c997)",
+                        stopOnFocus: true
+                    }).showToast();
+                    
+                    // Redirect to login page
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                    
+                    // Reset button state
+                    registerBtn.disabled = false;
+                    btnText.style.display = 'inline';
+                    spinner.style.display = 'none';
+                }, 2000);
+            }
         });
 
         // Drag and drop functionality for image upload
