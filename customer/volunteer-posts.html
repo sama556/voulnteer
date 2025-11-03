@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المنشورات - المتطوع</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        :root {
+            --color-dark-navy: #001F4D;
+            --color-deep-blue: #003B73;
+            --color-blue: #005EA6;
+            --color-sky-blue: #008ECC;
+            --color-light-sky: #33BFE6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--color-dark-navy);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-right: 3px solid var(--color-light-sky);
+        }
+        
+        .sidebar-menu i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .admin-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-dark-navy);
+            margin: 0;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-light-sky);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* Search and Filter */
+        .search-filter {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-header {
+            background: var(--color-dark-navy);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Media Preview */
+        .media-preview {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .media-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+            border: 1px solid #dee2e6;
+        }
+        
+        /* Action Buttons */
+        .action-btn {
+            border: none;
+            background: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .action-btn.view {
+            color: var(--color-blue);
+        }
+        
+        .action-btn.edit {
+            color: var(--color-light-sky);
+        }
+        
+        .action-btn.delete {
+            color: #dc3545;
+        }
+        
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Modal Styles */
+        .modal-header {
+            background: var(--color-dark-navy);
+            color: white;
+        }
+        
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+        
+        /* File Upload Preview */
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        /* Detail styles (aligned with initiatives page) */
+        .detail-row {
+            padding: 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: var(--color-dark-navy);
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        .detail-value {
+            color: #495057;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+        }
+        .keywords-badge {
+            display: inline-block;
+            margin: 3px 0 0 6px;
+            padding: 5px 10px;
+            background: #CCF3FB;
+            color: var(--color-blue);
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        /* Grid container for modals */
+        .grid-body {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .grid-body .full-width {
+            grid-column: 1 / -1;
+        }
+        @media (max-width: 768px) {
+            .grid-body {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .preview-item img, .preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .sidebar-menu i {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-info {
+                margin-top: 10px;
+            }
+        }
+        button.btn-close {
+    margin: 0 !important;
+}
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-hands-helping me-2"></i> المتطوع</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="volunteer-dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+            </li>
+            <li>
+                <a href="volunteer-profile.html">
+                    <i class="fas fa-user"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+            </li>
+            <li>
+                <a href="volunteer-posts.html" class="active">
+                    <i class="fas fa-file-alt"></i>
+                    <span>إدارة المنشورات</span>
+                </a>
+            </li>
+            <li>
+                <a href="../login.html">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>تسجيل الخروج</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- View Post Modal -->
+    <div class="modal fade" id="viewPostModal" tabindex="-1" aria-labelledby="viewPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewPostModalLabel">عرض المنشور</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body grid-body">
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">عنوان القصة</div>
+                        <div class="detail-value" id="viewPostTitle">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">الحالة</div>
+                        <div class="detail-value" id="viewStatus">-</div>
+                    </div>
+                    <div class="detail-row full-width">
+                        <div class="detail-label">نص القصة</div>
+                        <div class="detail-value" id="viewPostContent">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">تاريخ النشر</div>
+                        <div class="detail-value" id="viewPublishDate">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">تاريخ التحديث</div>
+                        <div class="detail-value" id="viewUpdateDate">-</div>
+                    </div>
+                    
+                    <div class="detail-row full-width">
+                        <div class="detail-label">الكلمات المفتاحية</div>
+                        <div class="detail-value" id="viewKeywordsContainer">-</div>
+                    </div>
+                    <div class="detail-row full-width">
+                        <div class="detail-label">الصور والفيديوهات</div>
+                        <div class="file-preview" id="viewMediaPreview"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPostModalLabel">تعديل المنشور</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPostForm">
+                        <input type="hidden" id="editRowIndex">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label for="editPostTitle" class="form-label">عنوان القصة</label>
+                                <input type="text" class="form-control" id="editPostTitle" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editStatus" class="form-label">الحالة</label>
+                                <select class="form-select" id="editStatus">
+                                    <option value="نشط">نشط</option>
+                                    <option value="قيد المراجعة">قيد المراجعة</option>
+                                    <option value="مرفوض">مرفوض</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 full-width">
+                            <label for="editPostContent" class="form-label">نص القصة</label>
+                            <textarea class="form-control" id="editPostContent" rows="5" required></textarea>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="editPublishDate" class="form-label">تاريخ النشر</label>
+                                <input type="date" class="form-control" id="editPublishDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editUpdateDate" class="form-label">تاريخ التحديث</label>
+                                <input type="date" class="form-control" id="editUpdateDate" required>
+                            </div>
+                        </div>
+                       
+                        <div class="mb-3 mt-3">
+                            <label for="editKeywords" class="form-label">الكلمات المفتاحية</label>
+                            <input type="text" class="form-control" id="editKeywords" placeholder="أدخل الكلمات المفتاحية مفصولة بفاصلة">
+                        </div>
+                        <div class="mb-3 full-width">
+                            <label for="editMediaFiles" class="form-label">الصور والفيديوهات</label>
+                            <input type="file" class="form-control" id="editMediaFiles" multiple accept="image/*,video/*">
+                            <div class="form-text">يمكنك إضافة أكثر من صورة أو فيديو للمنشور الواحد</div>
+                            <div class="file-preview" id="editMediaPreview"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">حفظ التعديلات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1>إدارة المنشورات</h1>
+            <div class="admin-info">
+                <div class="admin-avatar"><img src="../images/man2.jpg" alt="صورة المستخدم"></div>
+
+                <span>أحمد محمد</span>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="ابحث في المنشورات...">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="">جميع الحالات</option>
+                        <option value="active">نشط</option>
+                        <option value="pending">قيد المراجعة</option>
+                        <option value="rejected">مرفوض</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100">بحث</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Post Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>قائمة المنشورات</h4>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPostModal">
+                <i class="fas fa-plus me-1"></i> إضافة منشور جديد
+            </button>
+        </div>
+
+        <!-- Posts Table -->
+        <div class="data-table">
+            <div class="table-header">
+                <h3>المنشورات المنشأة</h3>
+                <span>إجمالي المنشورات: 12</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>عنوان القصة</th>
+                            <th>تاريخ النشر</th>
+                            <th>تاريخ التحديث</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-id="#P001" data-content="شاركت في مبادرة &quot;تعليم الأجيال&quot; وكانت تجربة رائعة. استطعت مساعدة أكثر من 50 طفل في تحسين مستواهم التعليمي..." data-keywords="تعليم، أطفال، تطوع">
+                            <td>تجربتي في تعليم الأطفال</td>
+                            <td>2025-10-05</td>
+                            <td>2025-10-05</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                                <div class="media-preview d-none">
+                                    <img src="../images/man1.jpg" class="media-item" alt="صورة">
+                                    <img src="../images/woman4.jpg" class="media-item" alt="صورة">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="#P002" data-content="من خلال مشاركتي في المبادرات الصحية، استطعت تقديم المساعدة لأكثر من 200 شخص في الفحوصات الطبية المجانية..." data-keywords="صحة، توعية، فحوصات">
+                            <td>رحلة العطاء في المجال الصحي</td>
+                            <td>2025-10-04</td>
+                            <td>2025-10-04</td>
+                            <td><span class="badge bg-success">نشط</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                                <div class="media-preview d-none">
+                                    <img src="../images/health2.jpg" class="media-item" alt="صورة">
+                                    <img src="../images/education.jpg" class="media-item" alt="صورة">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-id="#P003" data-content="شاركت في حملة تنظيف الشواطئ وكان يومًا مليئًا بالإنجاز. جمعنا أكثر من 100 كيلو من النفايات..." data-keywords="بيئة، نظافة، تشجير">
+                            <td>يوم في حياة متطوع بيئي</td>
+                            <td>2025-09-28</td>
+                            <td>2025-09-29</td>
+                            <td><span class="badge bg-warning">قيد المراجعة</span></td>
+                            <td>
+                                <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="تعديل"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                                <div class="media-preview d-none">
+                                    <img src="../images/eartg.jpg" class="media-item" alt="صورة">
+                                    <img src="../images/education.jpg" class="media-item" alt="صورة">
+                                    <img src="../images/health.jpg" class="media-item" alt="صورة">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        
+    </div>
+
+    <!-- Add Post Modal -->
+    <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPostModalLabel">إضافة منشور جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addPostForm">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label for="postTitle" class="form-label">عنوان القصة</label>
+                                <input type="text" class="form-control" id="postTitle" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="addStatus" class="form-label">الحالة</label>
+                                <select class="form-select" id="addStatus">
+                                    <option value="نشط">نشط</option>
+                                    <option value="قيد المراجعة">قيد المراجعة</option>
+                                    <option value="مرفوض">مرفوض</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postContent" class="form-label">نص القصة</label>
+                            <textarea class="form-control" id="postContent" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="keywords" class="form-label">الكلمات المفتاحية</label>
+                            <input type="text" class="form-control" id="keywords" placeholder="أدخل الكلمات المفتاحية مفصولة بفاصلة">
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="addPublishDate" class="form-label">تاريخ النشر</label>
+                                <input type="date" class="form-control" id="addPublishDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addUpdateDate" class="form-label">تاريخ التحديث</label>
+                                <input type="date" class="form-control" id="addUpdateDate" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mediaFiles" class="form-label">الصور والفيديوهات</label>
+                            <input type="file" class="form-control" id="mediaFiles" multiple accept="image/*,video/*">
+                            <div class="form-text">يمكنك إضافة أكثر من صورة أو فيديو للمنشور الواحد</div>
+                            <div class="file-preview" id="mediaPreview"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addPost()">نشر المنشور</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        // Handle media file preview
+        document.getElementById('mediaFiles').addEventListener('change', function(e) {
+            const preview = document.getElementById('mediaPreview');
+            preview.innerHTML = '';
+            
+            for (let file of e.target.files) {
+                const reader = new FileReader();
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                
+                if (file.type.startsWith('image/')) {
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        previewItem.appendChild(img);
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.onclick = function() {
+                            previewItem.remove();
+                        };
+                        previewItem.appendChild(removeBtn);
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file.type.startsWith('video/')) {
+                    reader.onload = function(e) {
+                        const video = document.createElement('video');
+                        video.src = e.target.result;
+                        video.controls = true;
+                        previewItem.appendChild(video);
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.onclick = function() {
+                            previewItem.remove();
+                        };
+                        previewItem.appendChild(removeBtn);
+                    };
+                    reader.readAsDataURL(file);
+                }
+                
+                preview.appendChild(previewItem);
+            }
+        });
+
+        // Add event listeners to action buttons
+        document.querySelectorAll('.action-btn.delete').forEach(button => {
+            button.addEventListener('click', function() {
+                const postTitle = this.closest('tr').querySelector('td:nth-child(1)').textContent;
+                
+                if(confirm(`هل أنت متأكد من حذف المنشور "${postTitle}"؟`)) {
+                    Toastify({
+                        text: `تم حذف المنشور "${postTitle}" بنجاح`,
+                        duration: 3000,
+                        gravity: "top",
+                        position: 'left',
+                        backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                        stopOnFocus: true
+                    }).showToast();
+                }
+            });
+        });
+
+        // Add new post
+        function addPost() {
+            const postTitle = document.getElementById('postTitle').value.trim();
+            const postContent = document.getElementById('postContent').value.trim();
+            const keywords = document.getElementById('keywords').value.trim();
+            const status = document.getElementById('addStatus').value;
+            const publishDate = document.getElementById('addPublishDate').value;
+            const updateDate = document.getElementById('addUpdateDate').value;
+            const filesInput = document.getElementById('mediaFiles');
+            const previewContainer = document.getElementById('mediaPreview');
+
+            if (!postTitle) {
+                alert('يرجى إدخال عنوان القصة');
+                return;
+            }
+            
+            Toastify({
+                text: `تم إضافة المنشور "${postTitle}" بنجاح`,
+                duration: 3000,
+                gravity: "top",
+                position: 'left',
+                backgroundColor: "linear-gradient(to right, #28a745, #218838)",
+                stopOnFocus: true
+            }).showToast();
+            
+            // Build hidden media HTML (sanitized from preview)
+            let mediaHTML = '';
+            if (previewContainer) {
+                const items = Array.from(previewContainer.querySelectorAll('.preview-item'));
+                items.forEach(item => {
+                    const img = item.querySelector('img');
+                    const video = item.querySelector('video');
+                    if (img && img.src) {
+                        mediaHTML += `<img src="${img.src}" class="media-item" alt="صورة">`;
+                    } else if (video && video.src) {
+                        // keep as video with controls for viewing in modal if needed
+                        mediaHTML += `<video class="media-item" controls src="${video.src}"></video>`;
+                    }
+                });
+            }
+
+            // Determine status badge
+            let badgeClass = 'bg-secondary';
+            if (status === 'نشط') badgeClass = 'bg-success';
+            else if (status === 'قيد المراجعة') badgeClass = 'bg-warning';
+            else if (status === 'مرفوض') badgeClass = 'bg-danger';
+
+            // Append new row to table
+            const tbody = document.querySelector('.data-table tbody');
+            if (tbody) {
+                const tr = document.createElement('tr');
+                tr.setAttribute('data-content', postContent);
+                tr.setAttribute('data-keywords', keywords);
+                tr.innerHTML = `
+                    <td>${postTitle}</td>
+                    <td>${publishDate}</td>
+                    <td>${updateDate}</td>
+                    <td><span class="badge ${badgeClass}">${status}</span></td>
+                    <td>
+                        <button class="action-btn view" title="عرض"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit" title="تعديل"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" title="حذف"><i class="fas fa-trash"></i></button>
+                        <div class="media-preview d-none">${mediaHTML}</div>
+                    </td>
+                `;
+                tbody.prepend(tr);
+
+                // Attach handlers for the new row
+                const viewBtn = tr.querySelector('.action-btn.view');
+                const editBtn = tr.querySelector('.action-btn.edit');
+                const deleteBtn = tr.querySelector('.action-btn.delete');
+
+                if (viewBtn) {
+                    viewBtn.addEventListener('click', function() {
+                        const row = this.closest('tr');
+                        const title = row.querySelector('td:nth-child(1)')?.textContent?.trim() || '';
+                        const content = row.dataset.content || '';
+                        const mediaCell = row.querySelector('.media-preview');
+                        const keywords = row.dataset.keywords || '';
+                        const publishDate = row.querySelector('td:nth-child(2)')?.textContent?.trim() || '';
+                        const updateDate = row.querySelector('td:nth-child(3)')?.textContent?.trim() || '';
+                        const statusText = row.querySelector('td:nth-child(4) span')?.textContent?.trim() || '';
+
+                        document.getElementById('viewPostTitle').textContent = title || '-';
+                        document.getElementById('viewPostContent').textContent = content || '-';
+                        document.getElementById('viewPublishDate').textContent = publishDate || '-';
+                        document.getElementById('viewUpdateDate').textContent = updateDate || '-';
+
+                        const statusEl = document.getElementById('viewStatus');
+                        statusEl.innerHTML = '';
+                        if (statusText) {
+                            let badgeClass = 'bg-secondary';
+                            if (statusText === 'نشط') badgeClass = 'bg-success';
+                            else if (statusText === 'قيد المراجعة') badgeClass = 'bg-warning';
+                            else if (statusText === 'مرفوض') badgeClass = 'bg-danger';
+                            statusEl.innerHTML = `<span class="badge ${badgeClass}">${statusText}</span>`;
+                        } else {
+                            statusEl.textContent = '-';
+                        }
+
+                        const keywordsEl = document.getElementById('viewKeywordsContainer');
+                        keywordsEl.innerHTML = '';
+                        const parts = (keywords || '').split(/[,،]/).map(k => k.trim()).filter(k => k);
+                        if (parts.length) {
+                            parts.forEach(k => {
+                                const span = document.createElement('span');
+                                span.className = 'keywords-badge';
+                                span.textContent = k;
+                                keywordsEl.appendChild(span);
+                            });
+                        } else {
+                            keywordsEl.textContent = '-';
+                        }
+
+                        const viewPreview = document.getElementById('viewMediaPreview');
+                        viewPreview.innerHTML = '';
+                        if (mediaCell) viewPreview.innerHTML = mediaCell.innerHTML;
+
+                        const viewModal = new bootstrap.Modal(document.getElementById('viewPostModal'));
+                        viewModal.show();
+                    });
+                }
+
+                if (editBtn) {
+                    editBtn.addEventListener('click', function() {
+                        const row = this.closest('tr');
+                        currentEditRow = row;
+                        originalMediaHTML = row.querySelector('.media-preview')?.innerHTML || '';
+
+                        const title = row.querySelector('td:nth-child(1)')?.textContent?.trim() || '';
+                        const content = row.dataset.content || '';
+                        const keywords = row.dataset.keywords || '';
+                        const publishDate = row.querySelector('td:nth-child(2)')?.textContent?.trim() || getTodayAsInputValue();
+                        const updateDate = row.querySelector('td:nth-child(3)')?.textContent?.trim() || getTodayAsInputValue();
+                        const statusText = row.querySelector('td:nth-child(4) span')?.textContent?.trim() || 'نشط';
+
+                        document.getElementById('editPostTitle').value = title;
+                        document.getElementById('editPostContent').value = content;
+                        document.getElementById('editKeywords').value = keywords;
+                        document.getElementById('editPublishDate').value = formatDateToInput(publishDate);
+                        document.getElementById('editUpdateDate').value = formatDateToInput(updateDate);
+                        document.getElementById('editStatus').value = statusText;
+
+                        editMediaInput.value = '';
+                        editMediaPreview.innerHTML = originalMediaHTML;
+
+                        const modal = new bootstrap.Modal(document.getElementById('editPostModal'));
+                        modal.show();
+                    });
+                }
+
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', function() {
+                        const postTitle = this.closest('tr').querySelector('td:nth-child(1)').textContent;
+                        if(confirm(`هل أنت متأكد من حذف المنشور "${postTitle}"؟`)) {
+                            Toastify({
+                                text: `تم حذف المنشور "${postTitle}" بنجاح`,
+                                duration: 3000,
+                                gravity: "top",
+                                position: 'left',
+                                backgroundColor: "linear-gradient(to right, #dc3545, #c82333)",
+                                stopOnFocus: true
+                            }).showToast();
+                            this.closest('tr').remove();
+                        }
+                    });
+                }
+            }
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addPostModal'));
+            modal.hide();
+            
+            // Reset form
+            document.getElementById('addPostForm').reset();
+            document.getElementById('mediaPreview').innerHTML = '';
+
+            // Reset default 2025 dates after clearing
+            ensureAddModalDatesDefault2025();
+        }
+
+        // Helpers
+        function formatDateToInput(dateString) {
+            // Expects YYYY-MM-DD; if valid return as-is, else try to parse
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return dateString;
+            const d = new Date(dateString);
+            if (isNaN(d.getTime())) return '';
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+
+        function getTodayAsInputValue() {
+            const d = new Date();
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+
+        function ensureAddModalDatesDefault2025() {
+            const publish = document.getElementById('addPublishDate');
+            const update = document.getElementById('addUpdateDate');
+            const today = getTodayAsInputValue();
+            const year = new Date().getFullYear();
+            // If not 2025, fallback to 2025-01-01 defaults
+            if (year !== 2025) {
+                publish.value = '2025-01-01';
+                update.value = '2025-01-01';
+            } else {
+                publish.value = today;
+                update.value = today;
+            }
+        }
+
+        // View modal wiring
+        document.querySelectorAll('.action-btn.view').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const title = row.querySelector('td:nth-child(1)')?.textContent?.trim() || '';
+                const content = row.dataset.content || '';
+                const mediaCell = row.querySelector('.media-preview');
+                const keywords = row.dataset.keywords || '';
+                const publishDate = row.querySelector('td:nth-child(2)')?.textContent?.trim() || '';
+                const updateDate = row.querySelector('td:nth-child(3)')?.textContent?.trim() || '';
+                const statusText = row.querySelector('td:nth-child(4) span')?.textContent?.trim() || '';
+
+                document.getElementById('viewPostTitle').textContent = title || '-';
+                document.getElementById('viewPostContent').textContent = content || '-';
+                document.getElementById('viewPublishDate').textContent = publishDate || '-';
+                document.getElementById('viewUpdateDate').textContent = updateDate || '-';
+
+                // Status badge
+                const statusEl = document.getElementById('viewStatus');
+                statusEl.innerHTML = '';
+                if (statusText) {
+                    let badgeClass = 'bg-secondary';
+                    if (statusText === 'نشط') badgeClass = 'bg-success';
+                    else if (statusText === 'قيد المراجعة') badgeClass = 'bg-warning';
+                    else if (statusText === 'مرفوض') badgeClass = 'bg-danger';
+                    statusEl.innerHTML = `<span class="badge ${badgeClass}">${statusText}</span>`;
+                } else {
+                    statusEl.textContent = '-';
+                }
+
+                // Keywords badges
+                const keywordsEl = document.getElementById('viewKeywordsContainer');
+                keywordsEl.innerHTML = '';
+                const parts = keywords.split(/[,،]/).map(k => k.trim()).filter(k => k);
+                if (parts.length) {
+                    parts.forEach(k => {
+                        const span = document.createElement('span');
+                        span.className = 'keywords-badge';
+                        span.textContent = k;
+                        keywordsEl.appendChild(span);
+                    });
+                } else {
+                    keywordsEl.textContent = '-';
+                }
+
+                // Media preview
+                const viewPreview = document.getElementById('viewMediaPreview');
+                viewPreview.innerHTML = '';
+                if (mediaCell) viewPreview.innerHTML = mediaCell.innerHTML;
+
+                const viewModal = new bootstrap.Modal(document.getElementById('viewPostModal'));
+                viewModal.show();
+            });
+        });
+
+        // Initialize default dates for Add Post modal on load
+        document.addEventListener('DOMContentLoaded', ensureAddModalDatesDefault2025);
+
+        // Edit modal wiring
+        const editMediaInput = document.getElementById('editMediaFiles');
+        const editMediaPreview = document.getElementById('editMediaPreview');
+        let currentEditRow = null;
+        let originalMediaHTML = '';
+
+        document.querySelectorAll('.action-btn.edit').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                currentEditRow = row;
+                originalMediaHTML = row.querySelector('.media-preview')?.innerHTML || '';
+
+                const title = row.querySelector('td:nth-child(1)')?.textContent?.trim() || '';
+                const content = row.dataset.content || '';
+                const keywords = row.dataset.keywords || '';
+                const publishDate = row.querySelector('td:nth-child(2)')?.textContent?.trim() || getTodayAsInputValue();
+                const updateDate = row.querySelector('td:nth-child(3)')?.textContent?.trim() || getTodayAsInputValue();
+                const statusText = row.querySelector('td:nth-child(4) span')?.textContent?.trim() || 'نشط';
+
+                document.getElementById('editPostTitle').value = title;
+                document.getElementById('editPostContent').value = content;
+                document.getElementById('editKeywords').value = keywords;
+                document.getElementById('editPublishDate').value = formatDateToInput(publishDate);
+                document.getElementById('editUpdateDate').value = formatDateToInput(updateDate);
+                document.getElementById('editStatus').value = statusText;
+
+                // Reset file input and preview, then preload existing preview
+                editMediaInput.value = '';
+                editMediaPreview.innerHTML = originalMediaHTML;
+
+                const modal = new bootstrap.Modal(document.getElementById('editPostModal'));
+                modal.show();
+            });
+        });
+
+        // Handle edit file preview updates
+        editMediaInput.addEventListener('change', function(e) {
+            editMediaPreview.innerHTML = '';
+
+            for (let file of e.target.files) {
+                const reader = new FileReader();
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+
+                if (file.type.startsWith('image/')) {
+                    reader.onload = function(evt) {
+                        const img = document.createElement('img');
+                        img.src = evt.target.result;
+                        previewItem.appendChild(img);
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.onclick = function() { previewItem.remove(); };
+                        previewItem.appendChild(removeBtn);
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file.type.startsWith('video/')) {
+                    reader.onload = function(evt) {
+                        const video = document.createElement('video');
+                        video.src = evt.target.result;
+                        video.controls = true;
+                        previewItem.appendChild(video);
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.onclick = function() { previewItem.remove(); };
+                        previewItem.appendChild(removeBtn);
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+                editMediaPreview.appendChild(previewItem);
+            }
+        });
+
+        // Save edits
+        document.getElementById('saveEditBtn').addEventListener('click', function() {
+            if (!currentEditRow) return;
+
+            const newTitle = document.getElementById('editPostTitle').value.trim();
+            const newContent = document.getElementById('editPostContent').value.trim();
+            const newKeywords = document.getElementById('editKeywords').value.trim();
+            const newPublishDate = document.getElementById('editPublishDate').value;
+            const newUpdateDate = document.getElementById('editUpdateDate').value || getTodayAsInputValue();
+            const newStatus = document.getElementById('editStatus').value;
+
+            currentEditRow.querySelector('td:nth-child(2)').textContent = newTitle || currentEditRow.querySelector('td:nth-child(2)').textContent;
+            currentEditRow.querySelector('td:nth-child(3)').textContent = newContent || currentEditRow.querySelector('td:nth-child(3)').textContent;
+            currentEditRow.querySelector('td:nth-child(5)').textContent = newKeywords;
+            currentEditRow.querySelector('td:nth-child(6)').textContent = newPublishDate;
+            currentEditRow.querySelector('td:nth-child(7)').textContent = newUpdateDate;
+
+            // Update status badge
+            const statusCell = currentEditRow.querySelector('td:nth-child(4)');
+            if (statusCell) {
+                let badgeClass = 'bg-secondary';
+                if (newStatus === 'نشط') badgeClass = 'bg-success';
+                else if (newStatus === 'قيد المراجعة') badgeClass = 'bg-warning';
+                else if (newStatus === 'مرفوض') badgeClass = 'bg-danger';
+                statusCell.innerHTML = `<span class="badge ${badgeClass}">${newStatus}</span>`;
+            }
+
+            const tableMediaContainer = currentEditRow.querySelector('.media-preview');
+            if (editMediaInput.files && editMediaInput.files.length > 0) {
+                // Replace media with new selection preview
+                tableMediaContainer.innerHTML = '';
+                for (let file of editMediaInput.files) {
+                    const reader = new FileReader();
+                    if (file.type.startsWith('image/')) {
+                        reader.onload = function(evt) {
+                            const img = document.createElement('img');
+                            img.src = evt.target.result;
+                            img.className = 'media-item';
+                            img.alt = 'صورة';
+                            tableMediaContainer.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    } else if (file.type.startsWith('video/')) {
+                        reader.onload = function(evt) {
+                            const video = document.createElement('video');
+                            video.className = 'media-item';
+                            video.controls = true;
+                            const source = document.createElement('source');
+                            source.src = evt.target.result;
+                            source.type = 'video/mp4';
+                            video.appendChild(source);
+                            tableMediaContainer.appendChild(video);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            } else {
+                // Keep original media
+                tableMediaContainer.innerHTML = originalMediaHTML;
+            }
+
+            Toastify({
+                text: 'تم حفظ التعديلات بنجاح',
+                duration: 3000,
+                gravity: 'top',
+                position: 'left',
+                backgroundColor: 'linear-gradient(to right, #005EA6, #008ECC)',
+                stopOnFocus: true
+            }).showToast();
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editPostModal'));
+            modal.hide();
+        });
+    </script>
+</body>
+</html>
